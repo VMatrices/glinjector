@@ -1,0 +1,91 @@
+--[[
+    @object-name: adguardhome
+    @object-desc: Adguardhome
+--]] local ubus = require "oui.ubus"
+local uci = require "uci"
+local fs = require "oui.fs"
+
+local M = {}
+
+--[[
+    @method-type: call
+    @method-name: get_config
+    @method-desc: 查询当前配置
+
+    @out bool enabled    是否开启
+
+    @in-example: {"jsonrpc":"2.0","id":1,"method":"call","params":["","adguardhome","get_config"]}
+    @out-example: {"jsonrpc": "2.0", "id": 1, "result": {"enabled": true}}
+ --]]
+M.get_config = function()
+    local c = uci.cursor()
+
+    local enabled = c:get("adguardhome", "config", "enabled")
+
+    return {
+        enabled = enabled == "1" and true or false
+    }
+end
+
+--[[
+    @method-type: call
+    @method-name: set_config
+    @method-desc: 设置
+
+    @in bool enabled    是否开启
+
+    @out number ?err_code  错误码: 1: 未关闭其它 DNS
+    @out number ?err_msg   错误信息
+
+    @in-example: {"jsonrpc":"2.0","id":1,"method":"call","params":["","adguardhome","set_config", {"enabled": true}]}
+    @out-example: {"jsonrpc": "2.0", "id": 1, "result": null}
+ --]]
+M.set_config = function(params)
+    -- local c = uci.cursor()
+
+    -- local enabled = params.enabled
+
+    -- if enabled then
+    --     c:delete("dhcp", "@dnsmasq[0]", "boguspriv")
+    --     c:delete("dhcp", "@dnsmasq[0]", "cachesize ")
+    --     c:set("dhcp", "@dnsmasq[0]", "noresolv", 1)
+    --     c:set("dhcp", "@dnsmasq[0]", "server", {"127.0.0.1#3053"})
+
+    --     c:set("stubby", "global", "enabled", 0)
+
+    --     if fs.access("/usr/share/dnscrypt-proxy/dnscrypt-resolvers.csv") then
+    --         c:set("dnscrypt-proxy", "@global[0]", "enabled", 0)
+    --     end
+
+    --     c:set("gl-dns", "@dns[0]", "mode", "auto")
+    --     c:set("gl-dns", "@dns[0]", "proto", "")
+
+    --     ngx.pipe.spawn({"/etc/init.d/stubby", "stop"}):wait()
+    --     ngx.pipe.spawn({"/etc/init.d/dnscrypt-proxy", "stop"}):wait()
+    -- else
+    --     c:delete("dhcp", "@dnsmasq[0]", "noresolv")
+    --     c:delete("dhcp", "@dnsmasq[0]", "server")
+    -- end
+
+    -- c:set("adguardhome", "config", "enabled", enabled and 1 or 0)
+    -- c:commit("adguardhome")
+    -- c:commit("dhcp")
+    -- c:commit("gl-dns")
+
+    -- ubus.call("service", "event", {
+    --     type = "config.change",
+    --     data = {
+    --         package = "dhcp"
+    --     }
+    -- })
+
+    -- ngx.timer.at(2.0, function()
+    --     ngx.pipe.spawn({"/etc/init.d/adguardhome", "stop"}):wait()
+
+    --     if enabled then
+    --         ngx.pipe.spawn({"/etc/init.d/adguardhome", "start"}):wait()
+    --     end
+    -- end)
+end
+
+return M

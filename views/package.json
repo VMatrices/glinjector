@@ -1,0 +1,22 @@
+{
+    "name": "gl-sdk4-ui",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "element-ui": "^2.15.14",
+        "sass": "^1.77.2",
+        "vite": "^4.5.0",
+        "vite-plugin-compression": "^0.5.1",
+        "vite-plugin-css-injected-by-js": "^3.5.1",
+        "vite-plugin-vue2": "^2.0.3",
+        "vue": "^2.7.16",
+        "vue-i18n": "^8.28.2",
+        "vue-template-compiler": "^2.7.16"
+    }
+}

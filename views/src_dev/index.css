@@ -1,0 +1,40 @@
+.home-wrapper {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.home-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 50px;
+}
+
+
+.header-container {
+    z-index: 102;
+    position: fixed;
+    width: 100%;
+    max-width: inherit;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 30px;
+    font-size: 16px;
+    color: var(--text-header);
+    background-color: var(--background-header);
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 0px 10px;
+}
+
+
+.menu-container {
+    position: relative;
+    z-index: 100;
+    width: 225px;
+    min-height: 100%;
+    background-color: var(--background-menu);
+}
+
+.main-container {
+    width: calc(100% - 225px);
+    padding: 0 20px;
+}
