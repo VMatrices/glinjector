@@ -13,12 +13,13 @@ Vue.use(ElementUI);
 initGlScript(Vue)
 initGlLogin(Vue)
 
-// localStorage.setItem('language',lang);
+const locale = localStorage.getItem('locale', 'zh-cn')
+document.body.setAttribute("lang", locale)
 
 new Vue({
     el: '#app',
     render: h => h(Index),
     i18n: new VueI18n({
-        messages, locale: localStorage.getItem('locale', 'zh-cn')
+        messages, locale
     })
 })

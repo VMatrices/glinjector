@@ -1,5 +1,9 @@
 {
     "glinjector": {
+        "login_page": "Login Page",
+        "index_page": "Index Page",
+        "navbar": "Navbar",
+        "misc": "Misc",
         "apply": "Apply"
     },
     "menu_glinjector": "Customize UI"

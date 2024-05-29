@@ -1,5 +1,9 @@
 {
     "glinjector": {
+        "login_page": "登陆页",
+        "index_page": "首页",
+        "navbar": "导航栏",
+        "misc": "其他",
         "apply": "应用"
     },
     "menu_glinjector": "个性化"

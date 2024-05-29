@@ -1,45 +1,58 @@
 <template>
     <div class="plugin-wrapper">
 
-        <gl-title :title="$t('menu_glinjector')" badge="asd">
-            <template slot="badge">
-                <a class="github" target="_blank" href="https://github.com/VMatrices">
-                    <i class="el-icon-link"></i>
-                    VMatrices
-                </a>
-            </template>
+        <gl-title :title="$t('menu_glinjector')">
+            <a slot="badge" class="github" target="_blank" href="https://github.com/VMatrices">
+                <i class="el-icon-link" />
+                VMatrices
+            </a>
         </gl-title>
 
         <gl-card class="card-spacing card-tabs ">
             <el-tabs class="is-card  el-tabs--card">
-                <el-tab-pane label="用户管理">
-                    <div class="container">
-                        asdasd
+                <el-tab-pane :label="tl('login_page')">
+
+                    <el-tooltip effect="dark" content="提示文字" placement="top-start">
+                        <span class="iconfont icon-info" />
+                    </el-tooltip>
+                    <el-popover placement="top-start" width="200" trigger="hover" content="提示文字">
+                        <span slot="reference" class="iconfont icon-info" />
+                    </el-popover>
+
+                </el-tab-pane>
+                <el-tab-pane :label="tl('index_page')">
+                </el-tab-pane>
+                <el-tab-pane :label="tl('navbar')">
+                </el-tab-pane>
+                <el-tab-pane :label="tl('misc')">
+                    <div class="form">
+                        <ul>
+                            <li>
+                                <div>
+                                    <span>宽屏模式 </span>
+                                    <el-tooltip effect="dark" content="Top Left 提示文字" placement="top-start">
+                                        <span class="iconfont icon-info" />
+                                    </el-tooltip>
+                                </div>
+                                <div>
+                                    <gl-switch v-model="style.wide_mode" />
+                                </div>
+                            </li>
+                            <li>
+                                <div>恢复菜单</div>
+                                <div>
+                                    <gl-switch v-model="unlock" />
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="配置管理"></el-tab-pane>
-                <el-tab-pane label="角色管理"></el-tab-pane>
-                <el-tab-pane label="定时任务补偿"></el-tab-pane>
             </el-tabs>
 
             <div class="btns">
                 <gl-button type="primary" @click="dialogVisible = true">{{ tl('apply') }}</gl-button>
             </div>
 
-        </gl-card>
-
-        <gl-card class="card-spacing" title="首页">
-            <gl-tips tips="Woc" />
-            <div class="btns">
-                <gl-button type="primary" @click="dialogVisible = true">{{ tl('apply') }}</gl-button>
-            </div>
-        </gl-card>
-
-        <gl-card class="card-spacing" title="导航栏">
-            <gl-tips tips="Woc" />
-            <div class="btns">
-                <gl-button type="primary" @click="dialogVisible = true">{{ tl('apply') }}</gl-button>
-            </div>
         </gl-card>
 
         <gl-card class="card-spacing" title="其他">
@@ -54,10 +67,10 @@
                 </gl-radio-group>
                 <el-select v-model="vv" filterable placeholder="请选择图标">
                     <template slot="prefix">
-                        <i :class="vv"></i>
+                        <i :class="vv" />
                     </template>
                     <el-option v-for="item in icons" :key="item" :label="item" :value="item">
-                        <span style="float: left"><i :class="item"></i></span>
+                        <span style="float: left"><i :class="item" /></span>
                         <span style="float: right; color: #8492a6; font-size: 13px">{{ item }}</span>
                     </el-option>
                 </el-select>
@@ -149,23 +162,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.github {
-    color: white !important;
-    font-size: 13px;
-}
-
-.card-spacing {
-    margin-bottom: 20px;
-}
-
-.card-tabs {
-    padding: 0px;
-
-    ::v-deep .container {
-        padding: 0px !important
-    }
-}
-
 .plugin-wrapper {
     padding: 20px 0;
 
@@ -180,29 +176,91 @@ export default {
         }
     }
 
-}
+    .github {
+        color: white !important;
+        font-size: 13px;
+    }
 
-.el-dialog {
-    max-width: 600px;
+    .card-spacing {
+        margin-bottom: 20px;
+    }
 
-    .dialog-btns {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .card-tabs {
+        padding: 0px;
 
-        .dialog-btn {
-            width: 124px;
-            height: 36px
+        ::v-deep {
+            >.container {
+                padding: 0 0 20px 0 !important
+            }
+
+            .el-tab-pane {
+                padding: 20px 20px 0 20px;
+            }
+        }
+
+
+        .is-card {
+            box-shadow: none !important;
         }
     }
 
-}
+    .el-dialog {
+        max-width: 600px;
 
-[class*=" el-icon-"],
-[class^=el-icon-] {
-    font-size: 16px;
-    width: inherit;
-    height: inherit;
-    line-height: inherit;
+        .dialog-btns {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .dialog-btn {
+                width: 124px;
+                height: 36px
+            }
+        }
+
+    }
+
+    .form {
+        // max-width: 635px;
+
+        li {
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 15px;
+
+            // &:not(:first-child) {
+            border-bottom: 1px solid var(--divider);
+            // }
+
+            >div:first-child {
+                color: var(--text-weak);
+                flex: 1;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+            }
+
+            >div:last-child {
+                max-width: 230px;
+                width: 50%;
+                min-width: 160px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                color: var(--text-regular);
+            }
+        }
+    }
+
+    [class*=" el-icon-"],
+    [class^=el-icon-] {
+        font-size: 16px;
+        width: inherit;
+        height: inherit;
+        line-height: inherit;
+    }
+
 }
 </style>

@@ -1,8 +1,9 @@
 const ctx = {
     id: {
         vue: '2b0e',
-        style1: 'e775',
-        style2: '2832',
+        style1: '01d8',
+        style2: 'e775',
+        style3: '2832',
         router: 'a18c',
         cookies: '57e0',
         request: 'ff66',

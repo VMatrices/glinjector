@@ -38,6 +38,7 @@ export default {
     watch: {
         '$i18n.locale'(locale) {
             localStorage.setItem('locale', locale)
+            document.body.setAttribute("lang", locale)
         }
     }
 }
