@@ -1,13 +1,50 @@
 <template>
-    <div class="wrapper">
-        <gl-title :title="$t('menu_glinjector')" />
+    <div class="plugin-wrapper">
 
-        <div class="card">
-            <div class="content">
-                <gl-tips tips="Woc" />
+        <gl-title :title="$t('menu_glinjector')" badge="asd">
+            <template slot="badge">
+                <a class="github" target="_blank" href="https://github.com/VMatrices">
+                    <i class="el-icon-link"></i>
+                    VMatrices
+                </a>
+            </template>
+        </gl-title>
+
+        <gl-card class="card-spacing card-tabs ">
+            <el-tabs class="is-card  el-tabs--card">
+                <el-tab-pane label="用户管理">
+                    <div class="container">
+                        asdasd
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="配置管理"></el-tab-pane>
+                <el-tab-pane label="角色管理"></el-tab-pane>
+                <el-tab-pane label="定时任务补偿"></el-tab-pane>
+            </el-tabs>
+
+            <div class="btns">
                 <gl-button type="primary" @click="dialogVisible = true">{{ tl('apply') }}</gl-button>
             </div>
-        </div>
+
+        </gl-card>
+
+        <gl-card class="card-spacing" title="首页">
+            <gl-tips tips="Woc" />
+            <div class="btns">
+                <gl-button type="primary" @click="dialogVisible = true">{{ tl('apply') }}</gl-button>
+            </div>
+        </gl-card>
+
+        <gl-card class="card-spacing" title="导航栏">
+            <gl-tips tips="Woc" />
+            <div class="btns">
+                <gl-button type="primary" @click="dialogVisible = true">{{ tl('apply') }}</gl-button>
+            </div>
+        </gl-card>
+
+        <gl-card class="card-spacing" title="其他">
+            <gl-tips tips="Woc" />
+        </gl-card>
 
         <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
             <div class="dialog-main">
@@ -112,18 +149,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
+.github {
+    color: white !important;
+    font-size: 13px;
+}
+
+.card-spacing {
+    margin-bottom: 20px;
+}
+
+.card-tabs {
+    padding: 0px;
+
+    ::v-deep .container {
+        padding: 0px !important
+    }
+}
+
+.plugin-wrapper {
     padding: 20px 0;
 
-    .card {
-        width: 100%;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 2px 6px 16px 6px var(--shadow);
-        background-color: var(--background-card);
+    .btns {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        .content {
-            max-width: 635px;
+        .gl-btn {
+            min-width: 124px;
         }
     }
 

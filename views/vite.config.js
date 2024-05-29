@@ -16,10 +16,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/rpc': {
-        target: 'https://127.0.0.1/',
-        cors: true,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "")
+        target: 'http://openwrt/'
       }
     },
   },
