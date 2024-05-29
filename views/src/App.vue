@@ -23,6 +23,59 @@
                 <el-tab-pane :label="tl('index_page')">
                 </el-tab-pane>
                 <el-tab-pane :label="tl('navbar')">
+                    <gl-tips tips="Woc">
+                        <gl-button slot="customAction" type="primary" @click="dialogVisible = true">
+                            <span class="iconfont icon-plus mr6"></span>
+                            <span>添加</span>
+                        </gl-button>
+                    </gl-tips>
+                    <table>
+                        <thead>
+                            <!-- <th style="width: 100px;">序号</th> -->
+                            <th style="width: 150px;">状态</th>
+                            <th>按钮</th>
+                            <th>链接 / 路径</th>
+                            <th>打开方式</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item, i in navbar">
+                                <!-- <td>{{ i + 1 }}</td> -->
+                                <td><gl-switch v-model="item.enable" /></td>
+                                <td><i :class="item.icon" /><span>&nbsp;{{ item.name }}</span></td>
+                                <td>{{ item.link }}</td>
+                                <td>
+                                    <span v-if="item.mode == 'embed'">嵌入当前页</span>
+                                    <span v-if="item.mode == 'blank'">打开新页面</span>
+                                    <span v-if="item.mode == 'replace'">替换当前页面</span>
+                                </td>
+                                <td>
+                                    <!-- default/primary/connect/error/abort/success  -->
+                                    <el-tooltip effect="dark" content="向上移动" placement="top-center">
+                                        <gl-button class="gl-icon-btn" type="default" @click="swapArray(i, -1)">
+                                            <i class="el-icon-arrow-up" />
+                                        </gl-button>
+                                    </el-tooltip>
+                                    <el-tooltip effect="dark" content="向下移动" placement="top-center">
+                                        <gl-button class="gl-icon-btn" type="default" @click="swapArray(i, +1)">
+                                            <i class="el-icon-arrow-down" />
+                                        </gl-button>
+                                    </el-tooltip>
+                                    <el-tooltip effect="dark" content="向下移动" placement="top-center">
+                                        <gl-button class="gl-icon-btn" type="success" @click="swapArray(i, +1)">
+                                            <i class="el-icon-edit" />
+                                        </gl-button>
+                                    </el-tooltip>
+                                    <el-tooltip effect="dark" content="删除" placement="top-center">
+                                        <gl-button class="gl-icon-btn" type="error" @click="swapArray(i, +1)">
+                                            <i class="el-icon-delete" />
+                                        </gl-button>
+                                    </el-tooltip>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </el-tab-pane>
                 <el-tab-pane :label="tl('misc')">
                     <div class="form">
@@ -31,7 +84,7 @@
                                 <div>
                                     <span>宽屏模式 </span>
                                     <el-tooltip effect="dark" content="Top Left 提示文字" placement="top-start">
-                                        <span class="iconfont icon-info" />
+                                        <span class="iconfont icon-info ml5" />
                                     </el-tooltip>
                                 </div>
                                 <div>
@@ -59,21 +112,48 @@
             <gl-tips tips="Woc" />
         </gl-card>
 
-        <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+        <el-dialog title="编辑按钮" :visible.sync="dialogVisible" width="30%">
             <div class="dialog-main">
-                <gl-radio-group>
-                    <gl-radio label="aaa">ACGD</gl-radio>
-                    <gl-radio label="bbb">dfgdfcd</gl-radio>
-                </gl-radio-group>
-                <el-select v-model="vv" filterable placeholder="请选择图标">
-                    <template slot="prefix">
-                        <i :class="vv" />
-                    </template>
-                    <el-option v-for="item in icons" :key="item" :label="item" :value="item">
-                        <span style="float: left"><i :class="item" /></span>
-                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item }}</span>
-                    </el-option>
-                </el-select>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <div>按钮图标</div>
+                            <div>
+                                <el-select v-model="vv" filterable placeholder="请选择图标">
+                                    <template slot="prefix">
+                                        <i :class="vv" />
+                                    </template>
+                                    <el-option v-for="item in icons" :key="item" :label="item" :value="item">
+                                        <span style="float: left"><i :class="item" /></span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </li>
+                        <li>
+                            <div><span>提示文字</span></div>
+                            <div><el-input xxx placeholder="请输入链接"></el-input></div>
+                        </li>
+                        <li>
+                            <div><span>链接/路径</span></div>
+                            <div><el-input xxx placeholder="请输入链接"></el-input></div>
+                        </li>
+                        <li>
+                            <div><span>打开方式</span></div>
+                            <div>
+                                <el-select filterable>
+                                    <el-option label="嵌入当前页" value="embed" />
+                                    <el-option label="打开新页面" value="blank" />
+                                    <el-option label="替换当前页面" value="new" />
+                                </el-select>
+                            </div>
+                        </li>
+                        <li>
+                            <div><span>是否启用</span></div>
+                            <div><gl-switch /></div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <span slot="footer" class="dialog-footer">
                 <div class="dialog-btns">
@@ -118,36 +198,43 @@ export default {
                 max: 90
             },
             unlock: true,
-            navbar: {
-                embed: true,
-                buttons: [    //自定义按钮
-                    {
-                        name: "LuCI",
-                        icon: "iconfont icon-gateway",
-                        link: "/cgi-bin/luci/"
-                    },
-                    {
-                        name: "打印机",
-                        icon: "iconfont icon-printer",
-                        link: "/cgi-bin/luci/admin/nas/usb_printer"
-                    },
-                    {
-                        name: "文件管理",
-                        icon: "iconfont icon-flash",
-                        link: "/cgi-bin/luci/admin/nas/fileassistant"
-                    },
-                    {
-                        name: "客户端列表",
-                        icon: "iconfont icon-clients",
-                        link: "#/clients"
-                    },
-                    {
-                        name: "系统概览",
-                        icon: "iconfont icon-info",
-                        link: "#/overview"
-                    }
-                ]
-            }
+            navbar: [    //自定义按钮
+                {
+                    name: "LuCI",
+                    icon: "iconfont icon-gateway",
+                    link: "/cgi-bin/luci/",
+                    mode: 'embed',
+                    enable: true,
+                },
+                {
+                    name: "打印机",
+                    icon: "iconfont icon-printer",
+                    link: "/cgi-bin/luci/admin/nas/usb_printerusb_printerusb_printerusb_printerusb_printerusb_printerusb_printerusb_printerusb_printerusb_printerusb_printer",
+                    mode: 'embed',
+                    enable: true,
+                },
+                {
+                    name: "文件管理",
+                    icon: "iconfont icon-flash",
+                    link: "/cgi-bin/luci/admin/nas/fileassistant",
+                    mode: 'embed',
+                    enable: true,
+                },
+                {
+                    name: "客户端列表",
+                    icon: "iconfont icon-clients",
+                    link: "#/clients",
+                    mode: 'embed',
+                    enable: true,
+                },
+                {
+                    name: "系统概览",
+                    icon: "iconfont icon-info",
+                    link: "#/overview",
+                    mode: 'embed',
+                    enable: true,
+                }
+            ]
         }
     },
     methods: {
@@ -156,6 +243,13 @@ export default {
         },
         hhh() {
             console.log(this)
+        },
+        swapArray(i, d) {
+            if (0 <= i + d && i + d < this.navbar.length) {
+                const tmp = this.navbar[i]
+                this.$set(this.navbar, i, this.navbar[i + d])
+                this.$set(this.navbar, i + d, tmp)
+            }
         }
     }
 }
@@ -165,14 +259,67 @@ export default {
 .plugin-wrapper {
     padding: 20px 0;
 
+    @for $i from 1 through 100 {
+        .ml#{$i} {
+            margin-left: #{$i}px !important
+        }
+
+        .mr#{$i} {
+            margin-right: #{$i}px !important
+        }
+
+        .mt#{$i} {
+            margin-top: #{$i}px !important
+        }
+
+        .mb#{$i} {
+            margin-bottom: #{$i}px !important
+        }
+
+        .pl#{$i} {
+            padding-left: #{$i}px !important
+        }
+
+        .pr#{$i} {
+            padding-right: #{$i}px !important
+        }
+
+        .pt#{$i} {
+            padding-top: #{$i}px !important
+        }
+
+        .pb#{$i} {
+            padding-bottom: #{$i}px !important
+        }
+    }
+
     .btns {
         margin-top: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
 
-        .gl-btn {
+    .gl-btn {
+        &:not(.gl-icon-btn) {
             min-width: 124px;
+        }
+
+        &.gl-icon-btn {
+            display: inline-block;
+            border-radius: 50%;
+            padding: 12px;
+            line-height: 1;
+            border-width: 1px !important;
+            margin: 0 !important;
+
+            i {
+                font-size: 14px;
+            }
+        }
+
+        &.gl-icon-btn+.gl-icon-btn {
+            margin-left: 10px !important;
         }
     }
 
@@ -211,11 +358,6 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
-
-            .dialog-btn {
-                width: 124px;
-                height: 36px
-            }
         }
 
     }
@@ -230,9 +372,9 @@ export default {
             justify-content: space-between;
             padding: 14px 15px;
 
-            // &:not(:first-child) {
-            border-bottom: 1px solid var(--divider);
-            // }
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--divider);
+            }
 
             >div:first-child {
                 color: var(--text-weak);
@@ -252,6 +394,13 @@ export default {
                 color: var(--text-regular);
             }
         }
+    }
+
+    td {
+        max-width: 100px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-wrap: normal;
     }
 
     [class*=" el-icon-"],
