@@ -11,13 +11,10 @@
         <gl-card class="card-spacing card-tabs ">
             <el-tabs class="is-card  el-tabs--card">
                 <el-tab-pane :label="tl('login_page')">
-
-                    <el-tooltip effect="dark" content="提示文字" placement="top-start">
-                        <span class="iconfont icon-info" />
-                    </el-tooltip>
-                    <el-popover placement="top-start" width="200" trigger="hover" content="提示文字">
+                    <!-- <el-popover placement="top-start" width="200" trigger="hover" content="提示文字">
                         <span slot="reference" class="iconfont icon-info" />
-                    </el-popover>
+                    </el-popover> -->
+
 
                 </el-tab-pane>
                 <el-tab-pane :label="tl('index_page')">
@@ -50,7 +47,6 @@
                                     <span v-if="item.mode == 'replace'">替换当前页面</span>
                                 </td>
                                 <td>
-                                    <!-- default/primary/connect/error/abort/success  -->
                                     <el-tooltip effect="dark" content="向上移动" placement="top-center">
                                         <gl-button class="gl-icon-btn" type="default" @click="swapArray(i, -1)">
                                             <i class="el-icon-arrow-up" />
@@ -92,9 +88,17 @@
                                 </div>
                             </li>
                             <li>
+                                <div>风扇区间 <a href="#/overview">去修改</a></div>
+                                <div>
+                                    <!-- #/overview -->
+                                    <el-slider class="w200" v-model="misc.fan" range :min="30" :max="90" show-tooltip :format-tooltip="v => v + '°C'" :marks="{ 10: '10°C', 90: '100°C' }">
+                                    </el-slider>
+                                </div>
+                            </li>
+                            <li>
                                 <div>恢复菜单</div>
                                 <div>
-                                    <gl-switch v-model="unlock" />
+                                    <gl-switch v-model="misc.unlock" />
                                 </div>
                             </li>
                         </ul>
@@ -192,12 +196,10 @@ export default {
                 },
                 wide_mode: true,
             },
-            fan: { // 无风扇型号可移除此项
-                enable: false,
-                min: 30,
-                max: 90
+            misc: {
+                fan: [30, 90],
+                unlock: true,
             },
-            unlock: true,
             navbar: [    //自定义按钮
                 {
                     name: "LuCI",
@@ -256,42 +258,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url(base.scss);
+
 .plugin-wrapper {
     padding: 20px 0;
-
-    @for $i from 1 through 100 {
-        .ml#{$i} {
-            margin-left: #{$i}px !important
-        }
-
-        .mr#{$i} {
-            margin-right: #{$i}px !important
-        }
-
-        .mt#{$i} {
-            margin-top: #{$i}px !important
-        }
-
-        .mb#{$i} {
-            margin-bottom: #{$i}px !important
-        }
-
-        .pl#{$i} {
-            padding-left: #{$i}px !important
-        }
-
-        .pr#{$i} {
-            padding-right: #{$i}px !important
-        }
-
-        .pt#{$i} {
-            padding-top: #{$i}px !important
-        }
-
-        .pb#{$i} {
-            padding-bottom: #{$i}px !important
-        }
-    }
 
     .btns {
         margin-top: 20px;
