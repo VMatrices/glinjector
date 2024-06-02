@@ -4,7 +4,10 @@
         "index_page": "首页",
         "navbar": "导航栏",
         "misc": "其他",
-        "apply": "应用"
+        "apply": "应用",
+        "navbar_btn": {
+            "link_path":"链接/路径"
+        }
     },
     "menu_glinjector": "个性化"
 }

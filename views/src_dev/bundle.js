@@ -1,3 +1,27 @@
+/*
+"./chart.js": "63ec",
+"./component.js": "d2c8",
+"./cookies.js": "57e0",
+"./copyText.js": "91cb",
+"./dateFormat.js": "ad68",
+"./deepCopy.js": "9a95",
+"./domDirective.js": "beca",
+"./downloadFile.js": "317c",
+"./element.js": "7378",
+"./flow.js": "8780",
+"./formatTime.js": "be47",
+"./mac.js": "ce62",
+"./markdown.js": "9b60",
+"./netmask.js": "8e22",
+"./qrCode2.js": "218a",
+"./regulars.js": "faad",
+"./request.js": "ff66",
+"./sortable.js": "89f6",
+"./temperature.js": "ce9d",
+"./themeLink.js": "2ff3",
+"./unixpassmd5.js": "d714",
+"./userAgent.js": "7501"
+*/
 const ctx = {
     id: {
         vue: '2b0e',
@@ -5,10 +29,14 @@ const ctx = {
         style2: 'e775',
         style3: '2832',
         router: 'a18c',
+        utils: 'f666',
         cookies: '57e0',
         request: 'ff66',
         unixpassmd5: 'd714',
+        userAgent: '7501',
+        domDirective: 'beca',
         component: 'd2c8',
+        flow: '8780',
     },
     // 屏蔽入口
     cache: { 0: { i: 0, l: 1, exports: { default() { } } } }
@@ -20,6 +48,9 @@ export default function initGlSdk(Vue) {
     // 屏蔽路由
     const router = ctx.load(ctx.id.router).a;
     router.push = router.replace = p => console.debug('Routing to:', p)
+    // // 加载工具类
+    // const utils = ctx.load(ctx.id.utils);
+    // utils.keys().forEach((t=>utils(t).default || utils(t)))
     // 按需加载
     for (const name in ctx.id) {
         ctx.load(ctx.id[name])

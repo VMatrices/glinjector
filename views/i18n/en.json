@@ -4,7 +4,10 @@
         "index_page": "Index Page",
         "navbar": "Navbar",
         "misc": "Misc",
-        "apply": "Apply"
+        "apply": "Apply",
+        "navbar_btn": {
+            "link_path":"Link/Path"
+        }
     },
     "menu_glinjector": "Customize UI"
 }
