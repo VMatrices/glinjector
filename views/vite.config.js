@@ -16,7 +16,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/rpc': {
-        target: 'https://127.0.0.1/'
+        target: 'http://openwrt/'
+      },
+      '/upload': {
+        target: 'http://openwrt/'
       }
     },
   },

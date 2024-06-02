@@ -229,7 +229,7 @@
 
             <el-dialog title="上传图片" :visible.sync="uploadDialog.show" width="30%">
                 <div class="dialog-main">
-                    <gl-upload-card allowType=".jpg, .png, .gif" :maxSize="2 * 1024" />
+                    <gl-upload-card allowType=".jpg, .png, .gif" :maxSize="2 * 1024 * 1024" path="/tmp/firmware.img" />
                 </div>
             </el-dialog>
             <el-dialog :title="(btnDialog.edit ? '修改' : '新增') + '按钮'" :visible.sync="btnDialog.show" width="30%">
