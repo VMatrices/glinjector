@@ -102,6 +102,8 @@ export default {
 
         .main-container {
             width: calc(100% - 225px);
+            max-height: calc(100vh - 50px);
+            overflow-y: overlay;
             padding: 0 20px;
 
             .footer {

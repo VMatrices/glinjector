@@ -17,85 +17,144 @@
                         <div class="preview-form">
                             <div class="form slim">
                                 <ul>
+                                    <li class="title-li"> 背景 </li>
                                     <li>
                                         <div>
-                                            <span>背景</span>
+                                            <span>背景图片</span>
                                         </div>
                                         <div>
-                                            <el-select v-model="config.style.login.background_url" @change="imageLoading = 1" filterable clearable allow-create placeholder="选择或输入网址">
+                                            <el-select v-model="config.style.login.background.url" @change="imageLoading = 1" filterable clearable allow-create placeholder="选择或输入网址">
                                                 <div class="select-upload" @click="uploadDialog.show = true"><i class="el-icon-upload mr5" />上传</div>
-                                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                                                </el-option>
+                                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
                                             </el-select>
                                         </div>
                                     </li>
+                                    <template v-if="config.style.login.background.url">
+                                        <li>
+                                            <div>背景位置</div>
+                                            <div>
+                                                <el-select v-model="config.style.login.background.position">
+                                                    <el-option label="居中" value="center" />
+                                                    <el-option label="左对齐" value="left" />
+                                                    <el-option label="右对齐" value="right" />
+                                                    <el-option label="顶部对齐" value="top" />
+                                                    <el-option label="底部对齐" value="bottom" />
+                                                </el-select>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>背景大小</div>
+                                            <div>
+                                                <el-select v-model="config.style.login.background.size">
+                                                    <el-option label="填充" value="cover" />
+                                                    <el-option label="适应宽高" value="contain no-repeat" />
+                                                    <el-option label="平铺(原图)" value="auto repeat" />
+                                                    <el-option label="平铺(放大)" value="contain repeat" />
+                                                </el-select>
+                                            </div>
+                                        </li>
+                                    </template>
+                                    <li class="title-li"> 登录框 </li>
                                     <li>
                                         <div>
                                             <span>模糊</span>
                                         </div>
                                         <div>
-                                            <el-slider class="w200" v-model="config.style.login.background_blur" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
+                                            <el-slider class="w200" v-model="config.style.login.box.blur" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
                                         </div>
                                     </li>
                                     <li>
                                         <div>
-                                            <span>遮罩</span>
+                                            <span>遮罩浓度</span>
                                         </div>
                                         <div>
-                                            <el-slider class="w200" v-model="config.style.login.background_mask" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
+                                            <el-slider class="w200" v-model="config.style.login.box.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
                                         </div>
                                     </li>
                                     <li>
-                                        <div>样式</div>
                                         <div>
-                                            <gl-toggle v-model="config.style.login.new_style.enable">
+                                            <span>遮罩颜色</span>
+                                        </div>
+                                        <div>
+                                            <el-select v-model="config.style.login.box.color">
+                                                <el-option label="黑色" value="black" />
+                                                <el-option label="白色" value="white" />
+                                            </el-select>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>新风格</div>
+                                        <div>
+                                            <!-- <gl-toggle v-model="config.style.login.box.new_look">
+                                                <gl-toggle-item label="原生" value="" />
                                                 <gl-toggle-item label="紧凑" value="1" />
-                                                <gl-toggle-item label="全屏" value="" />
-                                            </gl-toggle>
-                                            <!-- <gl-switch v-model="config.style.login.new_style.enable" /> -->
+                                            </gl-toggle> -->
+                                            <gl-switch v-model="config.style.login.box.new_look" />
                                         </div>
                                     </li>
-                                    <template v-if="config.style.login.new_style.enable">
+                                    <template v-if="config.style.login.box.new_look">
                                         <li>
                                             <div>
                                                 <span>宽度</span>
                                             </div>
                                             <div>
-                                                <el-slider class="w200" v-model="config.style.login.new_style.width" :min="400" :max="1000" show-tooltip :format-tooltip="v => v + 'px'" />
+                                                <el-slider class="w200" v-model="config.style.login.box.width" :min="400" :max="1000" show-tooltip :format-tooltip="v => v + 'px'" />
                                             </div>
                                         </li>
                                         <li>
                                             <div>位置</div>
                                             <div>
-                                                <gl-toggle v-model="config.style.login.new_style.position">
+                                                <gl-toggle v-model="config.style.login.box.position">
                                                     <gl-toggle-item label="左侧" value="left" />
                                                     <gl-toggle-item label="居中" value="center" />
                                                     <gl-toggle-item label="右侧" value="right" />
                                                 </gl-toggle>
                                             </div>
                                         </li>
-                                        <li v-if="config.style.login.new_style.position != 'center'">
+                                        <li v-if="config.style.login.box.position != 'center'">
                                             <div>
                                                 <span>边距</span>
                                             </div>
                                             <div>
-                                                <el-slider class="w200" v-model="config.style.login.new_style.margin" :min="0" :max="50" show-tooltip :format-tooltip="v => v + '%'" />
+                                                <el-slider class="w200" v-model="config.style.login.box.margin" :min="0" :max="50" show-tooltip :format-tooltip="v => v + '%'" />
+                                            </div>
+                                        </li>
+                                    </template>
+                                    <li class="title-li"> 登录按钮 </li>
+                                    <li>
+                                        <div>添加Luci按钮</div>
+                                        <div>
+                                            <gl-switch v-model="config.style.login.button.luci" />
+                                        </div>
+                                    </li>
+                                    <template v-if="config.style.login.button.luci">
+                                        <li>
+                                            <div>组合按钮</div>
+                                            <div>
+                                                <gl-switch v-model="config.style.login.button.comb" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>Luci文字</div>
+                                            <div>
+                                                <el-input v-model="config.style.login.button.text" placeholder="请输入密码" />
                                             </div>
                                         </li>
                                     </template>
                                 </ul>
                             </div>
                             <div class="preview-wrapper">
-                                <GLPreview :url="config.style.login.background_url">
+                                <GLPreview :url="config.style.login.background.url">
                                     <template v-slot:default="preview">
-                                        <div class="main" :class="{ new: config.style.login.new_style.enable }" :style="{ backgroundImage: preview.image && `url(${preview.image})` }">
+                                        <div class="main" :class="{ new: config.style.login.box.new_look }"
+                                            :style="{ background: preview.image && ` ${config.style.login.background.position} / ${config.style.login.background.size} url(${preview.image}), var(--background-login)` }">
                                             <div class="login-box" :style="loginBoxStyle">
                                                 <div class="login-fake">
                                                     <i class="iconfont icon-gateway" />
                                                     <p class="mt10">Openwrt</p>
                                                     <div class="big-title">管理员密码</div>
                                                     <el-input class="mt20 w300" readonly placeholder="请输入密码" />
-                                                    <gl-button class="mt20" type="primary">登录</gl-button>
+                                                    <gl-button class="mt20" type="primary" @click="followMe">登录</gl-button>
                                                 </div>
                                             </div>
                                         </div>
@@ -364,17 +423,25 @@ export default {
             config: {
                 style: {
                     login: {
-                        background_url: 'https://api.timecdn.cn/libs/wallpaper/v1',
-                        background_mask: 50,
-                        background_blur: 50,
-                        comb_button: true,
-                        luci_text: "LuCI",
-                        new_style: {
-                            enable: "1",
+                        background: {
+                            url: 'https://api.timecdn.cn/libs/wallpaper/v1',
+                            size: 'cover',
+                            position: 'center',
+                        },
+                        box: {
+                            color: 'black',
+                            alpha: 50,
+                            blur: 50,
+                            new_look: true,
                             margin: 10,
                             width: 550,
                             position: 'left'
                         },
+                        button: {
+                            comb: true,
+                            luci: true,
+                            text: "LuCI",
+                        }
                     },
                     index: {
 
@@ -427,23 +494,29 @@ export default {
     },
     computed: {
         loginBoxStyle() {
+            const cfg = this.config.style.login;
             const style = {
-                backdropFilter: `blur(${this.config.style.login.background_blur / 100 * 100}px)`,
-                background: `rgba(0, 0, 0, ${this.config.style.login.background_mask / 100})`
+                backdropFilter: `blur(${cfg.box.blur / 100 * 100}px)`,
+                background: `rgba(${cfg.box.color == 'black' ? '0,0,0' : '255,255,255'}, ${cfg.box.alpha / 100})`
             }
-            if (this.config.style.login.new_style.enable) {
-                style.width = this.config.style.login.new_style.width + 'px'
-                switch (this.config.style.login.new_style.position) {
+
+            if (cfg.box.color == 'white') {
+                style.color = '#333'
+            }
+
+            if (cfg.box.new_look) {
+                style.width = cfg.box.width + 'px'
+                switch (cfg.box.position) {
                     case 'center':
-                        style.marginLeft = `calc( 50% - ${this.config.style.login.new_style.width / 2}px )`
+                        style.marginLeft = `calc( 50% - ${cfg.box.width / 2}px )`
                         break
                     case 'left':
                         style.float = 'left'
-                        style.marginLeft = this.config.style.login.new_style.margin + '%'
+                        style.marginLeft = cfg.box.margin + '%'
                         break
                     case 'right':
                         style.float = 'right'
-                        style.marginRight = this.config.style.login.new_style.margin + '%'
+                        style.marginRight = cfg.box.margin + '%'
                         break
                 }
             }
@@ -453,6 +526,10 @@ export default {
     methods: {
         tl(key) {
             return this.$t('glinjector.' + key)
+        },
+        followMe() {
+            this.$message('Follow Me 💕 with https://github.com/VMatrices')
+            setTimeout(() => open('https://github.com/VMatrices'), 1000)
         },
         handleApply() {
             this.$message('应用成功，等待刷新页面...')
@@ -516,6 +593,17 @@ export default {
 <style lang="scss" scoped>
 @import url(base.scss);
 
+::v-deep {
+    .v-enter-active,
+    .v-leave-active {
+        transition: opacity 0.5s ease;
+    }
+
+    .v-enter-from,
+    .v-leave-to {
+        opacity: 0;
+    }
+}
 
 .select-upload {
     cursor: pointer;
@@ -538,13 +626,6 @@ export default {
 
 .plugin-wrapper {
     padding: 20px 0;
-
-    .btns {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 
     .gl-btn {
         &:not(.gl-icon-btn) {
@@ -583,7 +664,7 @@ export default {
 
         ::v-deep {
             >.container {
-                padding: 0 0 20px 0 !important
+                padding: 0 !important
             }
 
             .el-tab-pane {
@@ -591,10 +672,36 @@ export default {
             }
         }
 
-
         .is-card {
             box-shadow: none !important;
         }
+
+        // 解决sticky失效问题
+        & {
+            overflow: visible !important;
+
+            ::v-deep {
+
+                .container {
+                    border-radius: 5px;
+                    background: transparent;
+                }
+
+                .el-tabs__content {
+                    overflow: visible !important;
+                }
+            }
+
+            .btns {
+                border-radius: 0 0 5px 5px;
+                padding: 20px;
+                background-color: var(--background-card);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
     }
 
     .el-dialog {
@@ -617,8 +724,27 @@ export default {
             justify-content: space-between;
             padding: 14px 15px;
 
-            &:not(:last-child) {
+            +li {
+                border-top: 1px solid var(--divider);
+            }
+
+            &:last-child {
                 border-bottom: 1px solid var(--divider);
+            }
+
+            &.title-li {
+                padding: 0 10px;
+                height: 40px;
+                min-height: auto;
+                font-size: 14px;
+                font-weight: 700;
+                border-radius: 5px;
+                color: var(--text-subtitle);
+                background-color: var(--background-subtitle);
+
+                &:not(:first-child) {
+                    margin-top: 5px;
+                }
             }
 
             >div:first-child {
@@ -652,6 +778,11 @@ export default {
         .preview-wrapper {
             flex: 0;
             padding: 30px;
+
+            ::v-deep .preview {
+                position: sticky !important;
+                top: 40px;
+            }
 
             .main {
                 background-image: var(--background-login);
@@ -692,6 +823,10 @@ export default {
                     .login-box {
                         width: 544px;
                         box-shadow: 0 0 15px #00000080;
+
+                        ::v-deep .el-input__inner {
+                            border-radius: 99px;
+                        }
                     }
                 }
             }

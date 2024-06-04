@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height:100%">
         <div class="preview">
             <div class="header">
                 <span class="dot" @click="urlLoaded = ''"></span>
@@ -9,25 +9,23 @@
             <div class="content">
                 <slot :image="urlLoaded"></slot>
             </div>
-            <img class="for-loading" v-if="url" @load="handleLoaded" @error="handleError" :src="urlTest" />
+            <img class="for-loading" v-if="urlTest" @load="handleLoaded" @error="handleError" :src="urlTest" />
             <Transition>
                 <div v-if="loading" class="loading">
                     <i class="iconfont icon-loading" />
                 </div>
             </Transition>
-            <el-dialog :visible.sync="expand" width="960px">
-                <div class="expand">
-                    <div class="content">
-                        <slot :image="urlLoaded"></slot>
-                    </div>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <div class="dialog-btns">
-                        <gl-button class="dialog-btn" @click="expand = false">关 闭</gl-button>
-                    </div>
-                </span>
-            </el-dialog>
         </div>
+        <el-dialog :visible.sync="expand" width="960px">
+            <div class="preview-expand">
+                <div class="content">
+                    <slot :image="urlLoaded"></slot>
+                </div>
+                <div class="preview-close" @click="expand = false">
+                    <i class="el-icon-close" />
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -53,9 +51,14 @@ export default {
     },
     watch: {
         url(url) {
-            this.urlTest = url
-            this.loading = true
-            this.startTimer()
+            if (this.urlTest = url) {
+                this.loading = true
+                this.startTimer()
+            } else {
+                this.loading = false
+                this.urlLoaded = ''
+                clearTimeout(timer)
+            }
         }
     },
     methods: {
@@ -66,11 +69,14 @@ export default {
             clearTimeout(timer)
             timer = setTimeout(() => {
                 this.$message('图片加载过长，可能影响体验，建议切换其他图源')
-            }, 2000)
+            }, 1500)
         },
         refresh() {
-            this.loading = true
-            this.urlTest = `${this.url}${this.url.indexOf('?') > 0 ? '&' : '?'}_t${Date.now()}`
+            if (this.url) {
+                this.loading = true
+                this.startTimer()
+                this.urlTest = `${this.url}${this.url.indexOf('?') > 0 ? '&' : '?'}_t${Date.now()}`
+            }
         },
         handleLoaded() {
             clearTimeout(timer)
@@ -87,19 +93,14 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.v-enter-active,
-.v-leave-active {
-    transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-    opacity: 0;
-}
-
-.el-dialog {
+<style lang="scss" scoped>
+::v-deep .el-dialog {
     max-width: initial !important;
+
+    .el-dialog__header {
+        display: none !important;
+    }
+
 }
 
 .preview {
@@ -110,88 +111,124 @@ export default {
     border-radius: 5px;
     box-shadow: 2px 6px 16px 6px var(--shadow);
 
-    .for-loading {
-        width: 1px;
-        height: 1px;
-        opacity: 0;
-        pointer-events: none;
-        z-index: -1;
-        position: absolute;
-    }
+}
 
-    .header {
-        background-color: #DDDDDD;
-        padding: 6px 3px;
+.for-loading {
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    position: absolute;
+}
 
-        .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-left: 5px;
-            border-radius: 50%;
-            cursor: pointer;
+.header {
+    background-color: #DDDDDD;
+    padding: 6px 3px;
 
-            &:hover {
-                opacity: 0.7;
-            }
+    .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-left: 5px;
+        border-radius: 50%;
+        cursor: pointer;
 
-            &:nth-child(1) {
-                background-color: #FF6058;
-            }
+        &:hover {
+            opacity: 0.7;
+        }
 
-            &:nth-child(2) {
-                background-color: #FFBD2D;
-            }
+        &:nth-child(1) {
+            background-color: #FF6058;
+        }
 
-            &:nth-child(3) {
-                background-color: #18C635;
-            }
+        &:nth-child(2) {
+            background-color: #FFBD2D;
+        }
+
+        &:nth-child(3) {
+            background-color: #18C635;
         }
     }
+}
 
-    .loading {
-        padding-top: 20px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.loading {
+    padding-top: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .iconfont {
-            font-size: 40px;
-        }
+    .iconfont {
+        font-size: 40px;
     }
+}
 
-    .expand {
-        height: 540px;
-        overflow: hidden;
-
-        .content {
-            transform: scale(0.5);
-            transform-origin: top left;
-            width: 1920px;
-            height: 1080px;
-            overflow: hidden;
-        }
-    }
+.preview-expand {
+    height: 540px;
+    overflow: hidden;
+    position: relative;
 
     .content {
-        transform: scale(0.1666);
+        transform: scale(0.5);
         transform-origin: top left;
         width: 1920px;
         height: 1080px;
         overflow: hidden;
+    }
 
-        >* {
-            width: 100%;
-            height: 100%;
+    .preview-close {
+        cursor: pointer;
+        z-index: 9;
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 50px;
+        width: 50px;
+        opacity: 0.5;
+        border: 25px solid rgb(255, 255, 255);
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+        filter: drop-shadow(2px 6px 16px 6px var(--shadow));
+
+        >i {
+            width: 16px;
+            height: 16px;
+            font-size: 16px;
+            margin-top: -22px;
+            margin-left: 2px;
+
+            &:hover {
+                color: initial !important;
+                background-color: initial !important
+            }
         }
+
+        &:hover {
+            opacity: 1;
+        }
+
+    }
+
+}
+
+.content {
+    transform: scale(0.1666);
+    transform-origin: top left;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+
+    ::v-deep>* {
+        width: 100%;
+        height: 100%;
     }
 }
 </style>
