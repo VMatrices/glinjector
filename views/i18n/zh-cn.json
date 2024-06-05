@@ -1,7 +1,7 @@
 {
     "glinjector": {
         "login_page": "登陆页",
-        "index_page": "首页",
+        "admin_panel": "管理面板",
         "navbar": "导航栏",
         "misc": "其他",
         "apply": "应用",

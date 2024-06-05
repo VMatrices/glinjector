@@ -1,3 +1,13 @@
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+
 @for $i from 1 through 100 {
     .ml#{$i} {
         margin-left: #{$i}px !important
@@ -40,5 +50,27 @@
 
     .h#{$i * 10} {
         width: #{$i * 10}px !important
+    }
+}
+
+// ----------------------------
+
+
+.select-upload {
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    color: var(--text-weak);
+    padding: 5px;
+    border: 1px solid var(--text-weak);
+    border-radius: 3px;
+    margin: 3px 7px;
+
+    &:hover {
+        background-color: #F5F7FA
+    }
+
+    &:active {
+        opacity: 0.7
     }
 }

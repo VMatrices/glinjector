@@ -1,6 +1,8 @@
 export default function hookLogin(Vue) {
 
-    const $request = window.$request
+    const $request = Vue.prototype.$request
+    const $axios = Vue.prototype.$axios
+    const $axiosRequest = Vue.prototype.$axios.Axios.prototype.request
 
     function checkAccessDenied(err) {
         try {
@@ -43,6 +45,28 @@ export default function hookLogin(Vue) {
             if (checkAccessDenied(err)) {
                 await login()
                 return await $request(method, param, ...ext)
+            }
+        }
+    }
+
+    $axios.Axios.prototype.request = async function (option) {
+        try {
+            return await $axiosRequest(option)
+        } catch (err) {
+            if (checkAccessDenied(err)) {
+                await login()
+                return await $axiosRequest(option)
+            }
+        }
+    }
+
+    $axios.Axios.prototype.request = async function (option) {
+        try {
+            return await $axiosRequest(option)
+        } catch (err) {
+            if (checkAccessDenied(err)) {
+                await login()
+                return await $axiosRequest(option)
             }
         }
     }

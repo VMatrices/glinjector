@@ -1,7 +1,7 @@
 {
     "glinjector": {
         "login_page": "Login Page",
-        "index_page": "Index Page",
+        "admin_panel": "Admin Panel",
         "navbar": "Navbar",
         "misc": "Misc",
         "apply": "Apply",
