@@ -1,26 +1,15 @@
 <template>
     <div class="form">
         <ul>
-            <!-- <li>
-                <div>
-                    <span>宽屏模式 </span>
-                    <el-tooltip effect="dark" content="Top Left 提示文字" placement="top-start">
-                        <span class="iconfont icon-info ml10" />
-                    </el-tooltip>
-                </div>
-                <div>
-                    <gl-switch v-model="config.style.wide_mode" />
-                </div>
-            </li> -->
             <li>
-                <div>恢复菜单</div>
+                <div>解除区域限制</div>
                 <div>
                     <gl-switch v-model="misc.unlock" />
                 </div>
             </li>
             <li>
                 <div>
-                    <span>风扇区间</span>
+                    <span>风扇温度区间</span>
                     <span @click="goToFanSetting" class="iconfont icon-fan-setting btn-icon ml3" style="color: var(--primary)" />
                 </div>
                 <div>
@@ -38,6 +27,17 @@ export default {
         misc: Object
     },
     inject: ["tl"],
+    watch: {
+        'misc.unlock'(unlock) {
+            if (unlock) {
+                this.$confirm('请确保您当前在大陆以外的区域，并遵守当地法律, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '关闭',
+                    type: 'warning'
+                }).catch(() => this.misc.unlock = false);
+            }
+        }
+    },
     methods: {
         goToFanSetting() {
             this.$router.push({ name: 'overview' })

@@ -20,7 +20,10 @@ export default defineConfig({
       },
       '/upload': {
         target: 'http://openwrt/'
-      }
+      },
+      '/img': {
+        target: 'http://openwrt/'
+      },
     },
   },
   build: {

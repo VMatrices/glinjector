@@ -1,11 +1,17 @@
---[[
-    @object-name: adguardhome
-    @object-desc: Adguardhome
---]] local ubus = require "oui.ubus"
+local ubus = require "oui.ubus"
 local uci = require "uci"
 local fs = require "oui.fs"
 
 local M = {}
+
+M.upload_image = function(param)
+    local path = "/img/" .. param.prefix .. "_" .. math.random(1000, 9999) .. "." .. param.ext
+    os.execute("rm -f /www/img/" .. param.prefix .. "_*");
+    os.execute("mv -f /tmp/glinjector_img /www" .. path);
+    return {
+        path = path
+    }
+end
 
 --[[
     @method-type: call

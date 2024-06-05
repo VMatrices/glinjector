@@ -54,11 +54,14 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_DIR) $(1)/www/i18n
 	@$(foreach file, $(wildcard ./views/i18n/*.json), cp $(file) $(1)/www/i18n/$(GL_SDK_PREFIX)-$(PKG_NAME).$(notdir $(file));)
+
+	$(INSTALL_DIR) $(1)/www/img
 endef
 
-# define Package/$(PKG_NAME)/conffiles
-# 	/etc/config/glinjector
-# endef
+define Package/$(PKG_NAME)/conffiles
+	/www/img
+	/etc/config/glinjector
+endef
  
 define Package/$(PKG_NAME)/postinst
 	#!/bin/sh

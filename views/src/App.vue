@@ -1,9 +1,6 @@
 <template>
     <keep-alive>
         <div class="plugin-wrapper">
-            <!-- <el-popover placement="top-start" width="200" trigger="hover" content="提示文字">
-                <span slot="reference" class="iconfont icon-info" />
-            </el-popover> -->
             <gl-title :title="$t('menu_glinjector')">
                 <a slot="badge" class="github" target="_blank" href="https://github.com/VMatrices">
                     <i class="el-icon-link" />
@@ -16,7 +13,7 @@
                         <LoginPageTab :styles.sync="config.style.login" />
                     </el-tab-pane>
                     <el-tab-pane :label="tl('admin_panel')">
-                        <!-- <AdminPanelTab :styles.sync="config.style.system" /> -->
+                        <AdminPanelTab :styles.sync="config.style.system" />
                     </el-tab-pane>
                     <el-tab-pane :label="tl('navbar')">
                         <NavButtonTab :buttons.sync="config.navbar" />
@@ -29,12 +26,7 @@
                 <div class="btns">
                     <gl-button type="primary" @click="handleApply">{{ tl('apply') }}</gl-button>
                 </div>
-
             </gl-card>
-
-            <!-- <gl-card class="card-spacing" title="其他">
-            <gl-tips tips="Woc" />
-        </gl-card> -->
         </div>
     </keep-alive>
 </template>
@@ -50,21 +42,22 @@ export default {
     components: { LoginPageTab, AdminPanelTab, NavButtonTab, MiscOptionTab },
     data() {
         return {
+            name: "glinjector",
             config: {
                 style: {
                     login: {
                         background: {
-                            url: 'https://api.timecdn.cn/libs/wallpaper/v1',
+                            url: '/img/bg_login_demo.jpg',
                             size: 'cover',
                             position: 'center',
                         },
                         box: {
                             color: 'black',
-                            alpha: 50,
-                            blur: 50,
+                            alpha: 30,
+                            blur: 30,
                             new_look: true,
-                            margin: 10,
-                            width: 550,
+                            margin: 8,
+                            width: 500,
                             position: 'left'
                         },
                         button: {
@@ -75,6 +68,15 @@ export default {
                     },
                     system: {
                         wide_mode: true,
+
+                        background: {
+                            url: '',
+                            size: 'cover',
+                            position: 'center',
+                            color: 'black',
+                            alpha: 30,
+                            blur: 30,
+                        },
                     },
                 },
                 misc: {
@@ -123,12 +125,16 @@ export default {
     },
     provide() {
         return {
-            tl: this.tl
+            tl: this.tl,
+            rpc: this.rpc,
         }
     },
     methods: {
         tl(key) {
-            return this.$t('glinjector.' + key)
+            return this.$t(this.name + '.' + key)
+        },
+        async rpc(method, param) {
+            return await this.$request("call", ["sid", this.name, method, param || {}])
         },
         handleApply() {
             alert(JSON.stringify(this.config, null, 2))

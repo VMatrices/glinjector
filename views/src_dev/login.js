@@ -1,16 +1,26 @@
 export default function hookLogin(Vue) {
 
     const $request = Vue.prototype.$request
-    const $axios = Vue.prototype.$axios
-    const $axiosRequest = Vue.prototype.$axios.Axios.prototype.request
+    let refresherTimer = 0
+
+    function autoRefreshToken() {
+        clearInterval(refresherTimer)
+        refresherTimer = setInterval(() => {
+            try {
+                $request("call", ["sid", "system", "get_status", {}])
+            } catch (e) {
+                clearInterval(refresherTimer)
+            }
+        }, 30000)
+    }
 
     function checkAccessDenied(err) {
         try {
-            if (JSON.parse(err).error.message != "Access denied") {
-                throw err
+            if (JSON.parse(err).error.message == "Access denied") {
+                return true
             }
         } catch (ignored) { }
-        return true
+        throw err
     }
 
     async function login() {
@@ -26,6 +36,7 @@ export default function hookLogin(Vue) {
                     await $request('login', {
                         username, hash: Vue.prototype.$md5(username + ":" + encrypted + ":" + resp.nonce)
                     })
+                    autoRefreshToken()
                 } catch (err) {
                     if (checkAccessDenied(err)) {
                         alert('Wrong password!')
@@ -39,34 +50,15 @@ export default function hookLogin(Vue) {
     }
 
     Vue.prototype.$request = window.$request = async function (method, param, ...ext) {
+        if (!$getCookie("Admin-Token")) {
+            await login()
+        }
         try {
             return await $request(method, param, ...ext)
         } catch (err) {
             if (checkAccessDenied(err)) {
                 await login()
                 return await $request(method, param, ...ext)
-            }
-        }
-    }
-
-    $axios.Axios.prototype.request = async function (option) {
-        try {
-            return await $axiosRequest(option)
-        } catch (err) {
-            if (checkAccessDenied(err)) {
-                await login()
-                return await $axiosRequest(option)
-            }
-        }
-    }
-
-    $axios.Axios.prototype.request = async function (option) {
-        try {
-            return await $axiosRequest(option)
-        } catch (err) {
-            if (checkAccessDenied(err)) {
-                await login()
-                return await $axiosRequest(option)
             }
         }
     }

@@ -3,7 +3,7 @@
         <div class="form slim">
             <ul>
                 <li class="title-li"> 背景 </li>
-                <BackgroundOptions :background.sync="styles.background" />
+                <BackgroundOptions :background.sync="styles.background" imgPrefix="bg_login" />
                 <li class="title-li"> 登录框 </li>
                 <li>
                     <div>
@@ -97,8 +97,8 @@
                             <div class="login-fake">
                                 <i class="iconfont icon-gateway" />
                                 <p class="mt10">Openwrt</p>
-                                <div class="big-title">管理员密码</div>
-                                <el-input class="mt20 w300" readonly placeholder="请输入密码" />
+                                <div class="big-title">{{ $t('login.admin_password') }}</div>
+                                <el-input class="mt20 w300" readonly :placeholder="$t('login.password_hint.placeholder')" />
                                 <div class="login-btn mt20" :class="{ comb: styles.button.luci && styles.button.comb }">
                                     <gl-button type="primary" @click="followMe">{{ $t('login.login') }}</gl-button>
                                     <gl-button v-if="styles.button.luci" type="primary" @click="followMe">{{ styles.button.text }}</gl-button>

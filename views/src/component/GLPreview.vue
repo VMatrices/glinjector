@@ -6,7 +6,7 @@
                 <span class="dot" @click="refresh"></span>
                 <span class="dot" @click="expand = true"></span>
             </div>
-            <div class="content">
+            <div class="content" >
                 <slot :image="urlLoaded"></slot>
                 <div class="preview-close" v-if="fullscreen" @click="fullscreen = false">
                     <i class="el-icon-close" />
@@ -52,9 +52,10 @@ export default {
         }
     },
     mounted() {
-        this.urlTest = this.url
-        this.loading = true
-        this.startTimer()
+        if (this.urlTest = this.url) {
+            this.loading = true
+            this.startTimer()
+        }
     },
     watch: {
         url(url) {
@@ -113,7 +114,7 @@ export default {
 .preview {
     position: relative;
     width: 320px;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
     border-radius: 5px;
     box-shadow: 2px 6px 16px 6px var(--shadow);
@@ -209,14 +210,14 @@ export default {
 
 .preview-close {
     cursor: pointer;
-    z-index: 9;
+    z-index: 9999;
     position: absolute;
     top: 0;
     right: 0;
     height: 50px;
     width: 50px;
     opacity: 0.5;
-    border: 25px solid rgb(255, 255, 255);
+    border: 25px solid rgb(103, 103, 103);
     border-left-color: transparent;
     border-bottom-color: transparent;
     // filter: drop-shadow(2px 6px 16px 6px var(--shadow));
@@ -227,6 +228,7 @@ export default {
         font-size: 16px;
         margin-top: -22px;
         margin-left: 2px;
+        color: white;
 
         &:hover {
             color: initial !important;
