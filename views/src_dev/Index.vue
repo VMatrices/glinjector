@@ -7,8 +7,8 @@
                 <span>Preview</span>
             </div>
             <div class="locale">
-                <el-select v-model="$i18n.locale" size="small" class="pull-right" style="width:100px">
-                    <el-option v-for="(_, key) in $i18n.messages" :key="key" :value="key" />
+                <el-select v-model="$i18n.locale" size="small" class="pull-right" style="width:90px">
+                    <el-option v-for="(_, key) in $i18n.messages" :key="key" :label="key.toLocaleUpperCase()" :value="key" />
                 </el-select>
             </div>
         </div>

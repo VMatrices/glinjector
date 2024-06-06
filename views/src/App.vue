@@ -11,17 +11,17 @@
                 <el-tooltip effect="dark" content="恢复为默认配置">
                     <span class="reset-config iconfont icon-redo-alt" @click="resetDefault" />
                 </el-tooltip>
-                <el-tabs class="is-card  el-tabs--card">
-                    <el-tab-pane :label="tl('login_page')">
+                <el-tabs v-model="tabName" class="is-card  el-tabs--card">
+                    <el-tab-pane name="login" :label="tl('login_page')">
                         <LoginPageTab :styles.sync="config.style.login" />
                     </el-tab-pane>
-                    <el-tab-pane :label="tl('admin_panel')">
+                    <el-tab-pane name="system" :label="tl('admin_panel')">
                         <AdminPanelTab :styles.sync="config.style.system" />
                     </el-tab-pane>
-                    <el-tab-pane :label="tl('navbar')">
+                    <el-tab-pane name="navbar" :label="tl('navbar')">
                         <NavButtonTab :buttons.sync="config.navbar" />
                     </el-tab-pane>
-                    <el-tab-pane :label="tl('misc')">
+                    <el-tab-pane name="misc" :label="tl('misc')">
                         <MiscOptionTab :misc.sync="config.misc" />
                     </el-tab-pane>
                 </el-tabs>
@@ -41,27 +41,39 @@ import MiscOptionTab from './tabs/MiscOptionTab.vue';
 import defaultConfig from './js/default_config';
 import { extendObject } from './js/uitls';
 
+const
+    SKEY_TAB_NAME = 'gli.tabName',
+    SKEY_APPLY_TIP = 'gli.applyTip'
+
 export default {
     name: "GlInjector",
     components: { LoginPageTab, AdminPanelTab, NavButtonTab, MiscOptionTab },
     data() {
         return {
             name: "glinjector",
-            config: null
+            config: null,
+            tabName: localStorage.getItem(SKEY_TAB_NAME) || 'login',
         }
     },
     provide() {
         return {
             tl: this.tl,
             rpc: this.rpc,
+            keepCurrentTab: this.keepCurrentTab,
         }
     },
     async created() {
+        console.log(this.$store.state)
         try {
             this.config = extendObject(defaultConfig, JSON.parse((await this.rpc("get_config")).json))
         } catch (ignored) {
             this.config = JSON.parse(JSON.stringify(defaultConfig))
         }
+        if (localStorage.getItem(SKEY_APPLY_TIP)) {
+            localStorage.removeItem(SKEY_APPLY_TIP)
+            this.$message.success('应用成功')
+        }
+        localStorage.removeItem(SKEY_TAB_NAME)
     },
     methods: {
         tl(key) {
@@ -70,6 +82,9 @@ export default {
         resetDefault() {
             this.config = JSON.parse(JSON.stringify(defaultConfig))
         },
+        keepCurrentTab() {
+            localStorage.setItem(SKEY_TAB_NAME, this.tabName)
+        },
         async rpc(method, param) {
             return await this.$request("call", ["sid", this.name, method, param || {}])
         },
@@ -77,8 +92,10 @@ export default {
             this.$message('正在应用配置...')
             await this.rpc("set_config", { json: JSON.stringify(this.config) })
             setTimeout(() => {
+                this.keepCurrentTab()
+                localStorage.setItem(SKEY_APPLY_TIP, true)
                 location.reload()
-            }, 500);
+            }, 200);
         },
     }
 }

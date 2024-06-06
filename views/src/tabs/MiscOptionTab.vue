@@ -26,7 +26,7 @@ export default {
     props: {
         misc: Object
     },
-    inject: ["tl"],
+    inject: ['tl', 'keepCurrentTab'],
     watch: {
         'misc.unlock'(unlock) {
             if (unlock) {
@@ -40,6 +40,7 @@ export default {
     },
     methods: {
         goToFanSetting() {
+            this.keepCurrentTab()
             this.$router.push({ name: 'overview' })
             const timer = setInterval(() => {
                 const btn = document.querySelector('.fan-setting-wrapper > *')

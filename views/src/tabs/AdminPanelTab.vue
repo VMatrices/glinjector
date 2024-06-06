@@ -45,7 +45,10 @@
                                 <div class="main-container">
                                     <div class="router-visual-wrapper" :style="{
                                         background: preview.image && `linear-gradient(rgba(0 0 0/${styles.background.alpha}%),rgba(0 0 0/${styles.background.alpha}%)), ${styles.background.position} / ${styles.background.size} url(${preview.image})`
-                                    }"></div>
+                                    }">
+                                        <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
+                                        <p class="mt10">{{ $store.state.hostname }}</p>
+                                    </div>
                                     <div class="card-container">
                                         <gl-card class="card-item" title=" ">
                                             <div class="visual-text w80" slot="title" />
@@ -249,6 +252,15 @@ export default {
                 justify-content: center;
                 color: var(--text-status-panel);
                 transition: background-image .5s;
+
+                .icon-model {
+                    width: 135px;
+                    height: 135px;
+
+                    ::v-deep svg * {
+                        fill: var(--text-status-panel-active);
+                    }
+                }
             }
 
             .visual-block {

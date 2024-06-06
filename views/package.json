@@ -8,6 +8,9 @@
         "build": "vite build",
         "preview": "vite preview"
     },
+    "dependencies": {
+        "vuex": "^3.6.2"
+    },
     "devDependencies": {
         "element-ui": "^2.15.14",
         "sass": "^1.77.2",

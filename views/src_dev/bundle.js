@@ -35,6 +35,7 @@ const ctx = {
         unixpassmd5: 'd714',
         userAgent: '7501',
         domDirective: 'beca',
+        vuexStore: '4360',
         component: 'd2c8',
         flow: '8780',
     },
@@ -42,7 +43,7 @@ const ctx = {
     cache: { 0: { i: 0, l: 1, exports: { default() { } } } }
 };
 
-export default function initGlSdk(Vue) {
+export function initGlSdk(Vue) {
     // 替换Vue
     ctx.cache[ctx.id.vue] = { i: ctx.id.vue, l: 1, exports: { default: Vue } }
     // 屏蔽路由
@@ -55,6 +56,10 @@ export default function initGlSdk(Vue) {
     for (const name in ctx.id) {
         ctx.load(ctx.id[name])
     }
+}
+
+export function loadGlStore() {
+    return ctx.load(ctx.id.vuexStore).a
 }
 
 // ---- app.5bf48781.js ----

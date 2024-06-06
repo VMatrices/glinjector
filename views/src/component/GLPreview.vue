@@ -2,6 +2,7 @@
     <Fragment>
         <div class="preview" :class="{ 'preview-fullscreen': fullscreen }">
             <div class="header">
+                <!-- todo 全屏动画 -->
                 <span class="dot" @click="fullscreen = true"></span>
                 <span class="dot" @click="refresh"></span>
                 <span class="dot" @click="expand = true"></span>

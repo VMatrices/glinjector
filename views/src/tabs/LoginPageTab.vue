@@ -104,8 +104,8 @@
                     }">
                         <div class="login-box" :style="loginBoxStyle">
                             <div class="login-fake">
-                                <i class="iconfont icon-gateway" />
-                                <p class="mt10">Openwrt</p>
+                                <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
+                                <p class="mt10">{{ $store.state.hostname }}</p>
                                 <div class="big-title">{{ $t('login.admin_password') }}</div>
                                 <el-input class="mt20 w300" readonly :placeholder="$t('login.password_hint.placeholder')" />
                                 <div class="login-btn mt20" :class="{ comb: styles.button.luci && styles.button.comb }">
@@ -206,11 +206,20 @@ export default {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    padding-top: 200px;
+                    padding-top: 130px;
 
                     .iconfont {
                         opacity: 0.7;
                         font-size: 80px;
+                    }
+
+                    .icon-model {
+                        width: 200px;
+                        height: 200px;
+
+                        ::v-deep svg * {
+                            fill: var(--text-status-panel-active);
+                        }
                     }
 
                     >p {
