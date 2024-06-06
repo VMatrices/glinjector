@@ -108,7 +108,7 @@
 
 <script>
 
-import icons from '../icons';
+import icons from '../js/icons';
 export default {
     props: {
         buttons: Array

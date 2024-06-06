@@ -11,7 +11,7 @@ export default function hookLogin(Vue) {
             } catch (e) {
                 clearInterval(refresherTimer)
             }
-        }, 30000)
+        }, 20000)
     }
 
     function checkAccessDenied(err) {

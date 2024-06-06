@@ -6,7 +6,7 @@
                 <span class="dot" @click="refresh"></span>
                 <span class="dot" @click="expand = true"></span>
             </div>
-            <div class="content" >
+            <div class="content">
                 <slot :image="urlLoaded"></slot>
                 <div class="preview-close" v-if="fullscreen" @click="fullscreen = false">
                     <i class="el-icon-close" />
@@ -15,7 +15,7 @@
             <img class="for-loading" v-if="urlTest" @load="handleLoaded" @error="handleError" :src="urlTest" />
             <Transition>
                 <div v-if="loading" class="loading">
-                    <i class="iconfont icon-loading" />
+                    <i class="icon el-icon-loading" />
                 </div>
             </Transition>
         </div>
@@ -77,7 +77,7 @@ export default {
             clearTimeout(timer)
             timer = setTimeout(() => {
                 this.$message('图片加载过长，可能影响体验，建议切换其他图源')
-            }, 1500)
+            }, 2000)
         },
         refresh() {
             if (this.url) {
@@ -160,19 +160,19 @@ export default {
     }
 
     .loading {
-        padding-top: 20px;
+        margin-top: 20px;
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.5);
+        height: calc(100% - 20px);
+        color: rgb(134, 134, 134);
+        background-color: rgba(255, 255, 255, 0.692);
         display: flex;
         align-items: center;
         justify-content: center;
 
-        .iconfont {
+        .icon {
             font-size: 40px;
         }
     }

@@ -15,15 +15,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/rpc': {
-        target: 'http://openwrt/'
-      },
-      '/upload': {
-        target: 'http://openwrt/'
-      },
-      '/img': {
-        target: 'http://openwrt/'
-      },
+      '^/(rpc|upload|img)': 'https://127.0.0.1/'
     },
   },
   build: {

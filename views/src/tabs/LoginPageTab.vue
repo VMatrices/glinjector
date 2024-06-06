@@ -27,8 +27,8 @@
                     </div>
                     <div>
                         <el-select v-model="styles.box.color">
-                            <el-option label="黑色" value="black" />
-                            <el-option label="白色" value="white" />
+                            <el-option label="深色" value="dark" />
+                            <el-option label="浅色" value="light" />
                         </el-select>
                     </div>
                 </li>
@@ -38,8 +38,9 @@
                         <gl-switch v-model="styles.box.new_look" />
                     </div>
                 </li>
-                <template v-if="styles.box.new_look">
-                    <li>
+
+                <transition name="fade-down">
+                    <li v-if="styles.box.new_look">
                         <div>
                             <span>宽度</span>
                         </div>
@@ -47,7 +48,9 @@
                             <el-slider class="w200" v-model="styles.box.width" :min="400" :max="1000" show-tooltip :format-tooltip="v => v + 'px'" />
                         </div>
                     </li>
-                    <li>
+                </transition>
+                <transition name="fade-down">
+                    <li v-if="styles.box.new_look">
                         <div>位置</div>
                         <div>
                             <gl-toggle v-model="styles.box.position">
@@ -57,7 +60,9 @@
                             </gl-toggle>
                         </div>
                     </li>
-                    <li v-if="styles.box.position != 'center'">
+                </transition>
+                <transition name="fade-down">
+                    <li v-if="styles.box.new_look && styles.box.position != 'center'">
                         <div>
                             <span>边距</span>
                         </div>
@@ -65,7 +70,7 @@
                             <el-slider class="w200" v-model="styles.box.margin" :min="0" :max="50" show-tooltip :format-tooltip="v => v + '%'" />
                         </div>
                     </li>
-                </template>
+                </transition>
                 <li class="title-li"> 登录按钮 </li>
                 <li>
                     <div>添加Luci按钮</div>
@@ -73,26 +78,30 @@
                         <gl-switch v-model="styles.button.luci" />
                     </div>
                 </li>
-                <template v-if="styles.button.luci">
-                    <li>
+                <transition name="fade-down">
+                    <li v-if="styles.button.luci">
                         <div>组合按钮</div>
                         <div>
                             <gl-switch v-model="styles.button.comb" />
                         </div>
                     </li>
-                    <li>
+                </transition>
+                <transition name="fade-down">
+                    <li v-if="styles.button.luci">
                         <div>Luci文字</div>
                         <div>
                             <el-input v-model="styles.button.text" placeholder="请输入密码" />
                         </div>
                     </li>
-                </template>
+                </transition>
             </ul>
         </div>
         <div class="preview-wrapper">
             <GLPreview :url="styles.background.url">
                 <template v-slot:default="preview">
-                    <div class="main" :class="{ new: styles.box.new_look }" :style="{ background: preview.image && ` ${styles.background.position} / ${styles.background.size} url(${preview.image}), var(--background-login)` }">
+                    <div class="main" :class="{ new: styles.box.new_look }" :style="{
+                        background: preview.image && ` ${styles.background.position} / ${styles.background.size} url(${preview.image}), var(--background-login)`
+                    }">
                         <div class="login-box" :style="loginBoxStyle">
                             <div class="login-fake">
                                 <i class="iconfont icon-gateway" />
@@ -130,10 +139,10 @@ export default {
         loginBoxStyle() {
             const style = {
                 backdropFilter: `blur(${this.styles.box.blur / 100 * 100}px)`,
-                background: `rgba(${this.styles.box.color == 'black' ? '0,0,0' : '255,255,255'}, ${this.styles.box.alpha / 100})`
+                background: `rgba(${this.styles.box.color == 'dark' ? '0,0,0' : '255,255,255'}, ${this.styles.box.alpha / 100})`
             }
 
-            if (this.styles.box.color == 'white') {
+            if (this.styles.box.color == 'light') {
                 style.color = '#333'
             }
 

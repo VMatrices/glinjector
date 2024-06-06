@@ -5,9 +5,6 @@ export default [{
     label: 'Bing - Radom',
     value: 'https://bing.img.run/rand.php',
 }, {
-    label: '360',
-    value: 'https://www.yumus.cn/api/?target=img&brand=360&type=0',
-}, {
     label: 'Unsplash',
     value: 'https://source.unsplash.com/1920x1080/daily?wallpapers',
 }, {

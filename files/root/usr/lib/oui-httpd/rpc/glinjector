@@ -1,97 +1,56 @@
-local ubus = require "oui.ubus"
 local uci = require "uci"
-local fs = require "oui.fs"
 
-local M = {}
+local plugin_name = "glinjector"
+local gl_home_path = "/www/gl_home.html"
 
-M.upload_image = function(param)
-    local path = "/img/" .. param.prefix .. "_" .. math.random(1000, 9999) .. "." .. param.ext
-    os.execute("rm -f /www/img/" .. param.prefix .. "_*");
-    os.execute("mv -f /tmp/glinjector_img /www" .. path);
-    return {
-        path = path
-    }
+function copyFile(ff, ft)
+    local fsrc = io.input(ff);
+    if not fsrc then
+        print(ff .. " Is not existed.");
+        return false;
+    end
+    local fdst = io.output(ft);
+    local data = io.read("*a");
+    io.write(data);
+    io.flush();
+    io.close();
+    return true;
 end
 
---[[
-    @method-type: call
-    @method-name: get_config
-    @method-desc: 查询当前配置
-
-    @out bool enabled    是否开启
-
-    @in-example: {"jsonrpc":"2.0","id":1,"method":"call","params":["","adguardhome","get_config"]}
-    @out-example: {"jsonrpc": "2.0", "id": 1, "result": {"enabled": true}}
- --]]
-M.get_config = function()
-    local c = uci.cursor()
-
-    local enabled = c:get("adguardhome", "config", "enabled")
-
-    return {
-        enabled = enabled == "1" and true or false
-    }
+function read_file(path)
+    local file = io.open(path, "r");
+    local content = file.read("a*")
+    file.close()
+    return content
 end
 
---[[
-    @method-type: call
-    @method-name: set_config
-    @method-desc: 设置
+return {
+    get_config = function()
+        local c = uci.cursor()
+        return {
+            json = c:get(plugin_name, "config", "json")
+        }
+    end,
+    set_config = function(params)
+        local c = uci.cursor()
+        c:set(plugin_name, "config", "json", params.json)
+        c:commit(plugin_name)
 
-    @in bool enabled    是否开启
+        -- os.execute("rm -f /www/js/" .. plugin_name .. "-*");
 
-    @out number ?err_code  错误码: 1: 未关闭其它 DNS
-    @out number ?err_msg   错误信息
+        -- local js_name = plugin_name .. "-" .. math.random(1000, 9999) .. ".js"
+        -- local dst_js_file = io.open("/www/js/" .. js_name, "w");
+        -- dst_js_file.write("_GLI_=" .. params.json .. ";").write(read_file("/etc/" .. plugin_name .. "/core.js"))
 
-    @in-example: {"jsonrpc":"2.0","id":1,"method":"call","params":["","adguardhome","set_config", {"enabled": true}]}
-    @out-example: {"jsonrpc": "2.0", "id": 1, "result": null}
- --]]
-M.set_config = function(params)
-    -- local c = uci.cursor()
+        -- local src_html = read_file("/rom" .. gl_home_path) 
 
-    -- local enabled = params.enabled
-
-    -- if enabled then
-    --     c:delete("dhcp", "@dnsmasq[0]", "boguspriv")
-    --     c:delete("dhcp", "@dnsmasq[0]", "cachesize ")
-    --     c:set("dhcp", "@dnsmasq[0]", "noresolv", 1)
-    --     c:set("dhcp", "@dnsmasq[0]", "server", {"127.0.0.1#3053"})
-
-    --     c:set("stubby", "global", "enabled", 0)
-
-    --     if fs.access("/usr/share/dnscrypt-proxy/dnscrypt-resolvers.csv") then
-    --         c:set("dnscrypt-proxy", "@global[0]", "enabled", 0)
-    --     end
-
-    --     c:set("gl-dns", "@dns[0]", "mode", "auto")
-    --     c:set("gl-dns", "@dns[0]", "proto", "")
-
-    --     ngx.pipe.spawn({"/etc/init.d/stubby", "stop"}):wait()
-    --     ngx.pipe.spawn({"/etc/init.d/dnscrypt-proxy", "stop"}):wait()
-    -- else
-    --     c:delete("dhcp", "@dnsmasq[0]", "noresolv")
-    --     c:delete("dhcp", "@dnsmasq[0]", "server")
-    -- end
-
-    -- c:set("adguardhome", "config", "enabled", enabled and 1 or 0)
-    -- c:commit("adguardhome")
-    -- c:commit("dhcp")
-    -- c:commit("gl-dns")
-
-    -- ubus.call("service", "event", {
-    --     type = "config.change",
-    --     data = {
-    --         package = "dhcp"
-    --     }
-    -- })
-
-    -- ngx.timer.at(2.0, function()
-    --     ngx.pipe.spawn({"/etc/init.d/adguardhome", "stop"}):wait()
-
-    --     if enabled then
-    --         ngx.pipe.spawn({"/etc/init.d/adguardhome", "start"}):wait()
-    --     end
-    -- end)
-end
-
-return M
+    end,
+    upload_image = function(param)
+        local path = "/img/" .. param.prefix .. "_" .. math.random(1000, 9999) .. "." .. param.ext
+        os.execute("rm -f /www/img/" .. param.prefix .. "_*");
+        os.execute("mv -f /tmp/glinjector_img /www" .. path);
+        return {
+            path = path
+        }
+    end
+}

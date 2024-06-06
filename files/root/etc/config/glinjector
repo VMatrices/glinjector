@@ -1,2 +1,2 @@
 config glinjector config
-	option enabled 0
+	option json '{}'

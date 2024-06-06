@@ -1,11 +1,25 @@
 .v-enter-active,
 .v-leave-active {
-    transition: opacity 0.5s ease;
+    transition: opacity 0.3s ease;
 }
 
-.v-enter-from,
+.v-enter,
 .v-leave-to {
     opacity: 0;
+}
+
+.fade-down-enter-active,
+.fade-down-leave-active {
+    transition: all .3s;
+    transform-origin: bottom;
+}
+
+.fade-down-enter,
+.fade-down-leave-to {
+    opacity: 0;
+    visibility: hidden;
+    margin-top: -64px;
+    transform: scaleY(0);
 }
 
 @for $i from 1 through 100 {
@@ -49,7 +63,7 @@
     }
 
     .h#{$i * 10} {
-        width: #{$i * 10}px !important
+        height: #{$i * 10}px !important
     }
 }
 

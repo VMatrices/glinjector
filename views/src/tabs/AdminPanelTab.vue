@@ -4,33 +4,16 @@
             <ul>
                 <li class="title-li"> 首页背景 </li>
                 <BackgroundOptions :background.sync="styles.background" imgPrefix="bg_login" />
-                <li>
-                    <div>
-                        <span>模糊</span>
-                    </div>
-                    <div>
-                        <el-slider class="w200" v-model="styles.background.blur" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <span>遮罩浓度</span>
-                    </div>
-                    <div>
-                        <el-slider class="w200" v-model="styles.background.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <span>遮罩颜色</span>
-                    </div>
-                    <div>
-                        <el-select v-model="styles.background.color">
-                            <el-option label="黑色" value="black" />
-                            <el-option label="白色" value="white" />
-                        </el-select>
-                    </div>
-                </li>
+                <transition name="fade-down">
+                    <li v-if="styles.background.url">
+                        <div>
+                            <span>遮罩浓度</span>
+                        </div>
+                        <div>
+                            <el-slider class="w200" v-model="styles.background.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
+                        </div>
+                    </li>
+                </transition>
                 <li class="title-li"> 全局配置 </li>
                 <li>
                     <div>
@@ -58,13 +41,46 @@
                                 </div>
                             </div>
                             <div class="main">
-                                <div class="menu"> </div>
+                                <div class="menu" />
                                 <div class="main-container">
-                                    <App />
-                                    <div class="footer">
-                                        <a class="github" target="_blank" href="https://github.com/VMatrices">
-                                            <i class="el-icon-link"></i> Github
-                                        </a>
+                                    <div class="router-visual-wrapper" :style="{
+                                        background: preview.image && `linear-gradient(rgba(0 0 0/${styles.background.alpha}%),rgba(0 0 0/${styles.background.alpha}%)), ${styles.background.position} / ${styles.background.size} url(${preview.image})`
+                                    }"></div>
+                                    <div class="card-container">
+                                        <gl-card class="card-item" title=" ">
+                                            <div class="visual-text w80" slot="title" />
+                                            <div class="visual-block h220">
+                                                <div>
+                                                    <div class="visual-text w300" />
+                                                    <div class="visual-text w350 mt15" />
+                                                    <div class="visual-text w250 mt15" />
+                                                    <div class="visual-text w400 mt15" />
+                                                </div>
+                                                <div class="icon-big" />
+                                            </div>
+                                            <div class="visual-text w200" slot="footer" />
+                                        </gl-card>
+                                        <gl-card class="card-item small-card" title=" ">
+                                            <div class="visual-text w60" slot="title" />
+                                            <div class="visual-block h130">
+                                                <div class="icon-small" />
+                                                <div class="visual-text w150" />
+                                            </div>
+                                        </gl-card>
+                                        <gl-card class="card-item small-card" title=" ">
+                                            <div class="visual-text" slot="title" />
+                                            <div class="visual-block h130">
+                                                <div class="icon-small" />
+                                                <div class="visual-text w300" />
+                                            </div>
+                                        </gl-card>
+                                        <gl-card class="card-item small-card" title=" ">
+                                            <div class="visual-text" slot="title" />
+                                            <div class="visual-block h130">
+                                                <div class="icon-small" />
+                                                <div class="visual-text w200" />
+                                            </div>
+                                        </gl-card>
                                     </div>
                                 </div>
                             </div>
@@ -152,9 +168,10 @@ export default {
                 user-select: none;
                 max-width: 1300px;
                 margin: 0 auto;
+                transition: all .3s;
 
                 &.wide {
-                    max-width: initial
+                    max-width: 100%
                 }
 
                 .header {
@@ -208,17 +225,75 @@ export default {
                         width: calc(100% - 225px);
                         overflow-y: overlay;
                         padding: 0 20px;
+                    }
+                }
+            }
 
-                        .footer {
-                            font-size: 12px;
-                            font-weight: 500;
-                            color: var(--text-weak);
-                            background-color: var(--background-content);
-                            display: flex;
-                            align-items: center;
-                            justify-content: flex-end;
+            .visual-text {
+                display: block;
+                height: 23px;
+                width: 100px;
+                border-radius: 3px;
+                background-color: var(--text-hint);
+                opacity: 0.35;
+            }
+
+            .router-visual-wrapper {
+                position: relative;
+                margin: 0 -20px;
+                width: calc(100% + 40px);
+                height: 362px;
+                background: var(--background-status-panel);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-status-panel);
+                transition: background-image .5s;
+            }
+
+            .visual-block {
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                .icon-small {
+                    width: 78px;
+                    height: 78px;
+                    margin-right: 20px;
+                    border-radius: 50%;
+                    background-color: var(--background-subtitle);
+                }
+
+                .icon-big {
+                    position: absolute;
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    background-color: var(--background-subtitle);
+                    right: 30px;
+                }
+            }
+
+            .card-container {
+                width: 100%;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: flex-start;
+                flex-wrap: wrap;
+
+                .card-item {
+                    min-width: 278px;
+                    width: 100%;
+                    margin-top: 20px;
+
+                }
+
+                @media screen and (min-width: 1200px) {
+                    .small-card {
+                        flex: 1;
+
+                        &:not(:last-child) {
                             margin-right: 20px;
-                            margin-bottom: 20px;
                         }
                     }
                 }
