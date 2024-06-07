@@ -30,11 +30,7 @@ export default {
     watch: {
         'misc.unlock'(unlock) {
             if (unlock) {
-                this.$confirm('请确保您当前在大陆以外的区域，并遵守当地法律, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '关闭',
-                    type: 'warning'
-                }).catch(() => this.misc.unlock = false);
+                this.$glConfirm('请确保您当前在大陆以外的区域，并遵守当地法律, 是否继续?').catch(() => this.misc.unlock = false);
             }
         }
     },

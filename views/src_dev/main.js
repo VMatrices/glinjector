@@ -11,17 +11,21 @@ import { mapState, mapMutations } from 'vuex'
 Vue.use(VueI18n);
 Vue.use(ElementUI);
 
-initGlSdk(Vue)
-initGlLogin(Vue)
-
 const locale = localStorage.getItem('locale', 'zh-cn')
-document.body.setAttribute("lang", locale)
+const i18n = new VueI18n({
+    messages,
+    locale: (locale || navigator.language || navigator.browserLanguage).toLowerCase(),
+    fallbackLocale: "en",
+})
+
+initGlSdk(Vue, i18n)
+initGlLogin(Vue)
 
 new Vue({
     el: '#app',
     render: h => h(Index),
     store: loadGlStore(),
-    i18n: new VueI18n({ messages, locale }),
+    i18n: i18n,
     data() {
         return { maskMsgAlert: null }
     },

@@ -39,6 +39,7 @@ import AdminPanelTab from './tabs/AdminPanelTab.vue';
 import NavButtonTab from './tabs/NavButtonTab.vue';
 import MiscOptionTab from './tabs/MiscOptionTab.vue';
 import defaultConfig from './js/default_config';
+import ConfirmDialog from './component/ConfirmDialog.vue';
 import { extendObject } from './js/uitls';
 
 const
@@ -62,8 +63,12 @@ export default {
             keepCurrentTab: this.keepCurrentTab,
         }
     },
+    beforeCreate() {
+        // 使用框架提供的Vue，避免打包时引入多余的js
+        const Vue = this.__proto__.constructor
+        Vue.prototype.$glConfirm = param => (new Vue.extend.call(Vue, ConfirmDialog)()).show(param)
+    },
     async created() {
-        console.log(this.$store.state)
         try {
             this.config = extendObject(defaultConfig, JSON.parse((await this.rpc("get_config")).json))
         } catch (ignored) {
@@ -80,7 +85,8 @@ export default {
             return this.$t(this.name + '.' + key)
         },
         resetDefault() {
-            this.config = JSON.parse(JSON.stringify(defaultConfig))
+            this.$glConfirm()
+            // this.config = JSON.parse(JSON.stringify(defaultConfig))
         },
         keepCurrentTab() {
             localStorage.setItem(SKEY_TAB_NAME, this.tabName)

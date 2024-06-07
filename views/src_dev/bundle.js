@@ -25,6 +25,7 @@
 const ctx = {
     id: {
         vue: '2b0e',
+        i18n: '12cb',
         style1: '01d8',
         style2: 'e775',
         style3: '2832',
@@ -43,15 +44,15 @@ const ctx = {
     cache: { 0: { i: 0, l: 1, exports: { default() { } } } }
 };
 
-export function initGlSdk(Vue) {
+export function initGlSdk(Vue, i18n) {
     // 替换Vue
     ctx.cache[ctx.id.vue] = { i: ctx.id.vue, l: 1, exports: { default: Vue } }
+    // 替换i18n
+    ctx.cache[ctx.id.i18n] = { i: ctx.id.i18n, l: 1, exports: { a: i18n } }
     // 屏蔽路由
     const router = ctx.load(ctx.id.router).a;
-    router.push = router.replace = p => console.debug('Routing to:', p)
-    // // 加载工具类
-    // const utils = ctx.load(ctx.id.utils);
-    // utils.keys().forEach((t=>utils(t).default || utils(t)))
+    router.push = router.replace = p => Vue.prototype.$message('Routing to: ' + p.name)
+    Vue.prototype._router = router
     // 按需加载
     for (const name in ctx.id) {
         ctx.load(ctx.id[name])
