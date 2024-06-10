@@ -15,8 +15,8 @@
                 <th>打开方式</th>
                 <th>操作</th>
             </thead>
-            <tbody>
-                <tr v-for="item, i in buttons">
+            <transition-group tag="tbody" name="table-fade">
+                <tr v-for="item, i in buttons" :key="item.id" class="table-fade-item ">
                     <td><gl-switch v-model="item.enable" /></td>
                     <td><i :class="item.icon" /><span class="ml10">{{ item.name }}</span></td>
                     <td>{{ item.link }}</td>
@@ -40,7 +40,7 @@
                         </gl-button>
                     </td>
                 </tr>
-            </tbody>
+            </transition-group>
         </table>
 
         <el-dialog :title="(btnDialog.edit ? '修改' : '新增') + '按钮'" :visible.sync="btnDialog.show" width="30%">
@@ -107,8 +107,9 @@
 </template>
 
 <script>
-
+import uuid from 'short-uuid';
 import icons from '../js/icons';
+
 export default {
     props: {
         buttons: Array
@@ -132,10 +133,21 @@ export default {
             },
         }
     },
+    watch: {
+        buttons() {
+            this.checkButtonsID()
+        }
+    },
+    created() {
+        this.checkButtonsID()
+    },
     methods: {
-        followMe() {
-            this.$message('Follow Me 💕 with https://github.com/VMatrices')
-            setTimeout(() => open('https://github.com/VMatrices'), 1000)
+        checkButtonsID() {
+            for (const item of this.buttons) {
+                if (!item.id) {
+                    item.id = uuid.generate()
+                }
+            }
         },
         handleSwapBtn(i, d) {
             if (0 <= i + d && i + d < this.buttons.length) {
@@ -150,6 +162,7 @@ export default {
                 this.btnDialog.data = { ...this.buttons[index] }
             } else {
                 this.btnDialog.data = {
+                    id: uuid.generate(),
                     name: "",
                     icon: "",
                     link: "",
@@ -180,19 +193,36 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.table-fade-item {
+    transition: transform .3s;
+    transform-origin: top;
+}
+
+.table-fade-enter,
+.table-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-10px) scaleY(0.1);
+}
+
+.table-fade-leave-active {
+    // FIXME v-move bug
+    position: absolute;
+    visibility: hidden;
+}
+
 td {
     max-width: 100px;
     text-overflow: ellipsis;
     overflow: hidden;
     word-wrap: normal;
     white-space: nowrap;
-}
 
-[class*=" el-icon-"],
-[class^=el-icon-] {
-    font-size: 16px;
-    width: inherit;
-    height: inherit;
-    line-height: inherit;
+    [class*=" el-icon-"],
+    [class^=el-icon-] {
+        font-size: 16px;
+        width: inherit;
+        height: inherit;
+        line-height: inherit;
+    }
 }
 </style>

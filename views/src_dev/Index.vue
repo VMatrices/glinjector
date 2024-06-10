@@ -82,7 +82,6 @@ export default {
         }
 
         .locale {
-            margin-top: 9px;
             float: right;
         }
     }

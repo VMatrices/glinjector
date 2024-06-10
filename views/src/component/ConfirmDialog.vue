@@ -1,9 +1,9 @@
 <template>
-    <el-dialog title="提示" :visible.sync="dialog" @close="close" @closed="closed" width="400px">
+    <el-dialog :title="title || $t('core.confirm')" :visible.sync="dialog" @close="close" @closed="closed" width="420px">
         <div class="dialog-main">
             {{ message }}
             <div class="dialog-btns">
-                <gl-button class="dialog-btn" @click="dialog = false">关 闭</gl-button>
+                <gl-button class="dialog-btn" @click="dialog = false">{{ $t('core.close') }}</gl-button>
                 <gl-button class="dialog-btn" type="primary" @click="confirm">{{ $t('core.confirm') }}</gl-button>
             </div>
         </div>
@@ -17,15 +17,17 @@ export default {
         return {
             dialog: false,
             confirmed: false,
-            message: ''
+            title: '',
+            message: '',
         };
     },
     created() {
         document.body.appendChild(this.$mount().$el)
     },
     methods: {
-        show(message) {
+        show(message, title = '') {
             this.dialog = true
+            this.title = title
             this.message = message
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -51,12 +53,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-dialog {
-    .dialog-btns {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-top: 20px;
+::v-deep .el-dialog {
+    text-align: center;
+}
+
+.dialog-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+
+    .gl-btn {
+        min-width: 124px;
     }
 }
 </style>

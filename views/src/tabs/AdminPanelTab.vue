@@ -3,14 +3,14 @@
         <div class="form slim">
             <ul>
                 <li class="title-li"> 首页背景 </li>
-                <BackgroundOptions :background.sync="styles.background" imgPrefix="bg_login" />
+                <BackgroundOptions :background.sync="styles.home.background" imgPrefix="bg_home" />
                 <transition name="fade-down">
-                    <li v-if="styles.background.url">
+                    <li v-if="styles.home.background.url">
                         <div>
                             <span>遮罩浓度</span>
                         </div>
                         <div>
-                            <el-slider class="w200" v-model="styles.background.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
+                            <el-slider class="w200" v-model="styles.home.background.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
                         </div>
                     </li>
                 </transition>
@@ -29,25 +29,74 @@
             </ul>
         </div>
         <div class="preview-wrapper">
-            <GLPreview :url="styles.background.url">
+            <GLPreview :url="styles.home.background.url">
                 <template v-slot:default="preview">
                     <div class="body">
                         <div class="wrapper" :class="{ wide: styles.wide_mode }">
                             <div class="header" @dblclick="wide = !wide">
                                 <div class="title">
-                                    <i class="iconfont icon-gateway"></i>
-                                    <span class="divide"></span>
-                                    <span>{{ $t('core.admin_panel') }}</span>
+                                    <div class="logo-img" v-html="$store.state.logoSvg" />
+                                    <div class="divide" />
+                                    <div>{{ $t('core.admin_panel') }}</div>
                                 </div>
                             </div>
                             <div class="main">
                                 <div class="menu" />
                                 <div class="main-container">
                                     <div class="router-visual-wrapper" :style="{
-                                        background: preview.image && `linear-gradient(rgba(0 0 0/${styles.background.alpha}%),rgba(0 0 0/${styles.background.alpha}%)), ${styles.background.position} / ${styles.background.size} url(${preview.image})`
+                                        background: preview.image && `linear-gradient(rgba(0 0 0/${styles.home.background.alpha}%),rgba(0 0 0/${styles.home.background.alpha}%)), ${styles.home.background.position} / ${styles.home.background.size} url(${preview.image})`
                                     }">
-                                        <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
-                                        <p class="mt10">{{ $store.state.hostname }}</p>
+                                        <div class="tree-line">
+                                            <div class="block">
+                                                <div class="visual-text w100" />
+                                            </div>
+                                            <div class="block">
+                                                <div class="visual-text w100" />
+                                            </div>
+                                            <div class="block">
+                                                <div class="visual-text w100" />
+                                            </div>
+                                            <div class="block">
+                                                <div class="visual-text w100" />
+                                            </div>
+                                        </div>
+                                        <div class="tree-line left">
+                                            <div class="line" />
+                                            <div class="line" />
+                                            <div class="line" />
+                                        </div>
+                                        <div class="tree-line mr10">
+                                            <div class="line" />
+                                        </div>
+                                        <div class="router-info">
+                                            <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
+                                            <div class="alias">{{ $store.state.hostname || 'Openwrt' }}</div>
+                                            <div class="app-list">
+                                                <div class="visual-text w50 h50" />
+                                                <div class="visual-text w50 h50" />
+                                                <div class="visual-text w50 h50" />
+                                                <div class="visual-text w50 h50" />
+                                            </div>
+                                            <div class="visual-text w160 h45" />
+                                        </div>
+                                        <div class="tree-line ml10">
+                                            <div class="line" />
+                                        </div>
+                                        <div class="tree-line right">
+                                            <div class="line" />
+                                            <div class="line" />
+                                        </div>
+                                        <div class="tree-line">
+                                            <div class="block">
+                                                <div class="visual-text w100" />
+                                            </div>
+                                            <div class="block">
+                                                <div class="visual-text w100" />
+                                            </div>
+                                            <div class="block">
+                                                <div class="visual-text w100" />
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="card-container">
                                         <gl-card class="card-item" title=" ">
@@ -55,9 +104,9 @@
                                             <div class="visual-block h220">
                                                 <div>
                                                     <div class="visual-text w300" />
-                                                    <div class="visual-text w350 mt15" />
-                                                    <div class="visual-text w250 mt15" />
                                                     <div class="visual-text w400 mt15" />
+                                                    <div class="visual-text w250 mt15" />
+                                                    <div class="visual-text w330 mt15" />
                                                 </div>
                                                 <div class="icon-big" />
                                             </div>
@@ -67,14 +116,7 @@
                                             <div class="visual-text w60" slot="title" />
                                             <div class="visual-block h130">
                                                 <div class="icon-small" />
-                                                <div class="visual-text w150" />
-                                            </div>
-                                        </gl-card>
-                                        <gl-card class="card-item small-card" title=" ">
-                                            <div class="visual-text" slot="title" />
-                                            <div class="visual-block h130">
-                                                <div class="icon-small" />
-                                                <div class="visual-text w300" />
+                                                <div class="visual-text w120" />
                                             </div>
                                         </gl-card>
                                         <gl-card class="card-item small-card" title=" ">
@@ -82,6 +124,13 @@
                                             <div class="visual-block h130">
                                                 <div class="icon-small" />
                                                 <div class="visual-text w200" />
+                                            </div>
+                                        </gl-card>
+                                        <gl-card class="card-item small-card" title=" ">
+                                            <div class="visual-text" slot="title" />
+                                            <div class="visual-block h130">
+                                                <div class="icon-small" />
+                                                <div class="visual-text w170" />
                                             </div>
                                         </gl-card>
                                     </div>
@@ -107,36 +156,6 @@ export default {
     inject: ["tl"],
     data() {
         return {
-        }
-    },
-    computed: {
-        loginBoxStyle() {
-            const style = {
-                backdropFilter: `blur(${this.styles.box.blur / 100 * 100}px)`,
-                background: `rgba(${this.styles.box.color == 'black' ? '0,0,0' : '255,255,255'}, ${this.styles.box.alpha / 100})`
-            }
-
-            if (this.styles.box.color == 'white') {
-                style.color = '#333'
-            }
-
-            if (this.styles.box.new_look) {
-                style.width = this.styles.box.width + 'px'
-                switch (this.styles.box.position) {
-                    case 'center':
-                        style.marginLeft = `calc( 50% - ${this.styles.box.width / 2}px )`
-                        break
-                    case 'left':
-                        style.float = 'left'
-                        style.marginLeft = this.styles.box.margin + '%'
-                        break
-                    case 'right':
-                        style.float = 'right'
-                        style.marginRight = this.styles.box.margin + '%'
-                        break
-                }
-            }
-            return style
         }
     },
     methods: {
@@ -170,6 +189,7 @@ export default {
             .wrapper {
                 user-select: none;
                 max-width: 1300px;
+                height: 100%;
                 margin: 0 auto;
                 transition: all .3s;
 
@@ -183,23 +203,33 @@ export default {
                     max-width: inherit;
                     width: 100%;
                     height: 50px;
-                    line-height: 50px;
-                    padding: 0 20px;
                     background-color: var(--background-header);
                     box-shadow: rgba(0, 0, 0, 0.19) 0px 0px 10px;
 
                     .title {
-                        display: inline-block;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
                         font-size: 16px;
-                        margin-left: 10px;
                         color: var(--text-header);
 
+                        .logo-img {
+                            display: flex;
+                            width: 65px;
+                            height: 100%;
+                            margin: 0 20px;
+                            align-items: center;
+
+                            ::v-deep svg * {
+                                fill: var(--logo) !important;
+                            }
+                        }
+
                         .divide {
-                            display: inline-block;
                             width: 1px;
                             height: 18px;
                             border: 1px solid var(--icon);
-                            margin: 0 22px;
+                            margin-right: 18px;
                             vertical-align: middle;
                         }
                     }
@@ -253,14 +283,99 @@ export default {
                 color: var(--text-status-panel);
                 transition: background-image .5s;
 
-                .icon-model {
-                    width: 135px;
-                    height: 135px;
+                .visual-text {
+                    opacity: 0.5;
+                }
 
-                    ::v-deep svg * {
-                        fill: var(--text-status-panel-active);
+                .tree-line {
+
+                    .block {
+                        height: 55px;
+                        margin: 0 20px;
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .line {
+                        width: 55px;
+                        height: 55px;
+                        border-top: 2px dotted var(--text-status-panel-active);
+                        opacity: 0.7;
+
+                        &:first-child {
+                            border-top: 2px solid var(--text-status-panel-active);
+                        }
+
+                        &:last-child {
+                            border-bottom: 2px solid var(--text-status-panel-active);
+                        }
+
+                        &:first-child:last-child {
+                            height: 1px;
+                            border-style: solid;
+                            border-bottom: none;
+                        }
+
+                    }
+
+
+                    &.left .line {
+                        border-right: 2px solid var(--text-status-panel-active);
+                    }
+
+                    &.right .line {
+                        border-left: 2px solid var(--text-status-panel-active);
                     }
                 }
+
+                .router-info {
+                    color: inherit;
+                    padding-top: 40px;
+                    padding-bottom: 30px;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    .icon-model {
+                        width: 135px;
+                        height: 135px;
+
+                        ::v-deep svg * {
+                            fill: var(--text-status-panel-active);
+                        }
+                    }
+
+                    .alias {
+                        margin: 0 4px 18px;
+                        font-size: 14px;
+                        color: var(--text-status-panel-active);
+                    }
+
+                    .app-list {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-bottom: 18px;
+
+                        >*:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .wifi-list {
+                        height: 45px;
+                        background: var(--ssid-background);
+                        border-radius: 5px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 0 5px;
+                        cursor: pointer;
+                    }
+                }
+
             }
 
             .visual-block {

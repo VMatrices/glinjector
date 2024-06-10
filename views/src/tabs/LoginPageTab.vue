@@ -7,6 +7,17 @@
                 <li class="title-li"> 登录框 </li>
                 <li>
                     <div>
+                        <span>主题</span>
+                    </div>
+                    <div>
+                        <el-select v-model="styles.box.theme">
+                            <el-option label="深色" value="dark" />
+                            <el-option label="浅色" value="light" />
+                        </el-select>
+                    </div>
+                </li>
+                <li>
+                    <div>
                         <span>模糊</span>
                     </div>
                     <div>
@@ -15,32 +26,24 @@
                 </li>
                 <li>
                     <div>
-                        <span>遮罩浓度</span>
+                        <span>透明度</span>
                     </div>
                     <div>
                         <el-slider class="w200" v-model="styles.box.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
                     </div>
                 </li>
                 <li>
+                    <div>样式</div>
                     <div>
-                        <span>遮罩颜色</span>
-                    </div>
-                    <div>
-                        <el-select v-model="styles.box.color">
-                            <el-option label="深色" value="dark" />
-                            <el-option label="浅色" value="light" />
-                        </el-select>
-                    </div>
-                </li>
-                <li>
-                    <div>新风格</div>
-                    <div>
-                        <gl-switch v-model="styles.box.new_look" />
+                        <gl-toggle v-model="styles.box.style">
+                            <gl-toggle-item label="全屏" value="max" />
+                            <gl-toggle-item label="垂直" value="horizon" />
+                            <gl-toggle-item label="窗口" value="window" />
+                        </gl-toggle>
                     </div>
                 </li>
-
                 <transition name="fade-down">
-                    <li v-if="styles.box.new_look">
+                    <li v-if="styles.box.style != 'max'">
                         <div>
                             <span>宽度</span>
                         </div>
@@ -50,7 +53,27 @@
                     </li>
                 </transition>
                 <transition name="fade-down">
-                    <li v-if="styles.box.new_look">
+                    <li v-if="styles.box.style == 'window'">
+                        <div>
+                            <span>高度</span>
+                        </div>
+                        <div>
+                            <el-slider class="w200" v-model="styles.box.height" :min="400" :max="800" show-tooltip :format-tooltip="v => v + 'px'" />
+                        </div>
+                    </li>
+                </transition>
+                <transition name="fade-down">
+                    <li v-if="styles.box.style == 'window'">
+                        <div>
+                            <span>圆角</span>
+                        </div>
+                        <div>
+                            <el-slider class="w200" v-model="styles.box.radius" :min="0" :max="100" show-tooltip :format-tooltip="v => v + 'px'" />
+                        </div>
+                    </li>
+                </transition>
+                <transition name="fade-down">
+                    <li v-if="styles.box.style != 'max'">
                         <div>位置</div>
                         <div>
                             <gl-toggle v-model="styles.box.position">
@@ -62,9 +85,9 @@
                     </li>
                 </transition>
                 <transition name="fade-down">
-                    <li v-if="styles.box.new_look && styles.box.position != 'center'">
+                    <li v-if="styles.box.style != 'max' && styles.box.position != 'center'">
                         <div>
-                            <span>边距</span>
+                            <span>偏移</span>
                         </div>
                         <div>
                             <el-slider class="w200" v-model="styles.box.margin" :min="0" :max="50" show-tooltip :format-tooltip="v => v + '%'" />
@@ -99,19 +122,18 @@
         <div class="preview-wrapper">
             <GLPreview :url="styles.background.url">
                 <template v-slot:default="preview">
-                    <div class="main" :class="{ new: styles.box.new_look }" :style="{
+                    <div class="main" :class="styles.box.style" :style="{
                         background: preview.image && ` ${styles.background.position} / ${styles.background.size} url(${preview.image}), var(--background-login)`
                     }">
-                        <div class="login-box" :style="loginBoxStyle">
-                            <div class="login-fake">
-                                <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
-                                <p class="mt10">{{ $store.state.hostname }}</p>
-                                <div class="big-title">{{ $t('login.admin_password') }}</div>
-                                <el-input class="mt20 w300" readonly :placeholder="$t('login.password_hint.placeholder')" />
-                                <div class="login-btn mt20" :class="{ comb: styles.button.luci && styles.button.comb }">
-                                    <gl-button type="primary" @click="followMe">{{ $t('login.login') }}</gl-button>
-                                    <gl-button v-if="styles.button.luci" type="primary" @click="followMe">{{ styles.button.text }}</gl-button>
-                                </div>
+                        <div class="login-box" :class="[styles.box.position, styles.box.theme]" :style="loginBoxStyle">
+                            <div class="icon-vender" v-html="$store.state.logoSvg"></div>
+                            <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
+                            <p class="mt10">{{ $store.state.hostname || 'Openwrt' }}</p>
+                            <div class="big-title">{{ $t('login.admin_password') }}</div>
+                            <el-input class="mt20 w300" v-model="password" :placeholder="$t('login.password_hint.placeholder')" />
+                            <div class="login-btn mt20" :class="{ comb: styles.button.luci && styles.button.comb }">
+                                <gl-button type="primary" @click="followMe">{{ $t('login.login') }}</gl-button>
+                                <gl-button v-if="styles.button.luci" type="primary" @click="followMe">{{ styles.button.text }}</gl-button>
                             </div>
                         </div>
                     </div>
@@ -133,31 +155,28 @@ export default {
     inject: ["tl"],
     data() {
         return {
+            password: ''
         }
     },
     computed: {
         loginBoxStyle() {
             const style = {
                 backdropFilter: `blur(${this.styles.box.blur / 100 * 100}px)`,
-                background: `rgba(${this.styles.box.color == 'dark' ? '0,0,0' : '255,255,255'}, ${this.styles.box.alpha / 100})`
+                background: `rgba(${this.styles.box.theme == 'dark' ? '0,0,0' : '255,255,255'}, ${this.styles.box.alpha / 100})`
             }
 
-            if (this.styles.box.color == 'light') {
-                style.color = '#333'
+            if (this.styles.box.style == 'window') {
+                style.height = this.styles.box.height + 'px'
+                style.borderRadius = this.styles.box.radius + 'px'
             }
 
-            if (this.styles.box.new_look) {
+            if (this.styles.box.style != 'max') {
                 style.width = this.styles.box.width + 'px'
                 switch (this.styles.box.position) {
-                    case 'center':
-                        style.marginLeft = `calc( 50% - ${this.styles.box.width / 2}px )`
-                        break
                     case 'left':
-                        style.float = 'left'
                         style.marginLeft = this.styles.box.margin + '%'
                         break
                     case 'right':
-                        style.float = 'right'
                         style.marginRight = this.styles.box.margin + '%'
                         break
                 }
@@ -195,68 +214,124 @@ export default {
             background-position: center;
             background-size: cover;
             transition: background-image .5s;
-            color: white;
 
-            .login-box {
-                height: 100%;
-                transition: all .3s;
+            &.window,
+            &.horizon {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
 
-                .login-fake {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    padding-top: 130px;
-
-                    .iconfont {
-                        opacity: 0.7;
-                        font-size: 80px;
-                    }
-
-                    .icon-model {
-                        width: 200px;
-                        height: 200px;
-
-                        ::v-deep svg * {
-                            fill: var(--text-status-panel-active);
-                        }
-                    }
-
-                    >p {
-                        color: var(--text-status-panel-active);
-                    }
-
-                    .big-title {
-                        margin-top: 10px;
-                        font-size: 24px;
-                        font-weight: 500;
-                    }
-
-                    .login-btn {
-                        display: flex;
-
-                        &.comb ::v-deep {
-                            .gl-btn:first-child {
-                                border-radius: 99px 0px 0px 99px;
-                                margin-right: 1px;
-                            }
-
-                            .gl-btn:last-child {
-                                border-radius: 0px 99px 99px 0px;
-                                margin-left: 1px;
-                            }
-                        }
-                    }
-                }
-            }
-
-            &.new {
                 .login-box {
-                    width: 544px;
                     box-shadow: 0 0 15px #00000080;
 
                     ::v-deep .el-input__inner {
                         border-radius: 99px;
+                    }
+
+                    .icon-vender {
+                        left: 20px;
+                    }
+
+                    &.left {
+                        align-self: flex-start;
+                    }
+
+                    &.center {
+                        align-self: center;
+                    }
+
+                    &.right {
+                        align-self: flex-end;
+                    }
+                }
+
+            }
+
+            &.window .login-box {
+                justify-content: center;
+                padding-bottom: 50px;
+
+                .icon-model {
+                    margin-top: 0;
+                }
+            }
+
+            .login-box {
+                position: relative;
+                height: 100%;
+                transition: all 0.3s;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                color: #4bd9cc;
+
+                .icon-vender {
+                    width: 94px;
+                    height: 50px;
+                    padding: 15px;
+                    position: absolute;
+                    top: 0;
+                    ;
+                    left: 225px;
+
+                    ::v-deep svg * {
+                        fill: white;
+                    }
+                }
+
+                .icon-model {
+                    margin-top: 120px;
+                    width: 200px;
+                    height: 200px;
+
+                    ::v-deep svg * {
+                        fill: #4bd9cc
+                    }
+                }
+
+                &.light {
+                    --dart-text: #172b4d;
+                    color: var(--dart-text);
+
+                    .icon-vender ::v-deep svg * {
+                        fill: #000000;
+                    }
+
+                    .icon-model ::v-deep svg * {
+                        fill: #47475f
+                    }
+
+                    ::v-deep .el-input__inner {
+                        background-color: transparent;
+                        border-color: var(--dart-text);
+                        color: var(--dart-text);
+
+                        &::placeholder {
+                            color: var(--dart-text);
+                        }
+                    }
+                }
+
+                .big-title {
+                    margin-top: 10px;
+                    font-size: 24px;
+                    font-weight: 500;
+                }
+
+                .login-btn {
+                    display: flex;
+
+                    &.comb ::v-deep {
+                        .gl-btn:first-child {
+                            border-radius: 99px 0px 0px 99px;
+                            margin-right: 1px;
+                        }
+
+                        .gl-btn:last-child {
+                            border-radius: 0px 99px 99px 0px;
+                            margin-left: 1px;
+                        }
                     }
                 }
             }

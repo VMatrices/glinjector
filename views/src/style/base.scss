@@ -17,9 +17,19 @@
 .fade-down-enter,
 .fade-down-leave-to {
     opacity: 0;
-    visibility: hidden;
     margin-top: -64px;
     transform: scaleY(0);
+}
+
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+    transition: all .3s;
+}
+
+.fade-scale-enter,
+.fade-scale-leave-to {
+    opacity: 0;
+    transform: scale(1.05);
 }
 
 @for $i from 1 through 100 {
@@ -57,13 +67,13 @@
 }
 
 
-@for $i from 1 through 50 {
-    .w#{$i * 10} {
-        width: #{$i * 10}px !important
+@for $i from 1 through 100 {
+    .w#{$i * 5} {
+        width: #{$i * 5}px !important
     }
 
-    .h#{$i * 10} {
-        height: #{$i * 10}px !important
+    .h#{$i * 5} {
+        height: #{$i * 5}px !important
     }
 }
 

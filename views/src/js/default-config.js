@@ -1,18 +1,21 @@
-export default {
+
+const config = {
     "style": {
         "login": {
             "background": {
-                "url": "/img/bg_login_demo.jpg",
+                "url": "/upload/bg_example.jpg",
                 "size": "cover",
                 "position": "center"
             },
             "box": {
-                "color": "dark",
+                "theme": "dark",
                 "alpha": 30,
                 "blur": 30,
-                "new_look": true,
+                "style": "horizon",
                 "margin": 8,
                 "width": 500,
+                "height": 550,
+                "radius": 10,
                 "position": "left"
             },
             "button": {
@@ -23,12 +26,13 @@ export default {
         },
         "system": {
             "wide_mode": true,
-            "background": {
-                "url": "",
-                "size": "cover",
-                "position": "center",
-                "color": "dark",
-                "alpha": 30
+            "home": {
+                "background": {
+                    "url": "",
+                    "size": "cover",
+                    "position": "center",
+                    "alpha": 40
+                }
             }
         }
     },
@@ -37,7 +41,7 @@ export default {
             30,
             90
         ],
-        "unlock": true
+        "unlock": false
     },
     "navbar": [
         {
@@ -76,4 +80,8 @@ export default {
             "enable": true
         }
     ]
+}
+
+export default function defaultConfig() {
+    return JSON.parse(JSON.stringify(config))
 }

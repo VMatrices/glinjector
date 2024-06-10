@@ -43,24 +43,43 @@ define Build/Compile
 	npm --prefix $(PKG_BUILD_DIR) run build
 endef
 
-define Package/$(PKG_NAME)/install	
-	$(CP) ./files/root/* $(1)
+define Package/$(PKG_NAME)/install
+	if [ -d ./files/root ]; then \
+		$(CP) ./files/root/* $(1)/; \
+	fi
 
-	$(INSTALL_DIR) $(1)/usr/share/oui/menu.d/
-	$(CP) ./files/menu.json $(1)/usr/share/oui/menu.d/$(PKG_NAME).json
+	if [ -f ./files/config.conf ]; then \
+		$(INSTALL_DIR) $(1)/etc/config/; \
+		$(INSTALL_CONF) ./files/config.conf $(1)/etc/config/$(PKG_NAME); \
+	fi
 
-	$(INSTALL_DIR) $(1)/www/views
-	$(CP) $(PKG_BUILD_DIR)/dist/app.common.js.gz $(1)/www/views/$(GL_SDK_PREFIX)-$(PKG_NAME).common.js.gz
+	if [ -f ./files/menu.json ]; then \
+		$(INSTALL_DIR) $(1)/usr/share/oui/menu.d/; \
+		$(INSTALL_CONF) ./files/menu.json $(1)/usr/share/oui/menu.d/$(PKG_NAME).json; \
+	fi
+	
+	if [ -f ./files/upload.path ]; then \
+		$(INSTALL_DIR) $(1)/usr/share/gl-upload.d/; \
+		$(INSTALL_CONF) ./files/upload.path $(1)/usr/share/gl-upload.d/$(PKG_NAME); \
+	fi
 
-	$(INSTALL_DIR) $(1)/www/i18n
+	if [ -f ./files/rpc.lua ]; then \
+		$(INSTALL_DIR) $(1)/usr/lib/oui-httpd/rpc/; \
+		$(INSTALL_DATA) ./files/rpc.lua $(1)/usr/lib/oui-httpd/rpc/$(PKG_NAME); \
+	fi
+  
+	$(INSTALL_DIR) $(1)/www/i18n/
 	@$(foreach file, $(wildcard ./views/i18n/*.json), cp $(file) $(1)/www/i18n/$(GL_SDK_PREFIX)-$(PKG_NAME).$(notdir $(file));)
 
-	$(INSTALL_DIR) $(1)/www/img
+	$(INSTALL_DIR) $(1)/www/views/
+	$(CP) $(PKG_BUILD_DIR)/dist/app.common.js.gz $(1)/www/views/$(GL_SDK_PREFIX)-$(PKG_NAME).common.js.gz
+
+	$(INSTALL_DIR) $(1)/www/upload/
 endef
 
 define Package/$(PKG_NAME)/conffiles
-	/www/img
-	/etc/config/glinjector
+	/www/upload
+	/etc/config/$(PKG_NAME)
 endef
  
 define Package/$(PKG_NAME)/postinst
@@ -75,7 +94,9 @@ define Package/$(PKG_NAME)/prerm
 	#!/bin/sh
 	if [ -z "$${IPKG_INSTROOT}" ]; then
 		echo bye
-		#cp /rom/www/gl_home.html /www/
+		rm -f /www/upload/*
+		rm -f /www/js/$(PKG_NAME)-*
+		cp -f /rom/www/gl_home.html /www/
 	fi
 	exit 0
 endef

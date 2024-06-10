@@ -15,7 +15,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '^/(rpc|upload|img|\\w+\\.svg)': 'https://127.0.0.1/'
+      '^/(rpc|upload|img|\\w+\\.svg)': 'http://openwrt/'
     },
   },
   build: {

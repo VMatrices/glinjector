@@ -2,7 +2,7 @@
     <div class="form">
         <ul>
             <li>
-                <div>解除区域限制</div>
+                <div>移除区域限制</div>
                 <div>
                     <gl-switch v-model="misc.unlock" />
                 </div>
@@ -30,7 +30,7 @@ export default {
     watch: {
         'misc.unlock'(unlock) {
             if (unlock) {
-                this.$glConfirm('请确保您当前在大陆以外的区域，并遵守当地法律, 是否继续?').catch(() => this.misc.unlock = false);
+                this.$glConfirm('该功能仅用于学习研究为目的，请您务必遵守您当地的法律法规，并于学习研究结束后自觉关闭, 是否同意?', this.$t('core.caution')).catch(() => this.misc.unlock = false);
             }
         }
     },

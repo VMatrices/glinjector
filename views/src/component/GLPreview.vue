@@ -1,31 +1,43 @@
 <template>
     <Fragment>
-        <div class="preview" :class="{ 'preview-fullscreen': fullscreen }">
-            <div class="header">
-                <!-- todo 全屏动画 -->
-                <span class="dot" @click="fullscreen = true"></span>
-                <span class="dot" @click="refresh"></span>
-                <span class="dot" @click="expand = true"></span>
-            </div>
-            <div class="content">
-                <slot :image="urlLoaded"></slot>
-                <div class="preview-close" v-if="fullscreen" @click="fullscreen = false">
-                    <i class="el-icon-close" />
+        <Transition name="scale-left">
+            <div class="preview" v-show="show">
+                <div class="header" @click="dialog = true">
+                    <!-- todo 全屏动画 -->
+                    <span class="dot" @click.stop="close"></span>
+                    <span class="dot" @click.stop="refresh"></span>
+                    <span class="dot" @click.stop="fullscreen = true"></span>
                 </div>
-            </div>
-            <img class="for-loading" v-if="urlTest" @load="handleLoaded" @error="handleError" :src="urlTest" />
-            <Transition>
-                <div v-if="loading" class="loading">
-                    <i class="icon el-icon-loading" />
+                <div class="content" ref="content">
+                    <slot :image="urlLoaded"></slot>
+                    <div class="preview-close" v-if="fullscreen" @click="fullscreen = false">
+                        <i class="el-icon-close" />
+                    </div>
                 </div>
-            </Transition>
-        </div>
-        <el-dialog :visible.sync="expand" width="960px">
-            <div class="preview-expand">
+                <img class="for-loading" v-if="urlTest" @load="handleLoaded" @error="handleError" :src="urlTest" />
+                <Transition>
+                    <div v-if="loading" class="loading">
+                        <i class="icon el-icon-loading" />
+                    </div>
+                </Transition>
+            </div>
+        </Transition>
+        <Transition name="fade-scale">
+            <div class="preview-fullscreen" v-show="fullscreen">
                 <div class="content">
                     <slot :image="urlLoaded"></slot>
                 </div>
-                <div class="preview-close" @click="expand = false">
+                <div class="preview-close" @click="fullscreen = false">
+                    <i class="el-icon-close" />
+                </div>
+            </div>
+        </Transition>
+        <el-dialog :visible.sync="dialog" width="960px">
+            <div class="preview-dialog">
+                <div class="content">
+                    <slot :image="urlLoaded"></slot>
+                </div>
+                <div class="preview-close" @click="dialog = false">
                     <i class="el-icon-close" />
                 </div>
             </div>
@@ -45,10 +57,11 @@ export default {
     data() {
         return {
             hash: Date.now(),
+            show: true,
             urlTest: '',
             urlLoaded: '',
             fullscreen: false,
-            expand: false,
+            dialog: false,
             loading: false
         }
     },
@@ -80,6 +93,13 @@ export default {
                 this.$message('图片加载过长，可能影响体验，建议切换其他图源')
             }, 2000)
         },
+        close() {
+            this.show = false
+            setTimeout(() => {
+                this.show = true
+                this.$message.success("Haha, I'm back!")
+            }, 2000)
+        },
         refresh() {
             if (this.url) {
                 this.loading = true
@@ -106,10 +126,28 @@ export default {
 ::v-deep .el-dialog {
     max-width: initial !important;
 
+    &,
+    .el-dialog__body {
+        background: none !important;
+    }
+
+
     .el-dialog__header {
         display: none !important;
     }
 
+}
+
+.scale-left-enter-active,
+.scale-left-leave-active {
+    transition: all .3s;
+    transform-origin: left top;
+}
+
+.scale-left-enter,
+.scale-left-leave-to {
+    opacity: 0;
+    transform: scaleX(0.9) scaleY(0.6);
 }
 
 .preview {
@@ -131,13 +169,12 @@ export default {
 
     .header {
         background-color: #DDDDDD;
-        padding: 6px 3px;
+        line-height: 20px;
 
         .dot {
             display: inline-block;
             width: 8px;
             height: 8px;
-            border-radius: 50%;
             margin-left: 5px;
             border-radius: 50%;
             cursor: pointer;
@@ -179,7 +216,7 @@ export default {
     }
 }
 
-.preview-expand {
+.preview-dialog {
     height: 540px;
     overflow: hidden;
     position: relative;
@@ -195,17 +232,16 @@ export default {
 
 .preview-fullscreen {
     overflow: hidden;
-    position: relative !important;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
 
     .content {
-        z-index: 9999;
         transform: scale(1);
-        position: fixed;
-        top: 0;
-        left: 0;
+        overflow: hidden;
         width: 100vw;
         height: 100vh;
-        overflow: hidden;
     }
 }
 
@@ -221,18 +257,18 @@ export default {
     border: 25px solid rgb(103, 103, 103);
     border-left-color: transparent;
     border-bottom-color: transparent;
-    // filter: drop-shadow(2px 6px 16px 6px var(--shadow));
 
     >i {
+        position: absolute;
+        top: -22px;
+        left: 2px;
         width: 16px;
         height: 16px;
         font-size: 16px;
-        margin-top: -22px;
-        margin-left: 2px;
         color: white;
 
         &:hover {
-            color: initial !important;
+            color: white !important;
             background-color: initial !important
         }
     }

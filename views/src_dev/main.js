@@ -14,8 +14,9 @@ Vue.use(ElementUI);
 const locale = localStorage.getItem('locale', 'zh-cn')
 const i18n = new VueI18n({
     messages,
-    locale: (locale || navigator.language || navigator.browserLanguage).toLowerCase(),
     fallbackLocale: "en",
+    silentTranslationWarn: true,
+    locale: (locale || navigator.language || navigator.browserLanguage).toLowerCase(),
 })
 
 initGlSdk(Vue, i18n)
@@ -58,9 +59,10 @@ new Vue({
             this.maskMsgAlert = this.$message.warning(this.$t("msg.operation_not_finished"))
         },
         getLogoSvg() {
-            this.$axios.get("/logo.svg").then((resp => {
+            this.$axios.get("/logo.svg", { responseType: "arraybuffer" }).then((resp => {
                 const text = new Uint8Array(resp.data).reduce(((t, e) => t + String.fromCharCode(e)), "");
-                if (text.indexOf("<svg") < text.indexOf("</svg>")) {
+                if (text.indexOf("<svg") >= 0) {
+                    console.log(text)
                     this.updateLogoSvg(text)
                 } else {
                     this.updateLogoSvg(`<img style="width:65px;height:50px" src="${"data:image/png;base64," + btoa(text)}">`)
