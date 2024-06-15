@@ -98,7 +98,7 @@ export default {
             setTimeout(() => {
                 this.show = true
                 this.$message.success("Haha, I'm back!")
-            }, 2000)
+            }, 1200)
         },
         refresh() {
             if (this.url) {

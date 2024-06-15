@@ -8,20 +8,20 @@
         </gl-title>
         <Transition>
             <gl-card class="card-spacing card-tabs" v-if="config">
-                <el-tooltip effect="dark" content="恢复为默认配置">
+                <el-tooltip effect="dark" :content="tl('reset_default')">
                     <span class="reset-config iconfont icon-redo-alt" @click="resetDefault" />
                 </el-tooltip>
                 <el-tabs v-model="tabName" class="is-card  el-tabs--card">
-                    <el-tab-pane name="login" :label="tl('login_page')">
+                    <el-tab-pane name="login" :label="tl('login.tab_title')">
                         <LoginPageTab :styles.sync="config.style.login" />
                     </el-tab-pane>
-                    <el-tab-pane name="system" :label="tl('admin_panel')">
+                    <el-tab-pane name="system" :label="tl('system.tab_title')">
                         <AdminPanelTab :styles.sync="config.style.system" />
                     </el-tab-pane>
-                    <el-tab-pane name="navbar" :label="tl('navbar')">
+                    <el-tab-pane name="navbar" :label="tl('navbar.tab_title')">
                         <NavButtonTab :buttons.sync="config.navbar" />
                     </el-tab-pane>
-                    <el-tab-pane name="misc" :label="tl('misc')">
+                    <el-tab-pane name="misc" :label="tl('misc.tab_title')">
                         <MiscOptionTab :misc.sync="config.misc" />
                     </el-tab-pane>
                 </el-tabs>
@@ -74,18 +74,18 @@ export default {
         }
         if (localStorage.getItem(SKEY_APPLY_TIP)) {
             localStorage.removeItem(SKEY_APPLY_TIP)
-            this.$message.success('应用成功')
+            this.$message(this.tl('apply_success'))
         }
         localStorage.removeItem(SKEY_TAB_NAME)
     },
     methods: {
-        tl(key) {
-            return this.$t(this.name + '.' + key)
+        tl(key, param) {
+            return this.$t(this.name + '.' + key, param)
         },
         async resetDefault() {
-            await this.$glConfirm('是否重置为默认配置？') 
-                this.config = defaultConfig()
-                this.$message.success('已重置')
+            await this.$glConfirm(this.tl('reset_confirm'))
+            this.config = defaultConfig()
+            this.$message.success(this.tl('reset_done'))
         },
         keepCurrentTab() {
             localStorage.setItem(SKEY_TAB_NAME, this.tabName)
@@ -94,7 +94,7 @@ export default {
             return await this.$request("call", ["sid", this.name, method, param || {}])
         },
         async handleApply() {
-            this.$message('正在应用配置...')
+            this.$message(this.tl('applying'))
             await this.rpc("set_config", { json: JSON.stringify(this.config) })
             setTimeout(() => {
                 this.keepCurrentTab()

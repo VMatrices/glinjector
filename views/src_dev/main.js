@@ -62,7 +62,6 @@ new Vue({
             this.$axios.get("/logo.svg", { responseType: "arraybuffer" }).then((resp => {
                 const text = new Uint8Array(resp.data).reduce(((t, e) => t + String.fromCharCode(e)), "");
                 if (text.indexOf("<svg") >= 0) {
-                    console.log(text)
                     this.updateLogoSvg(text)
                 } else {
                     this.updateLogoSvg(`<img style="width:65px;height:50px" src="${"data:image/png;base64," + btoa(text)}">`)

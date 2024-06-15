@@ -43,9 +43,7 @@
                             <div class="main">
                                 <div class="menu" />
                                 <div class="main-container">
-                                    <div class="router-visual-wrapper" :style="{
-                                        background: preview.image && `linear-gradient(rgba(0 0 0/${styles.home.background.alpha}%),rgba(0 0 0/${styles.home.background.alpha}%)), ${styles.home.background.position} / ${styles.home.background.size} url(${preview.image})`
-                                    }">
+                                    <div class="router-visual-wrapper" :style="backgroundStyle(styles.home.background, preview.image)">
                                         <div class="tree-line">
                                             <div class="block">
                                                 <div class="visual-text w100" />
@@ -159,6 +157,29 @@ export default {
         }
     },
     methods: {
+        backgroundStyle(styles, image) {
+            if (image) {
+                const style = {
+                    backgroundImage: `linear-gradient(rgba(0 0 0/${styles.alpha}%),rgba(0 0 0/${styles.alpha}%)), url(${image})`,
+                    backgroundSize: {
+                        "fill": "cover",
+                        "fit": "contain",
+                        "stratch": "100% 100%",
+                        "tile": "auto",
+                    }[styles.size],
+                }
+                if (styles.size == 'fit') {
+                    style.backgroundRepeat = 'no-repeat'
+                }
+                if (styles.size == 'tile') {
+                    style.backgroundRepeat = 'repeat'
+                }
+                if (styles.size != 'stratch') {
+                    style.backgroundPosition = styles.position
+                }
+                return style
+            }
+        },
         followMe() {
             this.$message('Follow Me 💕 with https://github.com/VMatrices')
             setTimeout(() => open('https://github.com/VMatrices'), 1000)

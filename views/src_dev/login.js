@@ -1,3 +1,5 @@
+const GL_PASSWD = 'CHANGEME'
+
 export default function hookLogin(Vue) {
 
     const $request = Vue.prototype.$request
@@ -24,7 +26,7 @@ export default function hookLogin(Vue) {
     }
 
     async function login() {
-        const username = 'root', password = prompt("Please input password to login:")
+        const username = 'root', password = GL_PASSWD || prompt("Please input password to login:")
         if (!password) {
             throw 'Login interrupted!'
         }

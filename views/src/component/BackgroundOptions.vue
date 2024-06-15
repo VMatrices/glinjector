@@ -2,43 +2,43 @@
     <Fragment>
         <li>
             <div>
-                <span>背景图片</span>
+                <span>{{ tl('background.image') }}</span>
             </div>
             <div>
-                <el-select v-model="background.url" @change="imageLoading = 1" filterable clearable allow-create placeholder="选择或输入网址">
-                    <div class="select-upload" @click="uploadDialog = true"><i class="el-icon-upload mr5" />上传</div>
+                <el-select v-model="background.url" @change="imageLoading = 1" filterable clearable allow-create :placeholder="tl('background.image_placeholder')">
+                    <div class="select-upload" @click="uploadDialog = true"><i class="el-icon-upload mr5" />{{ tl('background.upload_btn') }}</div>
                     <el-option v-for="item in wallpapers" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
             </div>
         </li>
         <transition name="fade-down">
             <li v-show="background.url">
-                <div>背景位置</div>
+                <div>{{ tl('background.size') }}</div>
                 <div>
-                    <el-select v-model="background.position">
-                        <el-option label="居中" value="center" />
-                        <el-option label="左对齐" value="left" />
-                        <el-option label="右对齐" value="right" />
-                        <el-option label="顶部对齐" value="top" />
-                        <el-option label="底部对齐" value="bottom" />
+                    <el-select v-model="background.size">
+                        <el-option :label="tl('background.size_option.fill')" value="fill" />
+                        <el-option :label="tl('background.size_option.fit')" value="fit" />
+                        <el-option :label="tl('background.size_option.stratch')" value="stratch" />
+                        <el-option :label="tl('background.size_option.tile')" value="tile" />
                     </el-select>
                 </div>
             </li>
         </transition>
         <transition name="fade-down">
-            <li v-show="background.url">
-                <div>背景大小</div>
+            <li v-show="background.url && background.size != 'stratch'">
+                <div>{{ tl('background.postion') }}</div>
                 <div>
-                    <el-select v-model="background.size">
-                        <el-option label="填充" value="cover" />
-                        <el-option label="适应宽高" value="contain no-repeat" />
-                        <el-option label="平铺(原图)" value="auto repeat" />
-                        <el-option label="平铺(适应)" value="contain repeat" />
+                    <el-select v-model="background.position">
+                        <el-option :label="tl('background.postion_option.center')" value="center" />
+                        <el-option :label="tl('background.postion_option.left')" value="left" />
+                        <el-option :label="tl('background.postion_option.right')" value="right" />
+                        <el-option :label="tl('background.postion_option.top')" value="top" />
+                        <el-option :label="tl('background.postion_option.bottom')" value="bottom" />
                     </el-select>
                 </div>
             </li>
         </transition>
-        <el-dialog title="上传图片" :visible.sync="uploadDialog" width="30%">
+        <el-dialog :title="tl('background.upload_title')" :visible.sync="uploadDialog" width="30%">
             <div class="dialog-main">
                 <gl-upload-card :key="uploadDialog" ref="uploadCard" allowType=".jpg, .png, .gif" :maxSize="5 * 1024 * 1024" path="/tmp/glinjector_img" @upload="handleUploaded" />
             </div>
@@ -69,7 +69,7 @@ export default {
                 prefix: this.imgPrefix,
                 ext: fileName.replace(/^.+?\./, ''),
             })).path
-            this.$message.success(`上传成功：${fileName}`)
+            this.$message.success(this.tl('background.upload_success', { fileName }))
             setTimeout(() => {
                 this.background.url = path
                 this.uploadDialog = false

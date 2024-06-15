@@ -4,16 +4,16 @@
         <gl-tips tips="Woc">
             <gl-button slot="customAction" type="primary" @click="handleOpenBtnDialog">
                 <span class="iconfont icon-plus mr6"></span>
-                <span>添加</span>
+                <span>{{ tl('navbar.add') }}</span>
             </gl-button>
         </gl-tips>
         <table class="mt10">
             <thead>
-                <th style="width: 150px;">启用</th>
-                <th>按钮</th>
-                <th>{{ tl('navbar_btn.link_path') }}</th>
-                <th>打开方式</th>
-                <th>操作</th>
+                <th style="width: 150px;">{{ tl('navbar.enable') }}</th>
+                <th>{{ tl('navbar.btn') }}</th>
+                <th>{{ tl('navbar.path') }}</th>
+                <th>{{ tl('navbar.mode') }}</th>
+                <th>{{ tl('navbar.operate') }}</th>
             </thead>
             <transition-group tag="tbody" name="table-fade">
                 <tr v-for="item, i in buttons" :key="item.id" class="table-fade-item ">
@@ -21,9 +21,9 @@
                     <td><i :class="item.icon" /><span class="ml10">{{ item.name }}</span></td>
                     <td>{{ item.link }}</td>
                     <td>
-                        <span v-if="item.mode == 'embed'">嵌入当前页</span>
-                        <span v-if="item.mode == 'blank'">打开新页面</span>
-                        <span v-if="item.mode == 'replace'">替换当前页面</span>
+                        <span v-if="item.mode == 'embed'">{{ tl('navbar.mode_option.embed') }}</span>
+                        <span v-if="item.mode == 'blank'">{{ tl('navbar.mode_option.blank') }}</span>
+                        <span v-if="item.mode == 'replace'">{{ tl('navbar.mode_option.replace') }}</span>
                     </td>
                     <td>
                         <gl-button class="gl-icon-btn" type="default" @click="handleSwapBtn(i, -1)">
@@ -43,15 +43,15 @@
             </transition-group>
         </table>
 
-        <el-dialog :title="(btnDialog.edit ? '修改' : '新增') + '按钮'" :visible.sync="btnDialog.show" width="30%">
+        <el-dialog :title="tl(btnDialog.edit ? 'navbar.edit_btn' : 'navbar.add_btn')" :visible.sync="btnDialog.show" width="30%">
             <div class="dialog-main">
                 <el-form class="form" :model="btnDialog.data" ref="btnForm">
                     <ul>
                         <li>
-                            <div>按钮图标</div>
+                            <div>{{ tl('navbar.icon') }}</div>
                             <div>
                                 <el-form-item prop="icon" :rules="rules.required">
-                                    <el-select v-model="btnDialog.data.icon" filterable placeholder="请选择图标">
+                                    <el-select v-model="btnDialog.data.icon" filterable :placeholder="tl('navbar.icon_placeholder')">
                                         <template slot="prefix">
                                             <i :class="btnDialog.data.icon || 'el-icon-full-screen'" />
                                         </template>
@@ -64,33 +64,33 @@
                             </div>
                         </li>
                         <li>
-                            <div><span>按钮名称</span></div>
+                            <div>{{ tl('navbar.name') }}</div>
                             <div>
                                 <el-form-item prop="name" :rules="rules.required">
-                                    <el-input v-model="btnDialog.data.name" placeholder="请输入名称"></el-input>
+                                    <el-input v-model="btnDialog.data.name" :placeholder="tl('navbar.name_placeholder')"></el-input>
                                 </el-form-item>
                             </div>
                         </li>
                         <li>
-                            <div><span>{{ tl('navbar_btn.link_path') }}</span></div>
+                            <div>{{ tl('navbar.path') }}</div>
                             <div>
                                 <el-form-item prop="link" :rules="[rules.required, rules.link]">
-                                    <el-input v-model="btnDialog.data.link" placeholder="请输入链接"></el-input>
+                                    <el-input v-model="btnDialog.data.link" :placeholder="tl('navbar.path_placeholder')"></el-input>
                                 </el-form-item>
                             </div>
                         </li>
                         <li>
-                            <div><span>打开方式</span></div>
+                            <div>{{ tl('navbar.mode') }}</div>
                             <div>
                                 <el-select v-model="btnDialog.data.mode" filterable>
-                                    <el-option label="嵌入当前页" value="embed" />
-                                    <el-option label="打开新页面" value="blank" />
-                                    <el-option label="替换当前页面" value="replace" />
+                                    <el-option :label="tl('navbar.mode_option.embed')" value="embed" />
+                                    <el-option :label="tl('navbar.mode_option.blank')" value="blank" />
+                                    <el-option :label="tl('navbar.mode_option.replace')" value="replace" />
                                 </el-select>
                             </div>
                         </li>
                         <li>
-                            <div><span>是否启用</span></div>
+                            <div><span>{{ tl('navbar.enable') }}</span></div>
                             <div><gl-switch v-model="btnDialog.data.enable" /></div>
                         </li>
                     </ul>
@@ -98,8 +98,8 @@
             </div>
             <span slot="footer" class="dialog-footer">
                 <div class="dialog-btns">
-                    <gl-button class="dialog-btn" @click="handleCloseBtnDialog">取 消</gl-button>
-                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">确 定</gl-button>
+                    <gl-button class="dialog-btn" @click="handleCloseBtnDialog">{{ $t('core.cancel') }}</gl-button>
+                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">{{ $t('core.save_btn') }}</gl-button>
                 </div>
             </span>
         </el-dialog>
@@ -119,9 +119,9 @@ export default {
         return {
             icons,
             rules: {
-                required: { required: true, message: '不能为空' },
+                required: { required: true, message: this.tl('navbar.not_empty') },
                 link: {
-                    message: '格式不正确',
+                    message: this.tl('navbar.format_incorrect'),
                     pattern: /^(#?\/[\w\/]+|https?:\/\/.+)/i
                 }
             },

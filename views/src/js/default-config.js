@@ -4,7 +4,7 @@ const config = {
         "login": {
             "background": {
                 "url": "/upload/bg_example.jpg",
-                "size": "cover",
+                "size": "fill",
                 "position": "center"
             },
             "box": {
@@ -29,7 +29,7 @@ const config = {
             "home": {
                 "background": {
                     "url": "",
-                    "size": "cover",
+                    "size": "fill",
                     "position": "center",
                     "alpha": 40
                 }

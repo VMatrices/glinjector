@@ -1,12 +1,68 @@
 {
     "glinjector": {
-        "login_page": "登录页",
-        "admin_panel": "管理面板",
-        "navbar": "导航栏",
-        "misc": "其他",
+        "reset_default": "恢复为默认配置",
+        "reset_confirm": "是否重置为默认配置？",
+        "reset_done": "已重置",
         "apply": "应用",
-        "navbar_btn": {
-            "link_path":"链接/路径"
+        "applying": "正在应用配置...",
+        "apply_success": "应用成功",
+        "background": {
+            "title": "背景",
+            "image_placeholder": "选择或输入网址",
+            "image": "图片地址",
+            "upload_btn": "上传",
+            "upload_title": "上传图片",
+            "upload_success": "上传成功：{fileName}",
+            "size": "图片大小",
+            "postion": "图片位置",
+            "size_option": {
+                "fill": "填充",
+                "fit": "适应",
+                "stratch": "拉伸",
+                "tile": "平铺"
+            },
+            "postion_option": {
+                "center": "居中",
+                "left": "左对齐",
+                "right": "右对齐",
+                "top": "顶部对齐",
+                "bottom": "底部对齐"
+            }
+        },
+        "login": {
+            "tab_title": "登录页"
+        },
+        "system": {
+            "tab_title": "管理面板"
+        },
+        "navbar": {
+            "tab_title": "导航栏",
+            "add": "新增",
+            "add_btn": "新增按钮",
+            "edit_btn": "修改按钮",
+            "enable": "启用",
+            "btn": "按钮",
+            "icon": "图标",
+            "icon_placeholder": "请选择图标",
+            "name": "名称",
+            "name_placeholder": "请输入名称",
+            "path": "链接/路径",
+            "path_placeholder": "请输入链接或路径",
+            "mode": "打开方式",
+            "operate": "操作",
+            "mode_option": {
+                "embed": "嵌入当前页",
+                "blank": "打开新页面",
+                "replace": "替换当前页面"
+            },
+            "not_empty": "不能为空",
+            "format_incorrect": "格式不正确"
+        },
+        "misc": {
+            "tab_title": "其他",
+            "unlock": "移除区域限制",
+            "unlock_confirm": "该功能仅用于学习研究为目的，请您务必遵守您当地的法律法规，并于学习研究结束后自觉关闭, 是否同意?",
+            "fan_temp_range": "移除区域限制"
         }
     },
     "menu_glinjector": "个性化"

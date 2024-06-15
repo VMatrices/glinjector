@@ -38,7 +38,7 @@
                         <gl-toggle v-model="styles.box.style">
                             <gl-toggle-item label="全屏" value="max" />
                             <gl-toggle-item label="垂直" value="horizon" />
-                            <gl-toggle-item label="窗口" value="window" />
+                            <gl-toggle-item label="浮动" value="float" />
                         </gl-toggle>
                     </div>
                 </li>
@@ -53,7 +53,7 @@
                     </li>
                 </transition>
                 <transition name="fade-down">
-                    <li v-if="styles.box.style == 'window'">
+                    <li v-if="styles.box.style == 'float'">
                         <div>
                             <span>高度</span>
                         </div>
@@ -63,7 +63,7 @@
                     </li>
                 </transition>
                 <transition name="fade-down">
-                    <li v-if="styles.box.style == 'window'">
+                    <li v-if="styles.box.style == 'float'">
                         <div>
                             <span>圆角</span>
                         </div>
@@ -122,9 +122,7 @@
         <div class="preview-wrapper">
             <GLPreview :url="styles.background.url">
                 <template v-slot:default="preview">
-                    <div class="main" :class="styles.box.style" :style="{
-                        background: preview.image && ` ${styles.background.position} / ${styles.background.size} url(${preview.image}), var(--background-login)`
-                    }">
+                    <div class="main" :class="styles.box.style" :style="backgroundStyle(styles.background, preview.image)">
                         <div class="login-box" :class="[styles.box.position, styles.box.theme]" :style="loginBoxStyle">
                             <div class="icon-vender" v-html="$store.state.logoSvg"></div>
                             <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
@@ -165,7 +163,7 @@ export default {
                 background: `rgba(${this.styles.box.theme == 'dark' ? '0,0,0' : '255,255,255'}, ${this.styles.box.alpha / 100})`
             }
 
-            if (this.styles.box.style == 'window') {
+            if (this.styles.box.style == 'float') {
                 style.height = this.styles.box.height + 'px'
                 style.borderRadius = this.styles.box.radius + 'px'
             }
@@ -185,6 +183,29 @@ export default {
         }
     },
     methods: {
+        backgroundStyle(styles, image) {
+            if (image) {
+                const style = {
+                    backgroundImage: `url(${image}), var(--background-login)`,
+                    backgroundSize: {
+                        "fill": "cover",
+                        "fit": "contain",
+                        "stratch": "100% 100%",
+                        "tile": "auto",
+                    }[styles.size],
+                }
+                if (styles.size == 'fit') {
+                    style.backgroundRepeat = 'no-repeat'
+                }
+                if (styles.size == 'tile') {
+                    style.backgroundRepeat = 'repeat'
+                }
+                if (styles.size != 'stratch') {
+                    style.backgroundPosition = styles.position
+                }
+                return style
+            }
+        },
         followMe() {
             this.$message('Follow Me 💕 with https://github.com/VMatrices')
             setTimeout(() => open('https://github.com/VMatrices'), 1000)
@@ -215,7 +236,7 @@ export default {
             background-size: cover;
             transition: background-image .5s;
 
-            &.window,
+            &.float,
             &.horizon {
                 display: flex;
                 flex-direction: column;
@@ -247,7 +268,7 @@ export default {
 
             }
 
-            &.window .login-box {
+            &.float .login-box {
                 justify-content: center;
                 padding-bottom: 50px;
 
