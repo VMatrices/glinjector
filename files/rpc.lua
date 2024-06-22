@@ -32,8 +32,8 @@ return {
         js_file:write(read_file("/etc/" .. plugin_name .. "/core.js"))
         js_file:close()
 
-        html_file:write(string.gsub(read_file("/rom" .. gl_home_path), '<script.+app',
-            '<script src="' .. js_path .. '"></script>%0'))
+        local html_edited = string.gsub(read_file("/rom" .. gl_home_path), '<script.+app', '<script src="' .. js_path .. '"></script>%0')
+        html_file:write(html_edited)
         html_file:close()
     end,
 
