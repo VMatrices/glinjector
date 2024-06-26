@@ -40,7 +40,8 @@ define Build/Prepare
 endef
 
 define Build/Compile
-	npm --prefix $(PKG_BUILD_DIR) run build
+	npm --prefix $(PKG_BUILD_DIR) run build:view
+	npm --prefix $(PKG_BUILD_DIR) run build:core
 endef
 
 define Package/$(PKG_NAME)/install
@@ -73,6 +74,9 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_DIR) $(1)/www/views/
 	$(CP) $(PKG_BUILD_DIR)/dist/app.common.js.gz $(1)/www/views/$(GL_SDK_PREFIX)-$(PKG_NAME).common.js.gz
+
+	$(INSTALL_DIR) $(1)/etc/$(PKG_NAME)/
+	$(CP) $(PKG_BUILD_DIR)/dist/core.js $(1)/etc/$(PKG_NAME)/
 
 	$(INSTALL_DIR) $(1)/www/upload/
 endef

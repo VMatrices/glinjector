@@ -16,7 +16,7 @@
                 <th>{{ tl('navbar.operate') }}</th>
             </thead>
             <transition-group tag="tbody" name="table-fade">
-                <tr v-for="item, i in buttons" :key="item.id" class="table-fade-item ">
+                <tr v-for="item, i in navbar.buttons" :key="item.id" class="table-fade-item ">
                     <td><gl-switch v-model="item.enable" /></td>
                     <td><i :class="item.icon" /><span class="ml10">{{ item.name }}</span></td>
                     <td>{{ item.link }}</td>
@@ -35,7 +35,7 @@
                         <gl-button class="gl-icon-btn" type="success" @click="handleOpenBtnDialog(i)">
                             <i class="el-icon-edit" />
                         </gl-button>
-                        <gl-button class="gl-icon-btn" type="error" @click="buttons.splice(i, 1)">
+                        <gl-button class="gl-icon-btn" type="error" @click="navbar.buttons.splice(i, 1)">
                             <i class="el-icon-delete" />
                         </gl-button>
                     </td>
@@ -112,7 +112,7 @@ import icons from '../js/icons';
 
 export default {
     props: {
-        buttons: Array
+        navbar: Object
     },
     inject: ["tl"],
     data() {
@@ -134,7 +134,7 @@ export default {
         }
     },
     watch: {
-        buttons() {
+        'navbar.buttons'() {
             this.checkButtonsID()
         }
     },
@@ -143,23 +143,23 @@ export default {
     },
     methods: {
         checkButtonsID() {
-            for (const item of this.buttons) {
+            for (const item of this.navbar.buttons) {
                 if (!item.id) {
                     item.id = uuid.generate()
                 }
             }
         },
         handleSwapBtn(i, d) {
-            if (0 <= i + d && i + d < this.buttons.length) {
-                const tmp = this.buttons[i]
-                this.$set(this.buttons, i, this.buttons[i + d])
-                this.$set(this.buttons, i + d, tmp)
+            if (0 <= i + d && i + d < this.navbar.buttons.length) {
+                const tmp = this.navbar.buttons[i]
+                this.$set(this.navbar.buttons, i, this.navbar.buttons[i + d])
+                this.$set(this.navbar.buttons, i + d, tmp)
             }
         },
         handleOpenBtnDialog(index = -1) {
             if (this.btnDialog.edit = index > -1) {
                 this.btnDialog.index = index
-                this.btnDialog.data = { ...this.buttons[index] }
+                this.btnDialog.data = { ...this.navbar.buttons[index] }
             } else {
                 this.btnDialog.data = {
                     id: uuid.generate(),
@@ -177,9 +177,9 @@ export default {
             this.$refs.btnForm.validate(valid => {
                 if (valid) {
                     if (this.btnDialog.edit) {
-                        this.$set(this.buttons, this.btnDialog.index, this.btnDialog.data)
+                        this.$set(this.navbar.buttons, this.btnDialog.index, this.btnDialog.data)
                     } else {
-                        this.buttons.push(this.btnDialog.data)
+                        this.navbar.buttons.push(this.btnDialog.data)
                     }
                     this.btnDialog.show = false
                 }

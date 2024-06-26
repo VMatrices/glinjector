@@ -1,1 +1,100 @@
-{}
+{
+    "glinjector": {
+        "reset_default": "デフォルトに戻す",
+        "reset_confirm": "デフォルト設定に戻してよろしいですか?",
+        "reset_done": "リセット完了",
+        "apply": "適用",
+        "applying": "設定を適用しています...",
+        "apply_success": "適用に成功しました",
+        "background": {
+            "title": "背景",
+            "image_placeholder": "URLを選択または入力してください",
+            "image": "画像URL",
+            "upload_btn": "アップロード",
+            "upload_title": "画像をアップロード",
+            "upload_success": "アップロードに成功しました: {fileName}",
+            "size": "画像サイズ",
+            "postion": "画像の位置",
+            "size_option": {
+                "fill": "埋め尽くし",
+                "fit": "収まるように調整",
+                "stratch": "引き伸ばし",
+                "tile": "タイル状"
+            },
+            "postion_option": {
+                "center": "中央",
+                "left": "左寄せ",
+                "right": "右寄せ",
+                "top": "上揃え",
+                "bottom": "下揃え"
+            }
+        },
+        "login": {
+            "tab_title": "ログインページ",
+            "box": {
+                "title": "ログインボックス",
+                "theme": "テーマ",
+                "theme_dark": "ダーク",
+                "theme_light": "ライト",
+                "blur": "ぼかし",
+                "alpha": "不透明度",
+                "style": "スタイル",
+                "style_max": "フルスクリーン",
+                "style_bar": "縦",
+                "style_float": "フロート",
+                "width": "幅",
+                "height": "高さ",
+                "radius": "角丸",
+                "position": "位置",
+                "position_left": "左",
+                "position_center": "中央",
+                "position_right": "右",
+                "margin": "オフセット"
+            },
+            "button": {
+                "title": "ログインボタン",
+                "add_luci": "Luciボタンを追加",
+                "comb_mode": "組み合わせボタン",
+                "luci_text": "Luciテキスト"
+            }
+        },
+        "system": {
+            "tab_title": "管理パネル",
+            "home_background": "ホームページの背景",
+            "mask_alpha": "マスクの不透明度",
+            "global_option": "グローバルオプション",
+            "wide_mode": "ワイドスクリーンモード",
+            "wide_mode_tip": "ワイドスクリーンモード"
+        },
+        "navbar": {
+            "tab_title": "ナビゲーションバー",
+            "add": "追加",
+            "add_btn": "ボタンを追加",
+            "edit_btn": "ボタンを編集",
+            "enable": "有効",
+            "btn": "ボタン",
+            "icon": "アイコン",
+            "icon_placeholder": "アイコンを選択してください",
+            "name": "名前",
+            "name_placeholder": "名前を入力してください",
+            "path": "リンク/パス",
+            "path_placeholder": "リンクまたはパスを入力してください",
+            "mode": "開き方",
+            "operate": "操作",
+            "mode_option": {
+                "embed": "現在のページに埋め込む",
+                "blank": "新しいページで開く",
+                "replace": "現在のページを置き換える"
+            },
+            "not_empty": "空にできません",
+            "format_incorrect": "形式が正しくありません"
+        },
+        "misc": {
+            "tab_title": "その他",
+            "unlock": "地域制限を解除",
+            "unlock_confirm": "この機能は学習と研究目的でのみ使用するものです。お住まいの地域の法律と規制を必ず遵守し、学習と研究が終わったら必ず無効にしてください。同意しますか?",
+            "fan_temp_range": "地域制限を解除"
+        }
+    },
+    "menu_glinjector": "パーソナライゼーション"
+}

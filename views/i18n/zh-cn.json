@@ -30,10 +30,41 @@
             }
         },
         "login": {
-            "tab_title": "登录页"
+            "tab_title": "登录页",
+            "box": {
+                "title": "登录框",
+                "theme": "主题",
+                "theme_dark": "深色",
+                "theme_light": "浅色",
+                "blur": "模糊",
+                "alpha": "透明度",
+                "style": "样式",
+                "style_max": "全屏",
+                "style_bar": "垂直",
+                "style_float": "浮动",
+                "width": "宽度",
+                "height": "高度",
+                "radius": "圆角",
+                "position": "位置",
+                "position_left": "左侧",
+                "position_center": "居中",
+                "position_right": "右侧",
+                "margin": "偏移"
+            },
+            "button": {
+                "title": "登录按钮",
+                "add_luci": "添加Luci按钮",
+                "comb_mode": "组合按钮",
+                "luci_text": "Luci文字"
+            }
         },
         "system": {
-            "tab_title": "管理面板"
+            "tab_title": "管理面板",
+            "home_background": "首页背景",
+            "mask_alpha": "遮罩浓度",
+            "global_option": "全局配置",
+            "wide_mode": "宽屏模式",
+            "wide_mode_tip": "宽屏模式"
         },
         "navbar": {
             "tab_title": "导航栏",

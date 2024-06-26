@@ -19,7 +19,7 @@
                         <AdminPanelTab :styles.sync="config.style.system" />
                     </el-tab-pane>
                     <el-tab-pane name="navbar" :label="tl('navbar.tab_title')">
-                        <NavButtonTab :buttons.sync="config.navbar" />
+                        <NavbarTab :navbar.sync="config.navbar" />
                     </el-tab-pane>
                     <el-tab-pane name="misc" :label="tl('misc.tab_title')">
                         <MiscOptionTab :misc.sync="config.misc" />
@@ -36,7 +36,7 @@
 <script>
 import LoginPageTab from './tabs/LoginPageTab.vue';
 import AdminPanelTab from './tabs/AdminPanelTab.vue';
-import NavButtonTab from './tabs/NavButtonTab.vue';
+import NavbarTab from './tabs/NavbarTab.vue';
 import MiscOptionTab from './tabs/MiscOptionTab.vue';
 import defaultConfig from './js/default-config';
 import initConfirmDialog from './js/confirm-dialog';
@@ -48,7 +48,7 @@ const
 
 export default {
     name: "GlInjector",
-    components: { LoginPageTab, AdminPanelTab, NavButtonTab, MiscOptionTab },
+    components: { LoginPageTab, AdminPanelTab, NavbarTab, MiscOptionTab },
     data() {
         return {
             name: "glinjector",

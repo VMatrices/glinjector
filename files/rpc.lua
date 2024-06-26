@@ -25,15 +25,15 @@ return {
 
         os.execute("rm -f /www/js/" .. plugin_name .. "-*");
         local js_path = "/js/" .. plugin_name .. "-" .. math.random(10000000, 99009999) .. ".js"
-        local js_file = io.open("/www" .. js_path, "w")
-        local html_file = io.open(gl_home_path, "w")
 
-        js_file:write("_GLI_=" .. params.json .. ";")
-        js_file:write(read_file("/etc/" .. plugin_name .. "/core.js"))
+        local js_code = string.gsub(read_file("/etc/" .. plugin_name .. "/core.js"), 'GL_UI_CONFIG', params.json)
+        local js_file = io.open("/www" .. js_path, "w")
+        js_file:write(js_code)
         js_file:close()
 
-        local html_edited = string.gsub(read_file("/rom" .. gl_home_path), '<script.+app', '<script src="' .. js_path .. '"></script>%0')
-        html_file:write(html_edited)
+        local html_code = string.gsub(read_file("/rom" .. gl_home_path), '<script.+app', '<script src="' .. js_path .. '"></script>%0')
+        local html_file = io.open(gl_home_path, "w")
+        html_file:write(html_code)
         html_file:close()
     end,
 

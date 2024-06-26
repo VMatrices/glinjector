@@ -1,12 +1,99 @@
 {
     "glinjector": {
-        "login_page": "Login Page",
-        "admin_panel": "Admin Panel",
-        "navbar": "Navbar",
-        "misc": "Misc",
+        "reset_default": "Restore to Default",
+        "reset_confirm": "Are you sure you want to reset to default configuration?",
+        "reset_done": "Reset done",
         "apply": "Apply",
-        "navbar_btn": {
-            "link_path":"Link/Path"
+        "applying": "Applying configuration...",
+        "apply_success": "Application successful",
+        "background": {
+            "title": "Background",
+            "image_placeholder": "Select or enter URL",
+            "image": "Image URL",
+            "upload_btn": "Upload",
+            "upload_title": "Upload Image",
+            "upload_success": "Upload successful: {fileName}",
+            "size": "Image Size",
+            "postion": "Image Position",
+            "size_option": {
+                "fill": "Fill",
+                "fit": "Fit",
+                "stratch": "Stretch",
+                "tile": "Tile"
+            },
+            "postion_option": {
+                "center": "Center",
+                "left": "Left",
+                "right": "Right",
+                "top": "Top",
+                "bottom": "Bottom"
+            }
+        },
+        "login": {
+            "tab_title": "Login Page",
+            "box": {
+                "title": "Login Box",
+                "theme": "Theme",
+                "theme_dark": "Dark",
+                "theme_light": "Light",
+                "blur": "Blur",
+                "alpha": "Transparency",
+                "style": "Style",
+                "style_max": "Fullscreen",
+                "style_bar": "Vertical",
+                "style_float": "Floating",
+                "width": "Width",
+                "height": "Height",
+                "radius": "Rounded Corners",
+                "position": "Position",
+                "position_left": "Left",
+                "position_center": "Center",
+                "position_right": "Right",
+                "margin": "Offset"
+            },
+            "button": {
+                "title": "Login Button",
+                "add_luci": "Add Luci Button",
+                "comb_mode": "Combination Button",
+                "luci_text": "Luci Text"
+            }
+        },
+        "system": {
+            "tab_title": "Admin Panel",
+            "home_background": "Home Page Background",
+            "mask_alpha": "Mask Opacity",
+            "global_option": "Global Options",
+            "wide_mode": "Widescreen Mode",
+            "wide_mode_tip": "Widescreen Mode"
+        },
+        "navbar": {
+            "tab_title": "Navigation Bar",
+            "add": "Add",
+            "add_btn": "Add Button",
+            "edit_btn": "Edit Button",
+            "enable": "Enable",
+            "btn": "Button",
+            "icon": "Icon",
+            "icon_placeholder": "Please select an icon",
+            "name": "Name",
+            "name_placeholder": "Please enter a name",
+            "path": "Link/Path",
+            "path_placeholder": "Please enter a link or path",
+            "mode": "Open Mode",
+            "operate": "Operation",
+            "mode_option": {
+                "embed": "Embed in Current Page",
+                "blank": "Open in New Page",
+                "replace": "Replace Current Page"
+            },
+            "not_empty": "Cannot be empty",
+            "format_incorrect": "Incorrect format"
+        },
+        "misc": {
+            "tab_title": "Misc",
+            "unlock": "Remove Regional Restrictions",
+            "unlock_confirm": "This feature is for learning and research purposes only. Please be sure to comply with your local laws and regulations, and turn it off after your learning and research is complete. Do you agree?",
+            "fan_temp_range": "Remove Regional Restrictions"
         }
     },
     "menu_glinjector": "Customize UI"

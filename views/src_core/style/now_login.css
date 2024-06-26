@@ -1,0 +1,57 @@
+/* document.body.style.background = 'url(' + cfg.background_url + ') center/cover'
+style.background = 'rgba(0,0,0,' + cfg.background_mask / 100 + ')'
+style.backdropFilter = 'blur(' + cfg.background_blur + 'px)'
+if (cfg.new_style) {
+    style.width = '544px'
+    style.marginLeft = '134px'
+    style.boxShadow = '0 0 15px #00000080'
+    document.querySelector('.form-container').style.width = 'initial'
+} */
+
+body {
+    background: url(https://api.timecdn.cn/libs/wallpaper/v1);
+}
+
+.login-wrapper {
+    background: rgba(0, 0, 0, 0.5) !important;
+    -webkit-backdrop-filter: blur(30px);
+}
+
+.login-wrapper::after {
+    content: 'GlInjector v2.0';
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    font-size: 12px;
+    transform: translateX(-50%);
+    color: gray;
+}
+
+.login-form .el-input__inner {
+    border-radius: 99px;
+}
+
+@media screen and (min-width: 1000px) {
+
+    .login-wrapper {
+        width: 544px !important;
+        margin-left: 134px;
+        box-shadow: 0 0 15px #00000080;
+        animation: op 1s ease .3s both;
+    }
+
+    .form-container {
+        width: initial !important
+    }
+
+    @keyframes op {
+        0% {
+            margin-left: 100px;
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+}

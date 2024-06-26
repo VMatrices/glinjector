@@ -11,7 +11,8 @@ export default defineConfig({
       deleteOriginFile: true,
       algorithm: "gzip",
       threshold: 1,
-    }),],
+    })
+  ],
   server: {
     proxy: {
       '^/(rpc|upload|img|\\w+\\.svg)': 'https://127.0.0.1/'

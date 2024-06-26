@@ -1,1 +1,100 @@
-{}
+{
+    "glinjector": {
+        "reset_default": "還原預設",
+        "reset_confirm": "確定要還原為預設設定嗎?",
+        "reset_done": "重設完成",
+        "apply": "應用",
+        "applying": "正在應用設定...",
+        "apply_success": "應用成功",
+        "background": {
+            "title": "背景",
+            "image_placeholder": "請選擇或輸入圖片網址",
+            "image": "圖片網址",
+            "upload_btn": "上傳",
+            "upload_title": "上傳圖片",
+            "upload_success": "上傳成功: {fileName}",
+            "size": "圖片大小",
+            "postion": "圖片位置",
+            "size_option": {
+                "fill": "填滿",
+                "fit": "適合",
+                "stratch": "拉伸",
+                "tile": "平鋪"
+            },
+            "postion_option": {
+                "center": "中央",
+                "left": "左側",
+                "right": "右側",
+                "top": "頂端",
+                "bottom": "底端"
+            }
+        },
+        "login": {
+            "tab_title": "登入頁面",
+            "box": {
+                "title": "登入框",
+                "theme": "主題",
+                "theme_dark": "深色",
+                "theme_light": "淺色",
+                "blur": "模糊",
+                "alpha": "透明度",
+                "style": "樣式",
+                "style_max": "全螢幕",
+                "style_bar": "垂直",
+                "style_float": "浮動",
+                "width": "寬度",
+                "height": "高度",
+                "radius": "圓角",
+                "position": "位置",
+                "position_left": "左側",
+                "position_center": "中央",
+                "position_right": "右側",
+                "margin": "邊距"
+            },
+            "button": {
+                "title": "登入按鈕",
+                "add_luci": "添加 Luci 按鈕",
+                "comb_mode": "組合按鈕",
+                "luci_text": "Luci 文字"
+            }
+        },
+        "system": {
+            "tab_title": "管理面板",
+            "home_background": "首頁背景",
+            "mask_alpha": "遮罩透明度",
+            "global_option": "全域選項",
+            "wide_mode": "寬螢幕模式",
+            "wide_mode_tip": "寬螢幕模式"
+        },
+        "navbar": {
+            "tab_title": "導航欄",
+            "add": "新增",
+            "add_btn": "新增按鈕",
+            "edit_btn": "編輯按鈕",
+            "enable": "啟用",
+            "btn": "按鈕",
+            "icon": "圖示",
+            "icon_placeholder": "請選擇圖示",
+            "name": "名稱",
+            "name_placeholder": "請輸入名稱",
+            "path": "連結/路徑",
+            "path_placeholder": "請輸入連結或路徑",
+            "mode": "開啟方式",
+            "operate": "操作",
+            "mode_option": {
+                "embed": "嵌入到當前頁面",
+                "blank": "在新頁面開啟",
+                "replace": "取代當前頁面"
+            },
+            "not_empty": "不能為空",
+            "format_incorrect": "格式不正確"
+        },
+        "misc": {
+            "tab_title": "其他",
+            "unlock": "解除地區限制",
+            "unlock_confirm": "此功能僅供學習和研究之用。請確保遵守您所在地區的法律法規,並在學習和研究結束後立即停用。您同意嗎?",
+            "fan_temp_range": "解除地區限制"
+        }
+    },
+    "menu_glinjector": "個性化"
+}

@@ -2,23 +2,23 @@
     <div class="preview-form">
         <div class="form slim">
             <ul>
-                <li class="title-li"> 背景 </li>
+                <li class="title-li"> {{ tl('background.title') }}</li>
                 <BackgroundOptions :background.sync="styles.background" imgPrefix="bg_login" />
-                <li class="title-li"> 登录框 </li>
+                <li class="title-li"> {{ tl('login.box.title') }}</li>
                 <li>
                     <div>
-                        <span>主题</span>
+                        <span>{{ tl('login.box.theme') }}</span>
                     </div>
                     <div>
                         <el-select v-model="styles.box.theme">
-                            <el-option label="深色" value="dark" />
-                            <el-option label="浅色" value="light" />
+                            <el-option :label="tl('login.box.theme_dark')" value="dark" />
+                            <el-option :label="tl('login.box.theme_light')" value="light" />
                         </el-select>
                     </div>
                 </li>
                 <li>
                     <div>
-                        <span>模糊</span>
+                        <span>{{ tl('login.box.blur') }}</span>
                     </div>
                     <div>
                         <el-slider class="w200" v-model="styles.box.blur" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
@@ -26,26 +26,26 @@
                 </li>
                 <li>
                     <div>
-                        <span>透明度</span>
+                        <span>{{ tl('login.box.alpha') }}</span>
                     </div>
                     <div>
                         <el-slider class="w200" v-model="styles.box.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
                     </div>
                 </li>
                 <li>
-                    <div>样式</div>
+                    <div>{{ tl('login.box.style') }}</div>
                     <div>
                         <gl-toggle v-model="styles.box.style">
-                            <gl-toggle-item label="全屏" value="max" />
-                            <gl-toggle-item label="垂直" value="horizon" />
-                            <gl-toggle-item label="浮动" value="float" />
+                            <gl-toggle-item :label="tl('login.box.style_max')" value="max" />
+                            <gl-toggle-item :label="tl('login.box.style_bar')" value="horizon" />
+                            <gl-toggle-item :label="tl('login.box.style_float')" value="float" />
                         </gl-toggle>
                     </div>
                 </li>
                 <transition name="fade-down">
                     <li v-if="styles.box.style != 'max'">
                         <div>
-                            <span>宽度</span>
+                            <span>{{ tl('login.box.width') }}</span>
                         </div>
                         <div>
                             <el-slider class="w200" v-model="styles.box.width" :min="400" :max="1000" show-tooltip :format-tooltip="v => v + 'px'" />
@@ -55,7 +55,7 @@
                 <transition name="fade-down">
                     <li v-if="styles.box.style == 'float'">
                         <div>
-                            <span>高度</span>
+                            <span>{{ tl('login.box.height') }}</span>
                         </div>
                         <div>
                             <el-slider class="w200" v-model="styles.box.height" :min="400" :max="800" show-tooltip :format-tooltip="v => v + 'px'" />
@@ -65,7 +65,7 @@
                 <transition name="fade-down">
                     <li v-if="styles.box.style == 'float'">
                         <div>
-                            <span>圆角</span>
+                            <span>{{ tl('login.box.radius') }}</span>
                         </div>
                         <div>
                             <el-slider class="w200" v-model="styles.box.radius" :min="0" :max="100" show-tooltip :format-tooltip="v => v + 'px'" />
@@ -74,12 +74,14 @@
                 </transition>
                 <transition name="fade-down">
                     <li v-if="styles.box.style != 'max'">
-                        <div>位置</div>
+                        <div>
+                            <span>{{ tl('login.box.position') }}</span>
+                        </div>
                         <div>
                             <gl-toggle v-model="styles.box.position">
-                                <gl-toggle-item label="左侧" value="left" />
-                                <gl-toggle-item label="居中" value="center" />
-                                <gl-toggle-item label="右侧" value="right" />
+                                <gl-toggle-item :label="tl('login.box.position_left')" value="left" />
+                                <gl-toggle-item :label="tl('login.box.position_center')" value="center" />
+                                <gl-toggle-item :label="tl('login.box.position_right')" value="right" />
                             </gl-toggle>
                         </div>
                     </li>
@@ -87,23 +89,23 @@
                 <transition name="fade-down">
                     <li v-if="styles.box.style != 'max' && styles.box.position != 'center'">
                         <div>
-                            <span>偏移</span>
+                            <span>{{ tl('login.box.margin') }}</span>
                         </div>
                         <div>
                             <el-slider class="w200" v-model="styles.box.margin" :min="0" :max="50" show-tooltip :format-tooltip="v => v + '%'" />
                         </div>
                     </li>
                 </transition>
-                <li class="title-li"> 登录按钮 </li>
+                <li class="title-li">{{ tl('login.button.title') }}</li>
                 <li>
-                    <div>添加Luci按钮</div>
+                    <span>{{ tl('login.button.add_luci') }}</span>
                     <div>
                         <gl-switch v-model="styles.button.luci" />
                     </div>
                 </li>
                 <transition name="fade-down">
                     <li v-if="styles.button.luci">
-                        <div>组合按钮</div>
+                        <span>{{ tl('login.button.comb_mode') }}</span>
                         <div>
                             <gl-switch v-model="styles.button.comb" />
                         </div>
@@ -111,9 +113,9 @@
                 </transition>
                 <transition name="fade-down">
                     <li v-if="styles.button.luci">
-                        <div>Luci文字</div>
+                        <span>{{ tl('login.button.luci_text') }}</span>
                         <div>
-                            <el-input v-model="styles.button.text" placeholder="请输入密码" />
+                            <el-input v-model="styles.button.luci_text" />
                         </div>
                     </li>
                 </transition>

@@ -2,23 +2,23 @@
     <div class="preview-form">
         <div class="form slim">
             <ul>
-                <li class="title-li"> 首页背景 </li>
+                <li class="title-li">{{ tl('system.home_background') }}</li>
                 <BackgroundOptions :background.sync="styles.home.background" imgPrefix="bg_home" />
                 <transition name="fade-down">
                     <li v-if="styles.home.background.url">
                         <div>
-                            <span>遮罩浓度</span>
+                            <span>{{ tl('system.mask_alpha') }}</span>
                         </div>
                         <div>
                             <el-slider class="w200" v-model="styles.home.background.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
                         </div>
                     </li>
                 </transition>
-                <li class="title-li"> 全局配置 </li>
+                <li class="title-li">{{ tl('system.global_option') }}</li>
                 <li>
                     <div>
-                        <span>宽屏模式 </span>
-                        <el-tooltip effect="dark" content="Top Left 提示文字" placement="top-start">
+                        <span>{{ tl('system.wide_mode') }}</span>
+                        <el-tooltip effect="dark" :content="tl('system.wide_mode_tip')" placement="top-start">
                             <span class="iconfont icon-info ml10" />
                         </el-tooltip>
                     </div>
