@@ -4,6 +4,7 @@ import { Popper } from './popper';
 import { injectCss } from './inject-css';
 import { defineProp, hookObject, watchState } from './hook-tool';
 import wideModeStyle from './style/wide_mode.scss'
+import navbarFrameStyle from './style/navbar_iframe.scss'
 
 let config = GL_UI_CONFIG,
 	glLogin = null,
@@ -42,28 +43,30 @@ hookObject([
 		}
 	},
 	{
-		name: 'Unlock menu (v4.2.0~4.2.2)',
+		name: 'Unlock menu (v4.2.1~2)',
 		from: 'vue',
 		enable: config.misc.unlock,
-		condition: vm => 'menus' in vm && 'menuList' in vm,
+		condition: vm => 'menus' in vm && 'menuList' in vm && vm.$md5,
 		process(vm) {
-			if (vm.$md5) {
-				// v4.2.1~2
-				defineProp(vm, 'menuList', {
-					get() {
-						var networkMode = vm.networkMode;
-						return vm.menus
-							.filter(menu => (!menu.show_mode || menu.show_mode.includes(networkMode)) && (!menu.parent_show_mode || menu.parent_show_mode.includes(networkMode)))
-							.map(menu => (menu.h = vm.$md5(menu.view), menu))
-					}
-				})
-			} else {
-				// v4.2.0
-				defineProp(vm, 'menuList', {
-					get: _ => vm.$generateMenus(vm.menus)
-				})
-			}
-
+			defineProp(vm, 'menuList', {
+				get() {
+					var networkMode = vm.networkMode;
+					return vm.menus
+						.filter(menu => (!menu.show_mode || menu.show_mode.includes(networkMode)) && (!menu.parent_show_mode || menu.parent_show_mode.includes(networkMode)))
+						.map(menu => (menu.h = vm.$md5(menu.view), menu))
+				}
+			})
+		}
+	},
+	{
+		name: 'Unlock menu (v4.2.0)',
+		from: 'vue',
+		enable: config.misc.unlock,
+		condition: vm => 'menus' in vm && 'menuList' in vm && !vm.$md5,
+		process(vm) {
+			defineProp(vm, 'menuList', {
+				get: _ => vm.$generateMenus(vm.menus)
+			})
 		}
 	},
 	{
@@ -93,7 +96,7 @@ hookObject([
 	{
 		name: 'Extract PopperJs',
 		from: 'vue',
-		enable: config.navbar.length,
+		enable: config.navbar.buttons.length,
 		condition: vm => 'popperVM' in vm,
 		complete: () => glPopper,
 		process(vm) {
@@ -239,9 +242,9 @@ watchState([
 	{
 		name: 'Enable wide screen mode',
 		condition: () => config.style.system.wide_mode,
-		complete: () => document.getElementById('_wide_'),
+		complete: () => document.getElementById('_gli_wide_'),
 		process() {
-			injectCss('_wide_', wideModeStyle)
+			injectCss('_gli_wide_', wideModeStyle)
 		}
 	}, {
 		name: 'Auto refresh LuCI cookies',
@@ -252,104 +255,96 @@ watchState([
 			luciRefreshTimer = setInterval(() => fetch(luciURL + '/'), 100000)
 		}
 	},
-	//  {
-	// 	name: 'Inject navbar buttons',
-	// 	condition: () => !location.hash.match('login'),
-	// 	delayCondition: () => document.querySelector('.home-wrapper'),
-	// 	complete: () => document.querySelector('._navBtn_'),
-	// 	requires: {
-	// 		popper: () => glPopper,
-	// 		toastr: () => glToastr,
-	// 		switchElm: () => document.querySelector('.switch')
-	// 	},
-	// 	process(param) {
-	// 		let switchElm = param.switchElm
-	// 		let template = switchElm.firstChild.cloneNode()
-	// 		let divideElm = switchElm.querySelector('.divide-right')
-	// 		let iframe = null
-	// 		let closeButton = null
-	// 		let showIframe = flag => {
-	// 			closeButton.style.display = closeButton.nextElementSibling.style.display = flag ? '' : 'none'
-	// 			iframe.style.visibility = flag ? '' : 'hidden'
-	// 			iframe.style.opacity = flag ? 1 : 0
-	// 		}
-	// 		let createNavBtn = (template, link, icon) => {
-	// 			let button = template.cloneNode()
-	// 			button.classList.add('_navBtn_')
-	// 			button.href = link
-	// 			button.style = 'margin-left:20px'
-	// 			button.innerHTML = '<span class="' + icon + '">'
-	// 			return button
-	// 		}
+	{
+		name: 'Inject navbar buttons',
+		condition: () => config.navbar.buttons.length && !location.hash.match('login'),
+		delayCondition: () => document.querySelector('.home-wrapper'),
+		complete: () => document.querySelector('.gli-navbtn'),
+		requires: {
+			popper: () => glPopper,
+			toastr: () => glToastr,
+			switchElm: () => document.querySelector('.switch')
+		},
+		process(param) {
+			const divideElm = param.switchElm.querySelector('.switch .divide-right')
+			let iframe = null
+			let closeButton = null
+			let showIframe = flag => {
+				closeButton.style.display = closeButton.nextElementSibling.style.display = flag ? '' : 'none'
+				if (flag) {
+					iframe.classList.add('gli-show')
+				} else {
+					iframe.classList.remove('gli-show')
+				}
+			}
+			let createNavBtn = (link, icon) => {
+				let button = document.createElement('a')
+				button.classList.add('gli-navbtn')
+				button.href = link
+				button.innerHTML = '<span class="' + icon + '">'
+				return button
+			}
 
-	// 		switchElm.prepend(divideElm.cloneNode())
+			param.switchElm.prepend(divideElm.cloneNode())
+			const hasEmbed = config.navbar.buttons.find(o => o.mode == 'embed')
 
-	// 		if (config.navbar.buttons.find(o => o.mode == 'embed')) {
-	// 			iframe = document.createElement('iframe')
-	// 			iframe.name = '_gl_iframe_'
-	// 			iframe.style.position = 'absolute'
-	// 			iframe.style.width = '100%'
-	// 			iframe.style.height = 'calc(100% - 50px)'
-	// 			iframe.style.zIndex = 9999
-	// 			iframe.style.border = 'none'
-	// 			iframe.style.background = 'white'
-	// 			iframe.style.visibility = 'hidden'
-	// 			iframe.style.transition = 'all .2s'
+			if (hasEmbed) {
+				injectCss('', navbarFrameStyle)
+				iframe = document.createElement('iframe')
+				iframe.className = 'gli-iframe'
+				iframe.name = '_gli_iframe'
+				document.querySelector('.home-wrapper>.container').append(iframe)
+			}
 
-	// 			let header = document.querySelector('.header-container')
-	// 			header.style.zIndex = 102
-	// 			header.style.boxShadow = '0 0 10px #00000030'
+			for (let btnInfo of config.navbar.buttons) {
+				let button = createNavBtn(btnInfo.link, btnInfo.icon)
+				param.switchElm.prepend(button)
+				glPopper.bind(button, btnInfo.name)
 
-	// 			let container = document.querySelector('.home-wrapper>.container')
-	// 			container.style.position = 'relative'
-	// 			container.append(iframe)
-	// 		}
+				if (btnInfo.link.startsWith("#/")) {
+					button.removeAttribute('target')
+					button.onclick = () => showIframe(false)
+				} else if (btnInfo.mode == 'replace') {
+					button.target = '_self'
+				} else if (btnInfo.mode == 'blank') {
+					button.target = '_blank'
+				} else if (btnInfo.mode == 'embed') {
+					button.target = '_gli_iframe'
+					button.onclick = e => {
+						showIframe(false)
+						iframe.onload = () => {
+							iframe.onload = () => injectCss('', '[href="/cgi-bin/luci/admin/logout"]{display:none !important}', iframe.contentDocument)
+							iframe.onload()
+							setTimeout(() => {
+								glToastr.closeAll()
+								glDisableMask && glDisableMask(false)
+								showIframe(true)
+							}, 300)
+						}
+						glToastr.closeAll()
+						glDisableMask && glDisableMask(true)
+						glToastr({
+							message: "Loading...",
+							iconClass: "iconfont icon-loading",
+							duration: 0
+						})
+					}
+				}
+			}
 
-	// 		for (let btnInfo of config.navbar.buttons) {
-	// 			let button = createNavBtn(template, btnInfo.link, btnInfo.icon)
-	// 			switchElm.prepend(button)
-	// 			glPopper.bind(button, btnInfo.name)
-	// 			if (btnInfo.link.startsWith("#/")) {
-	// 				button.removeAttribute('target')
-	// 				button.onclick = () => showIframe(false)
-	// 			} else if (config.navbar.embed) {
-	// 				button.target = '_gl_iframe_'
-	// 				button.onclick = e => {
-	// 					showIframe(false)
-	// 					iframe.onload = () => {
-	// 						iframe.onload = () => injectCss('', '[href="/cgi-bin/luci/admin/logout"]{display:none !important}', iframe.contentDocument)
-	// 						iframe.onload()
-	// 						setTimeout(() => {
-	// 							glToastr.closeAll()
-	// 							glDisableMask && glDisableMask(false)
-	// 							showIframe(true)
-	// 						}, 300)
-	// 					}
-	// 					glToastr.closeAll()
-	// 					glDisableMask && glDisableMask(true)
-	// 					glToastr({
-	// 						message: "Loading...",
-	// 						iconClass: "iconfont icon-loading",
-	// 						duration: 0
-	// 					})
-	// 				}
-	// 			}
-	// 		}
-
-	// 		if (config.navbar.embed) {
-	// 			closeButton = createNavBtn(template, null, 'iconfont icon-eject')
-	// 			closeButton.removeAttribute('href')
-	// 			closeButton.onclick = () => showIframe(false)
-	// 			let divide = divideElm.cloneNode()
-	// 			divide.style.marginRight = 0
-	// 			switchElm.prepend(divide)
-	// 			switchElm.prepend(closeButton)
-	// 			glPopper.bind(closeButton, 'Back')
-	// 			closeButton.style.display = 'none'
-	// 			divide.style.display = 'none'
-	// 		}
-	// 	}
-	// }
+			if (hasEmbed) {
+				closeButton = createNavBtn(null, 'iconfont icon-eject')
+				closeButton.removeAttribute('href')
+				closeButton.onclick = () => showIframe(false)
+				let divide = divideElm.cloneNode()
+				param.switchElm.prepend(divide)
+				param.switchElm.prepend(closeButton)
+				glPopper.bind(closeButton, 'Back')
+				closeButton.style.display = 'none'
+				divide.style.display = 'none'
+			}
+		}
+	}
 ])
 
 xlog('info', 'Welcome', 'GlInjector v' + version)

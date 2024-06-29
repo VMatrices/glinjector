@@ -10,7 +10,7 @@ const _defineProperty = Object.defineProperty,
 export const defineProp = _defineProperty
 export const objectKeys = _objectKeys
 
-export function hookObject() {
+export function hookObject(hooks) {
     const process = (obj, from) => {
         if (!obj.___) {
             try {

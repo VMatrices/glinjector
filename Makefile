@@ -26,6 +26,9 @@ define Build/Prepare
 	cp -r ./views/src $(PKG_BUILD_DIR)
 	cp ./views/package.json $(PKG_BUILD_DIR)
 	cp ./views/vite.config.js $(PKG_BUILD_DIR)
+	
+	cp -r ./views/src_core $(PKG_BUILD_DIR)
+	cp ./views/vite.config_core.js $(PKG_BUILD_DIR)
 
 	@if ! diff -wB ./views/package.json $(PKG_CACHE_DIR)/package.json > /dev/null; then \
 		cp ./views/package.json $(PKG_CACHE_DIR); \

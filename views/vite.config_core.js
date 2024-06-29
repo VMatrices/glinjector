@@ -13,7 +13,7 @@ export default defineConfig({
     }
   ],
   build: {
-    // minify: false,
+    minify: false,
     emptyOutDir: false,
     lib: {
       formats: ['cjs'],

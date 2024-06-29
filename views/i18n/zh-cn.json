@@ -78,6 +78,7 @@
             "name": "名称",
             "name_placeholder": "请输入名称",
             "path": "链接/路径",
+            "path_tip": "示例：“#/...”、“/cgi-bin/luci/...”、“http://...”",
             "path_placeholder": "请输入链接或路径",
             "mode": "打开方式",
             "operate": "操作",
@@ -93,7 +94,7 @@
             "tab_title": "其他",
             "unlock": "移除区域限制",
             "unlock_confirm": "该功能仅用于学习研究为目的，请您务必遵守您当地的法律法规，并于学习研究结束后自觉关闭, 是否同意?",
-            "fan_temp_range": "移除区域限制"
+            "fan_temp_range": "风扇温度阈值区间"
         }
     },
     "menu_glinjector": "个性化"

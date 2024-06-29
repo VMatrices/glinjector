@@ -21,9 +21,14 @@
                     <td><i :class="item.icon" /><span class="ml10">{{ item.name }}</span></td>
                     <td>{{ item.link }}</td>
                     <td>
-                        <span v-if="item.mode == 'embed'">{{ tl('navbar.mode_option.embed') }}</span>
-                        <span v-if="item.mode == 'blank'">{{ tl('navbar.mode_option.blank') }}</span>
-                        <span v-if="item.mode == 'replace'">{{ tl('navbar.mode_option.replace') }}</span>
+                        <template v-if="item.link?.startsWith('#/')">
+                            <span>{{ tl('navbar.mode_option.embed') }}</span>
+                        </template>
+                        <template v-else>
+                            <span v-if="item.mode == 'embed'">{{ tl('navbar.mode_option.embed') }}</span>
+                            <span v-if="item.mode == 'blank'">{{ tl('navbar.mode_option.blank') }}</span>
+                            <span v-if="item.mode == 'replace'">{{ tl('navbar.mode_option.replace') }}</span>
+                        </template>
                     </td>
                     <td>
                         <gl-button class="gl-icon-btn" type="default" @click="handleSwapBtn(i, -1)">
@@ -72,23 +77,30 @@
                             </div>
                         </li>
                         <li>
-                            <div>{{ tl('navbar.path') }}</div>
+                            <div>
+                                <span>{{ tl('navbar.path') }}</span>
+                                <el-tooltip effect="dark" :content="tl('navbar.path_tip')" placement="top-start">
+                                    <span class="iconfont icon-info ml10" />
+                                </el-tooltip>
+                            </div>
                             <div>
                                 <el-form-item prop="link" :rules="[rules.required, rules.link]">
                                     <el-input v-model="btnDialog.data.link" :placeholder="tl('navbar.path_placeholder')"></el-input>
                                 </el-form-item>
                             </div>
                         </li>
-                        <li>
-                            <div>{{ tl('navbar.mode') }}</div>
-                            <div>
-                                <el-select v-model="btnDialog.data.mode" filterable>
-                                    <el-option :label="tl('navbar.mode_option.embed')" value="embed" />
-                                    <el-option :label="tl('navbar.mode_option.blank')" value="blank" />
-                                    <el-option :label="tl('navbar.mode_option.replace')" value="replace" />
-                                </el-select>
-                            </div>
-                        </li>
+                        <transition name="fade-down">
+                            <li v-if="!btnDialog.data.link?.startsWith('#/')">
+                                <div>{{ tl('navbar.mode') }}</div>
+                                <div>
+                                    <el-select v-model="btnDialog.data.mode" filterable>
+                                        <el-option :label="tl('navbar.mode_option.embed')" value="embed" />
+                                        <el-option :label="tl('navbar.mode_option.blank')" value="blank" />
+                                        <el-option :label="tl('navbar.mode_option.replace')" value="replace" />
+                                    </el-select>
+                                </div>
+                            </li>
+                        </transition>
                         <li>
                             <div><span>{{ tl('navbar.enable') }}</span></div>
                             <div><gl-switch v-model="btnDialog.data.enable" /></div>

@@ -1,0 +1,39 @@
+.header-container {
+    z-index: 102;
+    box-shadow: 0 0 10px #00000030;
+
+    .gli-navbtn {
+        cursor: pointer;
+        padding: 8px;
+        color: var(--icon);
+        display: inline-block;
+        border-radius: 5px;
+        margin-left: 10px;
+        font-size: 16px;
+    }
+
+    .divide-right+.gli-navbtn {
+        margin-left: 0px;
+    }
+}
+
+.home-wrapper>.container {
+    position: relative;
+
+    .gli-iframe {
+        z-index: 1999;
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 50px);
+        border: none;
+        background: white;
+        opacity: 0;
+        visibility: hidden;
+        transition: all .2s;
+
+        &.gli-show {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
