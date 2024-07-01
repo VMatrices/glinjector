@@ -1,10 +1,11 @@
 import { version } from '../package.json'
 import { xlog } from './xlog';
 import { Popper } from './popper';
-import { injectCss } from './inject-css';
+import { createCss, injectCss } from './css-tool';
 import { defineProp, hookObject, watchState } from './hook-tool';
 import wideModeStyle from './style/wide_mode.scss'
-import navbarFrameStyle from './style/navbar_iframe.scss'
+import baseStyle from './style/navbar_iframe.scss'
+import lightLoginStyle from './style/login_light.scss'
 
 let config = GL_UI_CONFIG,
 	glLogin = null,
@@ -167,92 +168,201 @@ hookObject([
 ])
 
 watchState([
-	// {
-	// 	name: 'Change style of login page ',
-	// 	condition: () => config.style.login.new_style || config.style.login.background_url,
-	// 	complete: () => document.getElementById('_login_'),
-	// 	process(param) {
-	// 		let cfg = config.style.login, css = '.aside-wrapper{height:calc(100vh - 50px)}';
-	// 		if (cfg.background_url) {
-	// 			css += 'body{background:url(' + cfg.background_url + ')center/cover}.login-wrapper{background:rgba(0,0,0,' + cfg.background_mask / 100 + ')!important;-webkit-backdrop-filter: blur(' + cfg.background_blur + 'px);backdrop-filter: blur(' + cfg.background_blur + 'px)}' +
-	// 				'.login-wrapper::after{content:"GlInjector v"' + version + ';position:absolute;bottom:10px;left:50%;font-size:12px;transform:translateX(-50%);color:gray;}.login-form .el-input__inner{border-radius:99px}'
-	// 		}
-	// 		if (cfg.new_style) {
-	// 			css += '@media screen and (min-width:1000px){.login-wrapper{width:544px !important;margin-left:134px;box-shadow:0 0 15px #00000080;animation:op 1s ease .3s both;}.form-container{width:initial !important}@keyframes op{0%{margin-left:100px;opacity:0;}100%{opacity:1;}}}'
-	// 		}
-	// 		injectCss('_login_', css)
-	// 	}
-	// },
-	// {
-	// 	name: 'Reset body background',
-	// 	condition: () => config.style.login.background_url && location.hash.match('login'),
-	// 	process(param) {
-	// 		document.body.style.background = ''
-	// 	}
-	// },
-	// {
-	// 	name: 'Clean body background',
-	// 	condition: () => config.style.login.background_url && !location.hash.match('login'),
-	// 	delayCondition: () => document.querySelector('.home-wrapper'),
-	// 	process(param) {
-	// 		document.body.style.background = 'var(--background-main)'
-	// 	}
-	// },
-	// {
-	// 	name: 'Modify login buttons',
-	// 	condition: () => location.hash.match('login'),
-	// 	complete: () => document.querySelector('._luciBtn_'),
-	// 	requires: {
-	// 		glLogin: () => glLogin,
-	// 		wrapper: () => document.querySelector('.login-btn'),
-	// 	},
-	// 	process(param) {
-	// 		let wrapper = param.wrapper,
-	// 			loginVm = param.glLogin.vm,
-	// 			loginBtn = wrapper.firstChild,
-	// 			luciBtn = loginBtn.cloneNode()
-
-	// 		luciBtn.innerText = config.style.login.button.luci_text
-	// 		luciBtn.classList.add('_luciBtn_')
-
-	// 		if (config.style.login.button.comb) {
-	// 			luciBtn.style.borderRadius = "0 99px 99px 0"
-	// 			luciBtn.style.marginLeft = "1px"
-	// 			loginBtn.style.borderRadius = "99px 0 0 99px"
-	// 			loginBtn.style.marginRight = "1px"
-	// 		}
-
-	// 		wrapper.appendChild(luciBtn)
-
-	// 		luciBtn.onclick = _ => {
-	// 			setTimeout(_ => loginVm.login = param.glLogin.method, 1000)
-	// 			loginVm.login = _ => luciLogin(response => {
-	// 				loginVm.isLoading = false
-	// 				if (response.status == 200) {
-	// 					location.href = luciURL + '/'
-	// 				} else {
-	// 					loginVm.$message.closeAll()
-	// 					loginVm.$message.error(loginVm.$t('login.err_msg'))
-	// 				}
-	// 			})
-	// 			loginVm.handleLogin()
-	// 		}
-	// 	}
-	// }, 
 	{
-		name: 'Enable wide screen mode',
-		condition: () => config.style.system.wide_mode,
-		complete: () => document.getElementById('_gli_wide_'),
-		process() {
-			injectCss('_gli_wide_', wideModeStyle)
-		}
-	}, {
 		name: 'Auto refresh LuCI cookies',
 		condition: () => !location.hash.match('login'),
 		delayCondition: () => document.querySelector('.home-wrapper'),
 		complete: () => luciRefreshTimer,
 		process() {
 			luciRefreshTimer = setInterval(() => fetch(luciURL + '/'), 100000)
+		}
+	},
+	{
+		name: 'Inject base style',
+		condition: () => true,
+		complete: () => document.getElementById('_gli_style_'),
+		process: () => injectCss('_gli_style_', baseStyle)
+	},
+	{
+		name: 'Change style of login page ',
+		condition: () => true,
+		complete: () => document.getElementById('_gli_login_'),
+		process() {
+			const bgCfg = config.style.login.background, boxCfg = config.style.login.box
+			let css = '';
+
+			if (bgCfg.url) {
+				const bgStyle = {
+					backgroundImage: `url(${bgCfg.url}), var(--background-login)`,
+					backgroundSize: {
+						"fill": "cover",
+						"fit": "contain",
+						"stratch": "100% 100%",
+						"tile": "auto",
+					}[bgCfg.size],
+				}
+				if (bgCfg.size == 'fit') {
+					bgStyle.backgroundRepeat = 'no-repeat'
+				}
+				if (bgCfg.size == 'tile') {
+					bgStyle.backgroundRepeat = 'repeat'
+				}
+				if (bgCfg.size != 'stratch') {
+					bgStyle.backgroundPosition = bgCfg.position
+				}
+				css += createCss('body', bgStyle)
+			}
+
+			const boxStyle = {
+				backdropFilter: `blur(${boxCfg.blur / 100 * 100}px)`,
+				background: `rgba(${boxCfg.theme == 'dark' ? '0,0,0' : '255,255,255'}, ${boxCfg.alpha / 100})`
+			}
+
+			if (boxCfg.theme == 'light') {
+				css += lightLoginStyle
+			}
+
+			if (boxCfg.style != 'max') {
+				boxStyle.overflow = 'hidden';
+				boxStyle.position = 'relative';
+				boxStyle.boxShadow = '0 0 15px #00000080';
+				boxStyle.width = boxCfg.width + 'px'
+
+				if (boxCfg.style == 'float') {
+					boxStyle.display = 'flex'
+					boxStyle.flexDirection = 'column'
+					boxStyle.justifyContent = 'center'
+					boxStyle.paddingBottom = '50px'
+					boxStyle.height = boxCfg.height + 'px'
+					boxStyle.borderRadius = boxCfg.radius + 'px'
+					boxStyle.transform = `translateY(calc(50vh - ${boxCfg.height / 2}px))`
+					css += createCss('.login-wrapper .typeof-router ', {
+						marginTop: '0'
+					})
+				}
+
+				switch (boxCfg.position) {
+					case 'left':
+						boxStyle.marginLeft = boxCfg.margin + '%'
+						break
+					case 'right':
+						boxStyle.float = 'right'
+						boxStyle.marginRight = boxCfg.margin + '%'
+						break
+					case 'center':
+						boxStyle.marginLeft = `calc(50vw - ${boxCfg.width / 2}px)`
+						break
+				}
+
+				css += createCss('.login-wrapper .el-input__inner', {
+					borderRadius: '99px'
+				}) + createCss('.login-wrapper .gl-logo', {
+					position: 'absolute',
+					top: 0,
+					left: '20px',
+					marginLeft: 0,
+				})
+
+			}
+			css += createCss('.login-wrapper', boxStyle)
+
+			injectCss('_gli_login_', css)
+		}
+	},
+	{
+		name: 'Reset app background',
+		condition: () => config.style.login.background.url && location.hash.match('login'),
+		requires: {
+			app: () => document.getElementById('app')
+		},
+		process(param) {
+			param.app.style.background = ''
+		}
+	},
+	{
+		name: 'Clean app background',
+		condition: () => config.style.login.background.url && !location.hash.match('login'),
+		requires: {
+			app: () => document.getElementById('app')
+		},
+		process(param) {
+			param.app.style.background = 'var(--background-main)'
+		}
+	},
+	{
+		name: 'Change style of index page',
+		condition: () => config.style.system.home.background.url,
+		complete: () => document.getElementById('_gli_index_'),
+		process() {
+			const cfg = config.style.system.home.background;
+			const style = {
+				backgroundImage: `linear-gradient(rgba(0 0 0/${cfg.alpha}%),rgba(0 0 0/${cfg.alpha}%)), url(${cfg.url})`,
+				backgroundSize: {
+					"tile": "auto",
+					"fill": "cover",
+					"fit": "contain",
+					"stratch": "100% 100%",
+				}[cfg.size],
+			}
+			if (cfg.size == 'fit') {
+				style.backgroundRepeat = 'no-repeat'
+			}
+			if (cfg.size == 'tile') {
+				style.backgroundRepeat = 'repeat'
+			}
+			if (cfg.size != 'stratch') {
+				style.backgroundPosition = cfg.position
+			}
+			injectCss('_gli_index_', createCss('.router-visual-wrapper', style))
+		}
+	},
+	{
+		name: 'Modify login buttons',
+		condition: () => config.style.login.button.luci && location.hash.match('login'),
+		complete: () => document.querySelector('.gli-luci-btn'),
+		requires: {
+			glLogin: () => glLogin,
+			wrapper: () => document.querySelector('.login-btn'),
+		},
+		process(param) {
+			let wrapper = param.wrapper,
+				loginVm = param.glLogin.vm,
+				loginBtn = wrapper.firstChild,
+				luciBtn = loginBtn.cloneNode()
+
+			luciBtn.innerText = config.style.login.button.luci_text
+			luciBtn.classList.add('gli-luci-btn')
+
+			if (config.style.login.button.comb) {
+				luciBtn.style.borderRadius = "0 99px 99px 0"
+				luciBtn.style.marginLeft = "1px"
+				loginBtn.style.borderRadius = "99px 0 0 99px"
+				loginBtn.style.marginRight = "1px"
+			}
+
+			wrapper.appendChild(luciBtn)
+
+			luciBtn.onclick = _ => {
+				setTimeout(_ => loginVm.login = param.glLogin.method, 1000)
+				loginVm.login = _ => luciLogin(response => {
+					loginVm.isLoading = false
+					if (response.status == 200) {
+						location.href = luciURL + '/'
+					} else {
+						loginVm.$message.closeAll()
+						loginVm.$message.error(loginVm.$t('login.err_msg'))
+					}
+				})
+				loginVm.handleLogin()
+			}
+		}
+	},
+	{
+		name: 'Enable wide screen mode',
+		condition: () => config.style.system.wide_mode,
+		complete: () => document.getElementById('_gli_wide_'),
+		process() {
+			injectCss('_gli_wide_', wideModeStyle)
 		}
 	},
 	{
@@ -281,7 +391,7 @@ watchState([
 				let button = document.createElement('a')
 				button.classList.add('gli-navbtn')
 				button.href = link
-				button.innerHTML = '<span class="' + icon + '">'
+				button.innerHTML = '<span class="btn-icon ' + icon + '">'
 				return button
 			}
 
@@ -289,14 +399,13 @@ watchState([
 			const hasEmbed = config.navbar.buttons.find(o => o.mode == 'embed')
 
 			if (hasEmbed) {
-				injectCss('', navbarFrameStyle)
 				iframe = document.createElement('iframe')
 				iframe.className = 'gli-iframe'
 				iframe.name = '_gli_iframe'
 				document.querySelector('.home-wrapper>.container').append(iframe)
 			}
 
-			for (let btnInfo of config.navbar.buttons) {
+			for (let btnInfo of config.navbar.buttons.filter(o => o.enable).reverse()) {
 				let button = createNavBtn(btnInfo.link, btnInfo.icon)
 				param.switchElm.prepend(button)
 				glPopper.bind(button, btnInfo.name)

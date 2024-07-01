@@ -2,22 +2,38 @@
     <div class="preview-form">
         <div class="form slim">
             <ul>
-                <li class="title-li">{{ tl('system.home_background') }}</li>
+                <li class="title-li">
+                    {{ tl("system.home_background") }}
+                    <span
+                        @click="
+                            keepCurrentTab()
+                            $router.push({ name: 'internet' })
+                        "
+                        class="iconfont icon-internet btn-icon ml3"
+                    />
+                </li>
                 <BackgroundOptions :background.sync="styles.home.background" imgPrefix="bg_home" />
                 <transition name="fade-down">
                     <li v-if="styles.home.background.url">
                         <div>
-                            <span>{{ tl('system.mask_alpha') }}</span>
+                            <span>{{ tl("system.mask_alpha") }}</span>
                         </div>
                         <div>
-                            <el-slider class="w200" v-model="styles.home.background.alpha" :min="0" :max="100" show-tooltip :format-tooltip="v => v + '%'" />
+                            <el-slider
+                                class="w200"
+                                v-model="styles.home.background.alpha"
+                                :min="0"
+                                :max="100"
+                                show-tooltip
+                                :format-tooltip="v => v + '%'"
+                            />
                         </div>
                     </li>
                 </transition>
-                <li class="title-li">{{ tl('system.global_option') }}</li>
+                <li class="title-li">{{ tl("system.global_option") }}</li>
                 <li>
                     <div>
-                        <span>{{ tl('system.wide_mode') }}</span>
+                        <span>{{ tl("system.wide_mode") }}</span>
                         <el-tooltip effect="dark" :content="tl('system.wide_mode_tip')" placement="top-start">
                             <span class="iconfont icon-info ml10" />
                         </el-tooltip>
@@ -37,13 +53,13 @@
                                 <div class="title">
                                     <div class="logo-img" v-html="$store.state.logoSvg" />
                                     <div class="divide" />
-                                    <div>{{ $t('core.admin_panel') }}</div>
+                                    <div>{{ $t("core.admin_panel") }}</div>
                                 </div>
                             </div>
                             <div class="main">
                                 <div class="menu" />
                                 <div class="main-container">
-                                    <div class="router-visual-wrapper" :style="backgroundStyle(styles.home.background, preview.image)">
+                                    <div class="router-wrapper" :style="backgroundStyle(styles.home.background, preview.image)">
                                         <div class="tree-line">
                                             <div class="block">
                                                 <div class="visual-text w100" />
@@ -68,7 +84,7 @@
                                         </div>
                                         <div class="router-info">
                                             <div class="icon-model" v-html="$store.state.routerTypeSvg"></div>
-                                            <div class="alias">{{ $store.state.hostname || 'Openwrt' }}</div>
+                                            <div class="alias">{{ $store.state.hostname || "Openwrt" }}</div>
                                             <div class="app-list">
                                                 <div class="visual-text w50 h50" />
                                                 <div class="visual-text w50 h50" />
@@ -143,18 +159,17 @@
 </template>
 
 <script>
-import GLPreview from '../component/GLPreview.vue';
-import BackgroundOptions from '../component/BackgroundOptions.vue';
+import GLPreview from "../component/GLPreview.vue"
+import BackgroundOptions from "../component/BackgroundOptions.vue"
 
 export default {
     components: { GLPreview, BackgroundOptions },
     props: {
         styles: Object
     },
-    inject: ["tl"],
+    inject: ["tl", "keepCurrentTab"],
     data() {
-        return {
-        }
+        return {}
     },
     methods: {
         backgroundStyle(styles, image) {
@@ -162,27 +177,27 @@ export default {
                 const style = {
                     backgroundImage: `linear-gradient(rgba(0 0 0/${styles.alpha}%),rgba(0 0 0/${styles.alpha}%)), url(${image})`,
                     backgroundSize: {
-                        "fill": "cover",
-                        "fit": "contain",
-                        "stratch": "100% 100%",
-                        "tile": "auto",
-                    }[styles.size],
+                        fill: "cover",
+                        fit: "contain",
+                        stratch: "100% 100%",
+                        tile: "auto"
+                    }[styles.size]
                 }
-                if (styles.size == 'fit') {
-                    style.backgroundRepeat = 'no-repeat'
+                if (styles.size == "fit") {
+                    style.backgroundRepeat = "no-repeat"
                 }
-                if (styles.size == 'tile') {
-                    style.backgroundRepeat = 'repeat'
+                if (styles.size == "tile") {
+                    style.backgroundRepeat = "repeat"
                 }
-                if (styles.size != 'stratch') {
+                if (styles.size != "stratch") {
                     style.backgroundPosition = styles.position
                 }
                 return style
             }
         },
         followMe() {
-            this.$message('Follow Me 💕 with https://github.com/VMatrices')
-            setTimeout(() => open('https://github.com/VMatrices'), 1000)
+            this.$message("Follow Me 💕 with https://github.com/VMatrices")
+            setTimeout(() => open("https://github.com/VMatrices"), 1000)
         }
     }
 }
@@ -212,10 +227,10 @@ export default {
                 max-width: 1300px;
                 height: 100%;
                 margin: 0 auto;
-                transition: all .3s;
+                transition: all 0.3s;
 
                 &.wide {
-                    max-width: 100%
+                    max-width: 100%;
                 }
 
                 .header {
@@ -292,7 +307,7 @@ export default {
                 opacity: 0.35;
             }
 
-            .router-visual-wrapper {
+            .router-wrapper {
                 position: relative;
                 margin: 0 -20px;
                 width: calc(100% + 40px);
@@ -302,14 +317,13 @@ export default {
                 align-items: center;
                 justify-content: center;
                 color: var(--text-status-panel);
-                transition: background-image .5s;
+                transition: background-image 0.5s;
 
                 .visual-text {
                     opacity: 0.5;
                 }
 
                 .tree-line {
-
                     .block {
                         height: 55px;
                         margin: 0 20px;
@@ -336,9 +350,7 @@ export default {
                             border-style: solid;
                             border-bottom: none;
                         }
-
                     }
-
 
                     &.left .line {
                         border-right: 2px solid var(--text-status-panel-active);
@@ -380,7 +392,7 @@ export default {
                         align-items: center;
                         margin-bottom: 18px;
 
-                        >*:not(:last-child) {
+                        > *:not(:last-child) {
                             margin-right: 10px;
                         }
                     }
@@ -396,7 +408,6 @@ export default {
                         cursor: pointer;
                     }
                 }
-
             }
 
             .visual-block {
@@ -433,7 +444,6 @@ export default {
                     min-width: 278px;
                     width: 100%;
                     margin-top: 20px;
-
                 }
 
                 @media screen and (min-width: 1200px) {
@@ -447,7 +457,6 @@ export default {
                 }
             }
         }
-
     }
 }
 </style>

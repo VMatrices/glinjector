@@ -1,0 +1,33 @@
+.login-wrapper {
+
+    &,
+    p,
+    h3,
+    .forgot-btn {
+        --dart-text: #172b4d !important;
+        color: var(--dart-text) !important;
+    }
+
+    .gl-logo svg {
+        filter: invert(1);
+    }
+
+    .typeof-router svg * {
+        fill: #47475f !important
+    }
+
+    .el-input__inner {
+        background-color: transparent !important;
+        border-color: var(--dart-text) !important;
+        color: var(--dart-text) !important;
+
+        &::placeholder {
+            color: var(--dart-text) !important;
+        }
+    }
+
+    .el-input__prefix,
+    .el-input__suffix {
+        color: var(--dart-text) !important;
+    }
+}

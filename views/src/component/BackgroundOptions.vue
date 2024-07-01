@@ -2,18 +2,28 @@
     <Fragment>
         <li>
             <div>
-                <span>{{ tl('background.image') }}</span>
+                <span>{{ tl("background.image") }}</span>
             </div>
             <div>
-                <el-select v-model="background.url" @change="imageLoading = 1" filterable clearable allow-create :placeholder="tl('background.image_placeholder')">
-                    <div class="select-upload" @click="uploadDialog = true"><i class="el-icon-upload mr5" />{{ tl('background.upload_btn') }}</div>
+                <el-select
+                    v-model="background.url"
+                    @change="imageLoading = 1"
+                    filterable
+                    clearable
+                    allow-create
+                    :placeholder="tl('background.image_placeholder')"
+                >
+                    <div class="select-upload" @click="uploadDialog = true">
+                        <i class="el-icon-upload mr5" />
+                        {{ tl("background.upload_btn") }}
+                    </div>
                     <el-option v-for="item in wallpapers" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
             </div>
         </li>
         <transition name="fade-down">
             <li v-show="background.url">
-                <div>{{ tl('background.size') }}</div>
+                <div>{{ tl("background.size") }}</div>
                 <div>
                     <el-select v-model="background.size">
                         <el-option :label="tl('background.size_option.fill')" value="fill" />
@@ -26,7 +36,7 @@
         </transition>
         <transition name="fade-down">
             <li v-show="background.url && background.size != 'stratch'">
-                <div>{{ tl('background.postion') }}</div>
+                <div>{{ tl("background.postion") }}</div>
                 <div>
                     <el-select v-model="background.position">
                         <el-option :label="tl('background.postion_option.center')" value="center" />
@@ -38,21 +48,28 @@
                 </div>
             </li>
         </transition>
-        <el-dialog :title="tl('background.upload_title')" :visible.sync="uploadDialog" width="30%">
+        <el-dialog :title="tl('background.upload_title')" :show-close="true" :visible.sync="uploadDialog" width="30%">
             <div class="dialog-main">
-                <gl-upload-card :key="uploadDialog" ref="uploadCard" allowType=".jpg, .png, .gif" :maxSize="5 * 1024 * 1024" path="/tmp/glinjector_img" @upload="handleUploaded" />
+                <gl-upload-card
+                    :key="uploadDialog"
+                    ref="uploadCard"
+                    allowType=".jpg, .png, .gif"
+                    :maxSize="5 * 1024 * 1024"
+                    path="/tmp/glinjector_upload"
+                    @upload="handleUploaded"
+                />
             </div>
         </el-dialog>
     </Fragment>
 </template>
 
 <script>
-import { Fragment } from 'vue-fragment';
-import wallpapers from '../wallpapers';
+import { Fragment } from "vue-fragment"
+import wallpapers from "../wallpapers"
 
 export default {
     components: { Fragment },
-    inject: ['tl', 'rpc'],
+    inject: ["tl", "rpc"],
     props: {
         imgPrefix: String,
         background: Object
@@ -65,11 +82,13 @@ export default {
     },
     methods: {
         async handleUploaded(fileName) {
-            const path = (await this.rpc('upload_image', {
-                prefix: this.imgPrefix,
-                ext: fileName.replace(/^.+?\./, ''),
-            })).path
-            this.$message.success(this.tl('background.upload_success', { fileName }))
+            const path = (
+                await this.rpc("upload_image", {
+                    prefix: this.imgPrefix,
+                    ext: fileName.replace(/^.+?\./, "")
+                })
+            ).path
+            this.$message.success(this.tl("background.upload_success", { fileName }))
             setTimeout(() => {
                 this.background.url = path
                 this.uploadDialog = false

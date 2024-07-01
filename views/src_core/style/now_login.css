@@ -27,9 +27,6 @@ body {
     color: gray;
 }
 
-.login-form .el-input__inner {
-    border-radius: 99px;
-}
 
 @media screen and (min-width: 1000px) {
 
@@ -40,9 +37,6 @@ body {
         animation: op 1s ease .3s both;
     }
 
-    .form-container {
-        width: initial !important
-    }
 
     @keyframes op {
         0% {

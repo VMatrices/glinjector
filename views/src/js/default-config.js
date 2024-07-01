@@ -31,7 +31,7 @@ const config = {
                     "url": "",
                     "size": "fill",
                     "position": "center",
-                    "alpha": 40
+                    "alpha": 50
                 }
             }
         }

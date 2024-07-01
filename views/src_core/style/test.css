@@ -1,0 +1,47 @@
+body {
+    background: url(xxx)center/cover
+}
+
+.login-wrapper {
+    background: rgba(0, 0, 0, 50) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.login-wrapper::after {
+    content: "GlInjector v1";
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    font-size: 12px;
+    transform: translateX(-50%);
+    color: gray;
+}
+
+.login-form .el-input__inner {
+    border-radius: 99px
+}
+
+@media screen and (min-width:1000px) {
+    .login-wrapper {
+        width: 544px !important;
+        margin-left: 134px;
+        box-shadow: 0 0 15px #00000080;
+        animation: op 1s ease .3s both;
+    }
+
+    .form-container {
+        width: initial !important
+    }
+
+    @keyframes op {
+        0% {
+            margin-left: 100px;
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+}

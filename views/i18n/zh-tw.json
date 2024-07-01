@@ -93,7 +93,7 @@
             "tab_title": "其他",
             "unlock": "解除地區限制",
             "unlock_confirm": "此功能僅供學習和研究之用。請確保遵守您所在地區的法律法規,並在學習和研究結束後立即停用。您同意嗎?",
-            "fan_temp_range": "解除地區限制"
+            "fan_temp_range": "風扇溫度區間"
         }
     },
     "menu_glinjector": "個性化"

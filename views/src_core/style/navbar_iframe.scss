@@ -1,15 +1,10 @@
+// Navbar
 .header-container {
     z-index: 102;
     box-shadow: 0 0 10px #00000030;
 
     .gli-navbtn {
-        cursor: pointer;
-        padding: 8px;
-        color: var(--icon);
-        display: inline-block;
-        border-radius: 5px;
         margin-left: 10px;
-        font-size: 16px;
     }
 
     .divide-right+.gli-navbtn {
@@ -35,5 +30,12 @@
             opacity: 1;
             visibility: visible;
         }
+    }
+}
+
+// Login
+.login-wrapper {
+    .form-container {
+        width: initial !important
     }
 }
