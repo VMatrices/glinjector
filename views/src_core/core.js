@@ -3,9 +3,9 @@ import { xlog } from './xlog';
 import { Popper } from './popper';
 import { createCss, injectCss } from './css-tool';
 import { defineProp, hookObject, watchState } from './hook-tool';
-import wideModeStyle from './style/wide_mode.scss'
-import baseStyle from './style/navbar_iframe.scss'
-import lightLoginStyle from './style/login_light.scss'
+import baseStyle from './style/base-style.scss'
+import wideModeStyle from './style/wide-mode.scss'
+import lightLoginStyle from './style/light-login.scss'
 
 let config = GL_UI_CONFIG,
 	glLogin = null,
@@ -213,21 +213,23 @@ watchState([
 				css += createCss('body', bgStyle)
 			}
 
-			const boxStyle = {
-				backdropFilter: `blur(${boxCfg.blur / 100 * 100}px)`,
-				background: `rgba(${boxCfg.theme == 'dark' ? '0,0,0' : '255,255,255'}, ${boxCfg.alpha / 100})`
-			}
-
 			if (boxCfg.theme == 'light') {
 				css += lightLoginStyle
 			}
 
+			css += createCss('.login-wrapper', {
+				overflow: 'hidden',
+				position: 'relative',
+				backdropFilter: `blur(${boxCfg.blur / 100 * 100}px)`,
+				background: `rgba(${boxCfg.theme == 'dark' ? '0,0,0' : '255,255,255'}, ${boxCfg.alpha / 100})`
+			})
+
+			const boxStyle = {}
+			let screenMinWith = 0
 			if (boxCfg.style != 'max') {
-				boxStyle.overflow = 'hidden';
-				boxStyle.position = 'relative';
 				boxStyle.boxShadow = '0 0 15px #00000080';
 				boxStyle.width = boxCfg.width + 'px'
-
+				screenMinWith = boxCfg.width
 				if (boxCfg.style == 'float') {
 					boxStyle.display = 'flex'
 					boxStyle.flexDirection = 'column'
@@ -235,7 +237,7 @@ watchState([
 					boxStyle.paddingBottom = '50px'
 					boxStyle.height = boxCfg.height + 'px'
 					boxStyle.borderRadius = boxCfg.radius + 'px'
-					boxStyle.transform = `translateY(calc(50vh - ${boxCfg.height / 2}px))`
+					boxStyle.marginTop = `calc(50vh - ${boxCfg.height / 2}px)`
 					css += createCss('.login-wrapper .typeof-router ', {
 						marginTop: '0'
 					})
@@ -243,15 +245,21 @@ watchState([
 
 				switch (boxCfg.position) {
 					case 'left':
+						screenMinWith += boxCfg.margin
 						boxStyle.marginLeft = boxCfg.margin + '%'
 						break
 					case 'right':
+						screenMinWith += boxCfg.margin
 						boxStyle.float = 'right'
 						boxStyle.marginRight = boxCfg.margin + '%'
 						break
 					case 'center':
 						boxStyle.marginLeft = `calc(50vw - ${boxCfg.width / 2}px)`
 						break
+				}
+
+				if (boxCfg.anime) {
+					boxStyle.animation = `gli-anime-${boxCfg.anime} 1s ease 0.3s both`
 				}
 
 				css += createCss('.login-wrapper .el-input__inner', {
@@ -262,9 +270,8 @@ watchState([
 					left: '20px',
 					marginLeft: 0,
 				})
-
 			}
-			css += createCss('.login-wrapper', boxStyle)
+			css += `@media screen and (min-width:${screenMinWith + 200}px) {${createCss('.login-wrapper', boxStyle)}}`
 
 			injectCss('_gli_login_', css)
 		}

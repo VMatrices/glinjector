@@ -32,7 +32,7 @@
                 </div>
             </div>
         </Transition>
-        <el-dialog :visible.sync="dialog" width="960px">
+        <el-dialog :visible.sync="dialog" width="1000px">
             <div class="preview-dialog">
                 <div class="content">
                     <slot :image="urlLoaded"></slot>
@@ -46,11 +46,12 @@
 </template>
 
 <script>
-import { Fragment } from 'vue-fragment';
+import { Fragment } from "vue-fragment"
 
 let timer = null
 export default {
     components: { Fragment },
+    inject: ["tl"],
     props: {
         url: String
     },
@@ -58,39 +59,39 @@ export default {
         return {
             hash: Date.now(),
             show: true,
-            urlTest: '',
-            urlLoaded: '',
+            urlTest: "",
+            urlLoaded: "",
             fullscreen: false,
             dialog: false,
             loading: false
         }
     },
     mounted() {
-        if (this.urlTest = this.url) {
+        if ((this.urlTest = this.url)) {
             this.loading = true
             this.startTimer()
         }
     },
     watch: {
         url(url) {
-            if (this.urlTest = url) {
+            if ((this.urlTest = url)) {
                 this.loading = true
                 this.startTimer()
             } else {
                 this.loading = false
-                this.urlLoaded = ''
+                this.urlLoaded = ""
                 clearTimeout(timer)
             }
         }
     },
     methods: {
         tl(key) {
-            return this.$t('glinjector.' + key)
+            return this.$t("glinjector." + key)
         },
         startTimer() {
             clearTimeout(timer)
             timer = setTimeout(() => {
-                this.$message('图片加载过长，可能影响体验，建议切换其他图源')
+                this.$message(this.tl("background.loading_timeout"))
             }, 2000)
         },
         close() {
@@ -104,7 +105,7 @@ export default {
             if (this.url) {
                 this.loading = true
                 this.startTimer()
-                this.urlTest = `${this.url}${this.url.indexOf('?') > 0 ? '&' : '?'}_t${Date.now()}`
+                this.urlTest = `${this.url}${this.url.indexOf("?") > 0 ? "&" : "?"}_t${Date.now()}`
             }
         },
         handleLoaded() {
@@ -115,14 +116,19 @@ export default {
         handleError() {
             clearTimeout(timer)
             this.loading = false
-            this.urlLoaded = ''
-            this.$message('图片加载失败')
+            this.urlLoaded = ""
+            this.$message.error(this.tl("background.loading_failed"))
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+$rawWidth: 1920px;
+$rawHeight: 1080px;
+$miniWidth: 380px;
+$dialogWidth: 1000px;
+
 ::v-deep .el-dialog {
     max-width: initial !important;
 
@@ -131,16 +137,14 @@ export default {
         background: none !important;
     }
 
-
     .el-dialog__header {
         display: none !important;
     }
-
 }
 
 .scale-left-enter-active,
 .scale-left-leave-active {
-    transition: all .3s;
+    transition: all 0.3s;
     transform-origin: left top;
 }
 
@@ -152,8 +156,8 @@ export default {
 
 .preview {
     position: relative;
-    width: 320px;
-    height: 200px;
+    width: $miniWidth;
+    height: calc($miniWidth * $rawHeight / $rawWidth + 20px);
     overflow: hidden;
     border-radius: 5px;
     box-shadow: 2px 6px 16px 6px var(--shadow);
@@ -168,7 +172,7 @@ export default {
     }
 
     .header {
-        background-color: #DDDDDD;
+        background-color: #dddddd;
         line-height: 20px;
 
         .dot {
@@ -184,15 +188,15 @@ export default {
             }
 
             &:nth-child(1) {
-                background-color: #FF6058;
+                background-color: #ff6058;
             }
 
             &:nth-child(2) {
-                background-color: #FFBD2D;
+                background-color: #ffbd2d;
             }
 
             &:nth-child(3) {
-                background-color: #18C635;
+                background-color: #18c635;
             }
         }
     }
@@ -217,15 +221,16 @@ export default {
 }
 
 .preview-dialog {
-    height: 540px;
+    width: $dialogWidth;
+    height: calc($dialogWidth * $rawHeight / $rawWidth);
     overflow: hidden;
     position: relative;
 
     .content {
-        transform: scale(0.5);
+        transform: scale(calc($dialogWidth / $rawWidth));
         transform-origin: top left;
-        width: 1920px;
-        height: 1080px;
+        width: $rawWidth;
+        height: $rawHeight;
         overflow: hidden;
     }
 }
@@ -258,7 +263,7 @@ export default {
     border-left-color: transparent;
     border-bottom-color: transparent;
 
-    >i {
+    > i {
         position: absolute;
         top: -22px;
         left: 2px;
@@ -269,24 +274,23 @@ export default {
 
         &:hover {
             color: white !important;
-            background-color: initial !important
+            background-color: initial !important;
         }
     }
 
     &:hover {
         opacity: 1;
     }
-
 }
 
 .content {
-    transform: scale(0.1666);
+    transform: scale(calc($miniWidth / $rawWidth));
     transform-origin: top left;
-    width: 1920px;
-    height: 1080px;
+    width: $rawWidth;
+    height: $rawHeight;
     overflow: hidden;
 
-    ::v-deep>*:not(.preview-close) {
+    ::v-deep > *:not(.preview-close) {
         width: 100%;
         height: 100%;
     }

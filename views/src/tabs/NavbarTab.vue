@@ -1,33 +1,35 @@
 <template>
     <div>
-
-        <gl-tips tips="Woc">
+        <gl-tips :tips="tl('navbar.tip')">
             <gl-button slot="customAction" type="primary" @click="handleOpenBtnDialog">
                 <span class="iconfont icon-plus mr6"></span>
-                <span>{{ tl('navbar.add') }}</span>
+                <span>{{ tl("navbar.add") }}</span>
             </gl-button>
         </gl-tips>
         <table class="mt10">
             <thead>
-                <th style="width: 150px;">{{ tl('navbar.enable') }}</th>
-                <th>{{ tl('navbar.btn') }}</th>
-                <th>{{ tl('navbar.path') }}</th>
-                <th>{{ tl('navbar.mode') }}</th>
-                <th>{{ tl('navbar.operate') }}</th>
+                <th style="width: 150px">{{ tl("navbar.enable") }}</th>
+                <th>{{ tl("navbar.btn") }}</th>
+                <th>{{ tl("navbar.path") }}</th>
+                <th>{{ tl("navbar.mode") }}</th>
+                <th>{{ tl("navbar.operate") }}</th>
             </thead>
             <transition-group tag="tbody" name="table-fade">
-                <tr v-for="item, i in navbar.buttons" :key="item.id" class="table-fade-item ">
+                <tr v-for="(item, i) in navbar.buttons" :key="item.id" class="table-fade-item">
                     <td><gl-switch v-model="item.enable" /></td>
-                    <td><i :class="item.icon" /><span class="ml10">{{ item.name }}</span></td>
+                    <td>
+                        <i :class="item.icon" />
+                        <span class="ml10">{{ item.name }}</span>
+                    </td>
                     <td>{{ item.link }}</td>
                     <td>
                         <template v-if="item.link?.startsWith('#/')">
-                            <span>{{ tl('navbar.mode_option.embed') }}</span>
+                            <span>{{ tl("navbar.mode_option.embed") }}</span>
                         </template>
                         <template v-else>
-                            <span v-if="item.mode == 'embed'">{{ tl('navbar.mode_option.embed') }}</span>
-                            <span v-if="item.mode == 'blank'">{{ tl('navbar.mode_option.blank') }}</span>
-                            <span v-if="item.mode == 'replace'">{{ tl('navbar.mode_option.replace') }}</span>
+                            <span v-if="item.mode == 'embed'">{{ tl("navbar.mode_option.embed") }}</span>
+                            <span v-if="item.mode == 'blank'">{{ tl("navbar.mode_option.blank") }}</span>
+                            <span v-if="item.mode == 'replace'">{{ tl("navbar.mode_option.replace") }}</span>
                         </template>
                     </td>
                     <td>
@@ -53,7 +55,7 @@
                 <el-form class="form" :model="btnDialog.data" ref="btnForm">
                     <ul>
                         <li>
-                            <div>{{ tl('navbar.icon') }}</div>
+                            <div>{{ tl("navbar.icon") }}</div>
                             <div>
                                 <el-form-item prop="icon" :rules="rules.required">
                                     <el-select v-model="btnDialog.data.icon" filterable :placeholder="tl('navbar.icon_placeholder')">
@@ -69,7 +71,7 @@
                             </div>
                         </li>
                         <li>
-                            <div>{{ tl('navbar.name') }}</div>
+                            <div>{{ tl("navbar.name") }}</div>
                             <div>
                                 <el-form-item prop="name" :rules="rules.required">
                                     <el-input v-model="btnDialog.data.name" :placeholder="tl('navbar.name_placeholder')"></el-input>
@@ -78,7 +80,7 @@
                         </li>
                         <li>
                             <div>
-                                <span>{{ tl('navbar.path') }}</span>
+                                <span>{{ tl("navbar.path") }}</span>
                                 <el-tooltip effect="dark" :content="tl('navbar.path_tip')" placement="top-start">
                                     <span class="iconfont icon-info ml10" />
                                 </el-tooltip>
@@ -91,7 +93,7 @@
                         </li>
                         <transition name="fade-down">
                             <li v-if="!btnDialog.data.link?.startsWith('#/')">
-                                <div>{{ tl('navbar.mode') }}</div>
+                                <div>{{ tl("navbar.mode") }}</div>
                                 <div>
                                     <el-select v-model="btnDialog.data.mode" filterable>
                                         <el-option :label="tl('navbar.mode_option.embed')" value="embed" />
@@ -102,7 +104,9 @@
                             </li>
                         </transition>
                         <li>
-                            <div><span>{{ tl('navbar.enable') }}</span></div>
+                            <div>
+                                <span>{{ tl("navbar.enable") }}</span>
+                            </div>
                             <div><gl-switch v-model="btnDialog.data.enable" /></div>
                         </li>
                     </ul>
@@ -110,8 +114,8 @@
             </div>
             <span slot="footer" class="dialog-footer">
                 <div class="dialog-btns">
-                    <gl-button class="dialog-btn" @click="handleCloseBtnDialog">{{ $t('core.cancel') }}</gl-button>
-                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">{{ $t('core.save_btn') }}</gl-button>
+                    <gl-button class="dialog-btn" @click="handleCloseBtnDialog">{{ $t("core.cancel") }}</gl-button>
+                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">{{ $t("core.save_btn") }}</gl-button>
                 </div>
             </span>
         </el-dialog>
@@ -119,8 +123,8 @@
 </template>
 
 <script>
-import uuid from 'short-uuid';
-import icons from '../js/icons';
+import uuid from "short-uuid"
+import icons from "../js/icons"
 
 export default {
     props: {
@@ -131,9 +135,9 @@ export default {
         return {
             icons,
             rules: {
-                required: { required: true, message: this.tl('navbar.not_empty') },
+                required: { required: true, message: this.tl("navbar.not_empty") },
                 link: {
-                    message: this.tl('navbar.format_incorrect'),
+                    message: this.tl("navbar.format_incorrect"),
                     pattern: /^(#?\/[\w\/]+|https?:\/\/.+)/i
                 }
             },
@@ -142,11 +146,11 @@ export default {
                 edit: false,
                 index: -1,
                 data: {}
-            },
+            }
         }
     },
     watch: {
-        'navbar.buttons'() {
+        "navbar.buttons"() {
             this.checkButtonsID()
         }
     },
@@ -169,7 +173,7 @@ export default {
             }
         },
         handleOpenBtnDialog(index = -1) {
-            if (this.btnDialog.edit = index > -1) {
+            if ((this.btnDialog.edit = index > -1)) {
                 this.btnDialog.index = index
                 this.btnDialog.data = { ...this.navbar.buttons[index] }
             } else {
@@ -178,12 +182,11 @@ export default {
                     name: "",
                     icon: "",
                     link: "",
-                    mode: 'embed',
-                    enable: true,
+                    mode: "embed",
+                    enable: true
                 }
             }
             this.btnDialog.show = true
-
         },
         handleSaveBtn() {
             this.$refs.btnForm.validate(valid => {
@@ -200,13 +203,13 @@ export default {
         handleCloseBtnDialog() {
             this.btnDialog.show = false
             this.$refs.btnForm.resetFields()
-        },
+        }
     }
 }
 </script>
 <style lang="scss" scoped>
 .table-fade-item {
-    transition: transform .3s;
+    transition: transform 0.3s;
     transform-origin: top;
 }
 
@@ -230,7 +233,7 @@ td {
     white-space: nowrap;
 
     [class*=" el-icon-"],
-    [class^=el-icon-] {
+    [class^="el-icon-"] {
         font-size: 16px;
         width: inherit;
         height: inherit;

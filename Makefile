@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=glinjector
-PKG_VERSION:=2.2
+PKG_VERSION:=3.0.0
 PKG_RELEASE:=1
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=VMatrices <vmatrices@outlook.com>
@@ -17,6 +17,11 @@ define Package/$(PKG_NAME)
   CATEGORY:=Utilitis
   TITLE:=GlInet UI Injector
   PKGARCH:=all
+endef
+
+define Package/$(PKG_NAME)/conffiles
+/www/upload
+/etc/config/$(PKG_NAME)
 endef
 
 define Build/Prepare
@@ -83,29 +88,25 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_DIR) $(1)/www/upload/
 endef
-
-define Package/$(PKG_NAME)/conffiles
-	/www/upload
-	/etc/config/$(PKG_NAME)
-endef
  
 define Package/$(PKG_NAME)/postinst
-	#!/bin/sh
-	if [ -z "$${IPKG_INSTROOT}" ]; then
-		echo hello
-	fi
-	exit 0
+#!/bin/sh
+if [ -z "$${IPKG_INSTROOT}" ]; then
+	echo 'Please go to "Admin Panel > System > Customization" and click the Apply button after installation or upgrade'
+	echo '首次安装或升级后，请进入“管理面板 > 系统 > 个性化”并点击应用按钮'
+fi
+exit 0
 endef
 
 define Package/$(PKG_NAME)/prerm
-	#!/bin/sh
-	if [ -z "$${IPKG_INSTROOT}" ]; then
-		echo bye
-		rm -f /www/upload/*
-		rm -f /www/js/$(PKG_NAME)-*
-		cp -f /rom/www/gl_home.html /www/
-	fi
-	exit 0
+#!/bin/sh
+if [ -z "$${IPKG_INSTROOT}" ]; then
+	echo bye
+	rm -f /www/upload/*
+	rm -f /www/js/$(PKG_NAME)-*
+	cp -f /rom/www/gl_home.html /www/
+fi
+exit 0
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

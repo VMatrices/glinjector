@@ -1,30 +1,33 @@
 {
     "glinjector": {
-        "reset_default": "デフォルトに戻す",
-        "reset_confirm": "デフォルト設定に戻してよろしいですか?",
-        "reset_done": "リセット完了",
+        "reset_default": "デフォルト設定に戻す",
+        "reset_confirm": "デフォルト設定にリセットしますか?",
+        "reset_done": "リセットしました",
         "apply": "適用",
         "applying": "設定を適用しています...",
         "apply_success": "適用に成功しました",
         "background": {
             "title": "背景",
-            "image_placeholder": "URLを選択または入力してください",
-            "image": "画像URL",
+            "image_placeholder": "画像のURLを入力してください",
+            "image_tip": "オンラインURLまたはアップロードした画像をサポートします",
+            "image": "画像のURL",
+            "loading_failed": "画像の読み込みに失敗しました",
+            "loading_timeout": "画像の読み込みに時間がかかりすぎて、体験に影響する可能性があります。他の画像ソースに切り替えることをお勧めします",
             "upload_btn": "アップロード",
             "upload_title": "画像をアップロード",
             "upload_success": "アップロードに成功しました: {fileName}",
             "size": "画像サイズ",
             "postion": "画像の位置",
             "size_option": {
-                "fill": "埋め尽くし",
-                "fit": "収まるように調整",
-                "stratch": "引き伸ばし",
-                "tile": "タイル状"
+                "fill": "フィル",
+                "fit": "フィット",
+                "stratch": "引き伸ばす",
+                "tile": "タイル"
             },
             "postion_option": {
                 "center": "中央",
-                "left": "左寄せ",
-                "right": "右寄せ",
+                "left": "左揃え",
+                "right": "右揃え",
                 "top": "上揃え",
                 "bottom": "下揃え"
             }
@@ -37,47 +40,59 @@
                 "theme_dark": "ダーク",
                 "theme_light": "ライト",
                 "blur": "ぼかし",
-                "alpha": "不透明度",
+                "alpha": "透明度",
                 "style": "スタイル",
                 "style_max": "フルスクリーン",
-                "style_bar": "縦",
+                "style_bar": "垂直",
                 "style_float": "フロート",
                 "width": "幅",
                 "height": "高さ",
                 "radius": "角丸",
                 "position": "位置",
-                "position_left": "左",
+                "position_left": "左側",
                 "position_center": "中央",
-                "position_right": "右",
-                "margin": "オフセット"
+                "position_right": "右側",
+                "margin": "オフセット",
+                "anime": "アニメーション",
+                "anime_none": "なし",
+                "anime_fade": "フェード",
+                "anime_zoomin": "ズームイン",
+                "anime_zoomout": "ズームアウト",
+                "anime_scalex": "水平方向の拡大",
+                "anime_scaley": "垂直方向の拡大",
+                "anime_left": "左から入る",
+                "anime_right": "右から入る",
+                "anime_top": "上から入る",
+                "anime_bottom": "下から入る"
             },
             "button": {
                 "title": "ログインボタン",
-                "add_luci": "Luciボタンを追加",
-                "comb_mode": "組み合わせボタン",
-                "luci_text": "Luciテキスト"
+                "add_luci": "Luciログインボタンを追加",
+                "comb_mode": "ボタンを組み合わせる",
+                "luci_text": "Luciボタンのテキスト"
             }
         },
         "system": {
             "tab_title": "管理パネル",
             "home_background": "ホームページの背景",
-            "mask_alpha": "マスクの不透明度",
-            "global_option": "グローバルオプション",
-            "wide_mode": "ワイドスクリーンモード",
-            "wide_mode_tip": "ワイドスクリーンモード"
+            "mask_alpha": "マスクの濃さ",
+            "global_option": "グローバル設定",
+            "wide_mode": "ワイドモード"
         },
         "navbar": {
             "tab_title": "ナビゲーションバー",
-            "add": "追加",
+            "tip": "トップナビゲーションバーにカスタムボタンを追加して、素早くアクセスできるようにします。 (一部のウェブサイトではネストが禁止されている可能性があります)",
+            "add": "新規追加",
             "add_btn": "ボタンを追加",
             "edit_btn": "ボタンを編集",
-            "enable": "有効",
+            "enable": "有効にする",
             "btn": "ボタン",
             "icon": "アイコン",
             "icon_placeholder": "アイコンを選択してください",
-            "name": "名前",
-            "name_placeholder": "名前を入力してください",
+            "name": "名称",
+            "name_placeholder": "名称を入力してください",
             "path": "リンク/パス",
+            "path_tip": "例: \"http://...\", \"#/...\", \"/cgi-bin/luci/...\"",
             "path_placeholder": "リンクまたはパスを入力してください",
             "mode": "開き方",
             "operate": "操作",
@@ -86,15 +101,15 @@
                 "blank": "新しいページで開く",
                 "replace": "現在のページを置き換える"
             },
-            "not_empty": "空にできません",
-            "format_incorrect": "形式が正しくありません"
+            "not_empty": "空にはできません",
+            "format_incorrect": "フォーマットが正しくありません"
         },
         "misc": {
             "tab_title": "その他",
-            "unlock": "地域制限を解除",
-            "unlock_confirm": "この機能は学習と研究目的でのみ使用するものです。お住まいの地域の法律と規制を必ず遵守し、学習と研究が終わったら必ず無効にしてください。同意しますか?",
+            "unlock": "エリア制限を解除する",
+            "unlock_confirm": "この機能は学習と研究の目的でのみ使用されます。必ず現地の法律と規制に従ってください。学習と研究が終了したら、自主的にこの機能を無効にしてください。同意しますか?",
             "fan_temp_range": "ファン温度範囲"
         }
     },
-    "menu_glinjector": "パーソナライゼーション"
+    "menu_glinjector": "カスタマイズ"
 }

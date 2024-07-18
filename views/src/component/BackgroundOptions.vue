@@ -3,6 +3,9 @@
         <li>
             <div>
                 <span>{{ tl("background.image") }}</span>
+                <el-tooltip effect="dark" :content="tl('background.image_tip')" placement="top-start">
+                    <span class="iconfont icon-info ml10" />
+                </el-tooltip>
             </div>
             <div>
                 <el-select
@@ -53,7 +56,7 @@
                 <gl-upload-card
                     :key="uploadDialog"
                     ref="uploadCard"
-                    allowType=".jpg, .png, .gif"
+                    allowType=".jpg, .png, .apng, .gif"
                     :maxSize="5 * 1024 * 1024"
                     path="/tmp/glinjector_upload"
                     @upload="handleUploaded"
@@ -65,7 +68,7 @@
 
 <script>
 import { Fragment } from "vue-fragment"
-import wallpapers from "../wallpapers"
+import wallpapers from "../js/wallpapers"
 
 export default {
     components: { Fragment },

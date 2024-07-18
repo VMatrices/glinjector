@@ -11,7 +11,7 @@
                 <el-tooltip effect="dark" :content="tl('reset_default')">
                     <span class="reset-config iconfont icon-redo-alt" @click="resetDefault" />
                 </el-tooltip>
-                <el-tabs v-model="tabName" class="is-card  el-tabs--card">
+                <el-tabs v-model="tabName" class="is-card el-tabs--card">
                     <el-tab-pane name="login" :label="tl('login.tab_title')">
                         <LoginPageTab :styles.sync="config.style.login" />
                     </el-tab-pane>
@@ -26,7 +26,7 @@
                     </el-tab-pane>
                 </el-tabs>
                 <div class="btns">
-                    <gl-button type="primary" @click="handleApply">{{ tl('apply') }}</gl-button>
+                    <gl-button type="primary" @click="handleApply">{{ tl("apply") }}</gl-button>
                 </div>
             </gl-card>
         </Transition>
@@ -34,17 +34,16 @@
 </template>
 
 <script>
-import LoginPageTab from './tabs/LoginPageTab.vue';
-import AdminPanelTab from './tabs/AdminPanelTab.vue';
-import NavbarTab from './tabs/NavbarTab.vue';
-import MiscOptionTab from './tabs/MiscOptionTab.vue';
-import defaultConfig from './js/default-config';
-import initConfirmDialog from './js/confirm-dialog';
-import { extendObject } from './js/uitls';
+import LoginPageTab from "./tabs/LoginPageTab.vue"
+import AdminPanelTab from "./tabs/AdminPanelTab.vue"
+import NavbarTab from "./tabs/NavbarTab.vue"
+import MiscOptionTab from "./tabs/MiscOptionTab.vue"
+import defaultConfig from "./js/default-config"
+import initConfirmDialog from "./js/confirm-dialog"
+import { extendObject } from "./js/uitls"
 
-const
-    SKEY_TAB_NAME = 'gli.tabName',
-    SKEY_APPLY_TIP = 'gli.applyTip'
+const SKEY_TAB_NAME = "gli.tabName",
+    SKEY_APPLY_TIP = "gli.applyTip"
 
 export default {
     name: "GlInjector",
@@ -53,14 +52,14 @@ export default {
         return {
             name: "glinjector",
             config: null,
-            tabName: localStorage.getItem(SKEY_TAB_NAME) || 'login',
+            tabName: localStorage.getItem(SKEY_TAB_NAME) || "login"
         }
     },
     provide() {
         return {
             tl: this.tl,
             rpc: this.rpc,
-            keepCurrentTab: this.keepCurrentTab,
+            keepCurrentTab: this.keepCurrentTab
         }
     },
     beforeCreate() {
@@ -74,18 +73,18 @@ export default {
         }
         if (localStorage.getItem(SKEY_APPLY_TIP)) {
             localStorage.removeItem(SKEY_APPLY_TIP)
-            this.$message(this.tl('apply_success'))
+            this.$message(this.tl("apply_success"))
         }
         localStorage.removeItem(SKEY_TAB_NAME)
     },
     methods: {
         tl(key, param) {
-            return this.$t(this.name + '.' + key, param)
+            return this.$t(this.name + "." + key, param)
         },
         async resetDefault() {
-            await this.$glConfirm(this.tl('reset_confirm'))
+            await this.$glConfirm(this.tl("reset_confirm"))
             this.config = defaultConfig()
-            this.$message.success(this.tl('reset_done'))
+            this.$message.success(this.tl("reset_done"))
         },
         keepCurrentTab() {
             localStorage.setItem(SKEY_TAB_NAME, this.tabName)
@@ -94,14 +93,14 @@ export default {
             return await this.$request("call", ["sid", this.name, method, param || {}])
         },
         async handleApply() {
-            this.$message(this.tl('applying'))
+            this.$message(this.tl("applying"))
             await this.rpc("set_config", { json: JSON.stringify(this.config) })
             setTimeout(() => {
                 this.keepCurrentTab()
                 localStorage.setItem(SKEY_APPLY_TIP, true)
                 location.reload()
-            }, 200);
-        },
+            }, 200)
+        }
     }
 }
 </script>
@@ -140,8 +139,8 @@ export default {
         padding: 0px;
 
         ::v-deep {
-            >.container {
-                padding: 0 !important
+            > .container {
+                padding: 0 !important;
             }
 
             .el-tab-pane {
@@ -158,8 +157,7 @@ export default {
             overflow: visible !important;
 
             ::v-deep {
-
-                >.container {
+                > .container {
                     position: relative;
                     border-radius: 5px;
                     background: transparent;
@@ -170,7 +168,7 @@ export default {
                 }
             }
 
-            .container>.btns {
+            .container > .btns {
                 border-radius: 0 0 5px 5px;
                 padding: 20px;
                 background-color: var(--background-card);
@@ -179,11 +177,9 @@ export default {
                 align-items: center;
             }
         }
-
     }
 
     ::v-deep {
-
         .gl-btn {
             &:not(.gl-icon-btn) {
                 min-width: 124px;
@@ -202,7 +198,7 @@ export default {
                 }
             }
 
-            &.gl-icon-btn+.gl-icon-btn {
+            &.gl-icon-btn + .gl-icon-btn {
                 margin-left: 10px !important;
             }
         }
@@ -215,14 +211,14 @@ export default {
             }
         }
 
-        .form>ul>li {
+        .form > ul > li {
             height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 14px 15px;
 
-            +li {
+            + li {
                 border-top: 1px solid var(--divider);
             }
 
@@ -245,7 +241,7 @@ export default {
                 }
             }
 
-            >div {
+            > div {
                 &:first-child {
                     color: var(--text-weak);
                     flex: 1;

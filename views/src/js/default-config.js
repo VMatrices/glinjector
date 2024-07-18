@@ -16,7 +16,8 @@ const config = {
                 "width": 500,
                 "height": 550,
                 "radius": 10,
-                "position": "left"
+                "position": "left",
+                "anime": "left"
             },
             "button": {
                 "comb": true,
@@ -49,7 +50,7 @@ const config = {
                 "name": "LuCI",
                 "icon": "iconfont icon-gateway",
                 "link": "/cgi-bin/luci/",
-                "mode": "embed",
+                "mode": "blank",
                 "enable": true
             },
             {

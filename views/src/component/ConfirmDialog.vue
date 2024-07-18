@@ -3,8 +3,8 @@
         <div class="dialog-main">
             {{ message }}
             <div class="dialog-btns">
-                <gl-button class="dialog-btn" @click="dialog = false">{{ $t('core.close') }}</gl-button>
-                <gl-button class="dialog-btn" type="primary" @click="confirm">{{ $t('core.confirm') }}</gl-button>
+                <gl-button class="dialog-btn" @click="dialog = false">{{ $t("core.close") }}</gl-button>
+                <gl-button class="dialog-btn" type="primary" @click="confirm">{{ $t("core.confirm") }}</gl-button>
             </div>
         </div>
     </el-dialog>
@@ -17,39 +17,39 @@ export default {
         return {
             dialog: false,
             confirmed: false,
-            title: '',
-            message: '',
-        };
+            title: "",
+            message: ""
+        }
     },
     created() {
         document.body.appendChild(this.$mount().$el)
     },
     methods: {
-        show(message, title = '') {
+        show(message, title = "") {
             this.dialog = true
             this.title = title
             this.message = message
             return new Promise((resolve, reject) => {
-                this.reject = reject;
-                this.resolve = resolve;
-            });
+                this.reject = reject
+                this.resolve = resolve
+            })
         },
         confirm() {
-            this.resolve();
+            this.resolve()
             this.dialog = false
             this.confirmed = true
         },
         close() {
             if (!this.confirmed) {
-                this.reject();
+                this.reject()
             }
         },
         closed() {
-            document.body.removeChild(this.$el);
-            this.$destroy();
+            document.body.removeChild(this.$el)
+            this.$destroy()
         }
     }
-};
+}
 </script>
 
 <style lang="scss" scoped>

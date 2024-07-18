@@ -1,0 +1,61 @@
+@keyframes gli-anime-left {
+    0% {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-right {
+    0% {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-top {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-bottom {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-fade {
+    0% {
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-zoomin {
+    0% {
+        transform: scale(1.08);
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-zoomout {
+    0% {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-scalex {
+    0% {
+        transform: scaleX(0.92);
+        opacity: 0;
+    }
+}
+
+@keyframes gli-anime-scaley {
+    0% {
+        transform: scaleY(0.92);
+        opacity: 0;
+    }
+}

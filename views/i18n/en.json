@@ -1,20 +1,23 @@
 {
     "glinjector": {
-        "reset_default": "Restore to Default",
-        "reset_confirm": "Are you sure you want to reset to default configuration?",
-        "reset_done": "Reset done",
+        "reset_default": "Restore to default configuration",
+        "reset_confirm": "Do you want to reset to the default configuration?",
+        "reset_done": "Reset completed",
         "apply": "Apply",
         "applying": "Applying configuration...",
         "apply_success": "Application successful",
         "background": {
             "title": "Background",
-            "image_placeholder": "Select or enter URL",
+            "image_placeholder": "Please enter the image URL",
+            "image_tip": "Supports online URL or uploaded images",
             "image": "Image URL",
+            "loading_failed": "Image loading failed",
+            "loading_timeout": "Image loading took too long, which may affect the experience. It is recommended to switch to another image source",
             "upload_btn": "Upload",
-            "upload_title": "Upload Image",
+            "upload_title": "Upload image",
             "upload_success": "Upload successful: {fileName}",
-            "size": "Image Size",
-            "postion": "Image Position",
+            "size": "Image size",
+            "postion": "Image position",
             "size_option": {
                 "fill": "Fill",
                 "fit": "Fit",
@@ -30,9 +33,9 @@
             }
         },
         "login": {
-            "tab_title": "Login Page",
+            "tab_title": "Login page",
             "box": {
-                "title": "Login Box",
+                "title": "Login box",
                 "theme": "Theme",
                 "theme_dark": "Dark",
                 "theme_light": "Light",
@@ -44,57 +47,69 @@
                 "style_float": "Floating",
                 "width": "Width",
                 "height": "Height",
-                "radius": "Rounded Corners",
+                "radius": "Roundness",
                 "position": "Position",
                 "position_left": "Left",
                 "position_center": "Center",
                 "position_right": "Right",
-                "margin": "Offset"
+                "margin": "Offset",
+                "anime": "Animation",
+                "anime_none": "None",
+                "anime_fade": "Fade",
+                "anime_zoomin": "Zoom in",
+                "anime_zoomout": "Zoom out",
+                "anime_scalex": "Horizontal stretch",
+                "anime_scaley": "Vertical stretch",
+                "anime_left": "Enter from left",
+                "anime_right": "Enter from right",
+                "anime_top": "Enter from top",
+                "anime_bottom": "Enter from bottom"
             },
             "button": {
-                "title": "Login Button",
-                "add_luci": "Add Luci Button",
-                "comb_mode": "Combination Button",
-                "luci_text": "Luci Text"
+                "title": "Login button",
+                "add_luci": "Add Luci login button",
+                "comb_mode": "Combine buttons",
+                "luci_text": "Luci button text"
             }
         },
         "system": {
-            "tab_title": "Admin Panel",
-            "home_background": "Home Page Background",
-            "mask_alpha": "Mask Opacity",
-            "global_option": "Global Options",
-            "wide_mode": "Widescreen Mode",
-            "wide_mode_tip": "Widescreen Mode"
+            "tab_title": "Admin panel",
+            "home_background": "Home page background",
+            "mask_alpha": "Mask density",
+            "global_option": "Global configuration",
+            "wide_mode": "Widescreen mode"
         },
         "navbar": {
-            "tab_title": "Navigation Bar",
+            "tab_title": "Navbar",
+            "tip": "Add custom buttons to the top navigation bar for quick access. (Some websites may have restrictions on nesting)",
             "add": "Add",
-            "add_btn": "Add Button",
-            "edit_btn": "Edit Button",
+            "add_btn": "Add button",
+            "edit_btn": "Edit button",
             "enable": "Enable",
             "btn": "Button",
             "icon": "Icon",
             "icon_placeholder": "Please select an icon",
             "name": "Name",
-            "name_placeholder": "Please enter a name",
+            "name_placeholder": "Please enter the name",
             "path": "Link/Path",
-            "path_placeholder": "Please enter a link or path",
-            "mode": "Open Mode",
+            "path_tip": "Format example: \"http://...\", \"#/...\", \"/cgi-bin/luci/...\"",
+            "path_placeholder": "Please enter the link or path",
+            "mode": "Open mode",
             "operate": "Operation",
             "mode_option": {
-                "embed": "Embed in Current Page",
-                "blank": "Open in New Page",
-                "replace": "Replace Current Page"
+                "embed": "Embed in the current page",
+                "blank": "Open in a new page",
+                "replace": "Replace the current page"
             },
             "not_empty": "Cannot be empty",
             "format_incorrect": "Incorrect format"
         },
         "misc": {
-            "tab_title": "Misc",
-            "unlock": "Remove Regional Restrictions",
-            "unlock_confirm": "This feature is for learning and research purposes only. Please be sure to comply with your local laws and regulations, and turn it off after your learning and research is complete. Do you agree?",
+            "tab_title": "Others",
+            "unlock": "Remove regional restrictions",
+            "unlock_confirm": "This function is for learning and research purposes only. Please comply with local laws and regulations, and turn it off after learning and research are completed. Do you agree?",
             "fan_temp_range": "Fan temperature range"
         }
     },
-    "menu_glinjector": "Customize UI"
+    "menu_glinjector": "Customization"
 }

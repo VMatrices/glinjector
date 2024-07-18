@@ -34,9 +34,6 @@
                 <li>
                     <div>
                         <span>{{ tl("system.wide_mode") }}</span>
-                        <el-tooltip effect="dark" :content="tl('system.wide_mode_tip')" placement="top-start">
-                            <span class="iconfont icon-info ml10" />
-                        </el-tooltip>
                     </div>
                     <div>
                         <gl-switch v-model="styles.wide_mode" />

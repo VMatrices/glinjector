@@ -6,6 +6,23 @@
                 <BackgroundOptions :background.sync="styles.background" imgPrefix="bg_login" />
                 <li class="title-li">{{ tl("login.box.title") }}</li>
                 <li>
+                    <div>{{ tl("login.box.anime") }}</div>
+                    <div>
+                        <el-select v-model="styles.box.anime">
+                            <el-option :label="tl('login.box.anime_none')" value="" />
+                            <el-option :label="tl('login.box.anime_fade')" value="fade" />
+                            <el-option :label="tl('login.box.anime_zoomin')" value="zoomin" />
+                            <el-option :label="tl('login.box.anime_zoomout')" value="zoomout" />
+                            <el-option :label="tl('login.box.anime_scalex')" value="scalex" />
+                            <el-option :label="tl('login.box.anime_scaley')" value="scaley" />
+                            <el-option :label="tl('login.box.anime_left')" value="left" />
+                            <el-option :label="tl('login.box.anime_right')" value="right" />
+                            <el-option :label="tl('login.box.anime_top')" value="top" />
+                            <el-option :label="tl('login.box.anime_bottom')" value="bottom" />
+                        </el-select>
+                    </div>
+                </li>
+                <li>
                     <div>
                         <span>{{ tl("login.box.theme") }}</span>
                     </div>
@@ -165,6 +182,10 @@ export default {
                 background: `rgba(${this.styles.box.theme == "dark" ? "0,0,0" : "255,255,255"}, ${this.styles.box.alpha / 100})`
             }
 
+            if (this.styles.box.anime) {
+                style.animation = `gli-anime-${this.styles.box.anime} 1s ease 0.3s both`
+            }
+
             if (this.styles.box.style == "float") {
                 style.height = this.styles.box.height + "px"
                 style.borderRadius = this.styles.box.radius + "px"
@@ -215,6 +236,11 @@ export default {
     }
 }
 </script>
+
+<style>
+@import url(../style/login-anime.scss);
+</style>
+
 <style lang="scss" scoped>
 .preview-form {
     display: flex;
