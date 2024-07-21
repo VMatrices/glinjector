@@ -115,7 +115,7 @@
             <span slot="footer" class="dialog-footer">
                 <div class="dialog-btns">
                     <gl-button class="dialog-btn" @click="handleCloseBtnDialog">{{ $t("core.cancel") }}</gl-button>
-                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">{{ $t("core.save_btn") }}</gl-button>
+                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">{{ $t(btnDialog.edit ? "core.edit" : "core.add") }}</gl-button>
                 </div>
             </span>
         </el-dialog>
@@ -231,6 +231,7 @@ td {
     overflow: hidden;
     word-wrap: normal;
     white-space: nowrap;
+    color: var(--text-weak);
 
     [class*=" el-icon-"],
     [class^="el-icon-"] {

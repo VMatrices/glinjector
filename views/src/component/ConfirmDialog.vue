@@ -3,8 +3,8 @@
         <div class="dialog-main">
             {{ message }}
             <div class="dialog-btns">
-                <gl-button class="dialog-btn" @click="dialog = false">{{ $t("core.close") }}</gl-button>
-                <gl-button class="dialog-btn" type="primary" @click="confirm">{{ $t("core.confirm") }}</gl-button>
+                <gl-button class="dialog-btn" @click="dialog = false">{{ $t("core.no") }}</gl-button>
+                <gl-button class="dialog-btn" type="primary" @click="confirm">{{ $t("core.yes") }}</gl-button>
             </div>
         </div>
     </el-dialog>

@@ -90,7 +90,7 @@ export default {
             localStorage.setItem(SKEY_TAB_NAME, this.tabName)
         },
         async rpc(method, param) {
-            return await this.$request("call", ["sid", this.name, method, param || {}])
+            return await this.$request("call", [window.$getCookie("Admin-Token") || "sid", this.name, method, param || {}])
         },
         async handleApply() {
             this.$message(this.tl("applying"))

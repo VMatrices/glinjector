@@ -39,7 +39,7 @@ const config = {
     },
     "misc": {
         "fan": {
-            "enable": false,
+            "enable": true,
             "range": [30, 90]
         },
         "unlock": false

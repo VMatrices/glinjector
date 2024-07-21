@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=glinjector
-PKG_VERSION:=3.0.0
-PKG_RELEASE:=1
+PKG_VERSION:=3.0.1
+PKG_RELEASE:=2
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=VMatrices <vmatrices@outlook.com>
 
@@ -14,9 +14,9 @@ GL_SDK_PREFIX:=gl-sdk4-ui
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-  CATEGORY:=Utilitis
-  TITLE:=GlInet UI Injector
-  PKGARCH:=all
+	CATEGORY:=Utilitis
+	TITLE:=GlInet UI Injector
+	PKGARCH:=all
 endef
 
 define Package/$(PKG_NAME)/conffiles
@@ -66,7 +66,7 @@ define Package/$(PKG_NAME)/install
 		$(INSTALL_DIR) $(1)/usr/share/oui/menu.d/; \
 		$(INSTALL_CONF) ./files/menu.json $(1)/usr/share/oui/menu.d/$(PKG_NAME).json; \
 	fi
-	
+
 	if [ -f ./files/upload.path ]; then \
 		$(INSTALL_DIR) $(1)/usr/share/gl-upload.d/; \
 		$(INSTALL_CONF) ./files/upload.path $(1)/usr/share/gl-upload.d/$(PKG_NAME); \
@@ -76,7 +76,7 @@ define Package/$(PKG_NAME)/install
 		$(INSTALL_DIR) $(1)/usr/lib/oui-httpd/rpc/; \
 		$(INSTALL_DATA) ./files/rpc.lua $(1)/usr/lib/oui-httpd/rpc/$(PKG_NAME); \
 	fi
-  
+
 	$(INSTALL_DIR) $(1)/www/i18n/
 	@$(foreach file, $(wildcard ./views/i18n/*.json), cp $(file) $(1)/www/i18n/$(GL_SDK_PREFIX)-$(PKG_NAME).$(notdir $(file));)
 
@@ -88,12 +88,14 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_DIR) $(1)/www/upload/
 endef
- 
+
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 if [ -z "$${IPKG_INSTROOT}" ]; then
-	echo 'Please go to "Admin Panel > System > Customization" and click the Apply button after installation or upgrade'
-	echo '首次安装或升级后，请进入“管理面板 > 系统 > 个性化”并点击应用按钮'
+	echo
+	echo 'Please go to "System > Customization" and click the Apply button after installation'
+	echo '安装后请进入“系统 > 个性化”点击应用按钮'
+	echo
 fi
 exit 0
 endef
@@ -101,8 +103,6 @@ endef
 define Package/$(PKG_NAME)/prerm
 #!/bin/sh
 if [ -z "$${IPKG_INSTROOT}" ]; then
-	echo bye
-	rm -f /www/upload/*
 	rm -f /www/js/$(PKG_NAME)-*
 	cp -f /rom/www/gl_home.html /www/
 fi

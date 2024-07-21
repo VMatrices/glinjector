@@ -18,6 +18,8 @@ let config = GL_UI_CONFIG,
 let luciLogin = (callback) => fetch(luciURL + '?luci_username=' + encodeURIComponent(glLogin.vm.form.username) + '&luci_password=' + encodeURIComponent(glLogin.vm.form.password))
 	.then(response => callback && callback(response))
 
+xlog('info', 'Welcome', 'GlInjector v' + version)
+
 hookObject([
 	{
 		name: 'Extract login method',
@@ -39,26 +41,25 @@ hookObject([
 		enable: config.misc.unlock,
 		condition: arr => arr[0].lang_hide,
 		process(arr) {
-			// v4.2.3
 			arr.forEach(menu => menu.lang_hide = menu.parent_lang_hide = [])
 		}
 	},
-	{
-		name: 'Unlock menu (v4.2.1~2)',
-		from: 'vue',
-		enable: config.misc.unlock,
-		condition: vm => 'menus' in vm && 'menuList' in vm && vm.$md5,
-		process(vm) {
-			defineProp(vm, 'menuList', {
-				get() {
-					var networkMode = vm.networkMode;
-					return vm.menus
-						.filter(menu => (!menu.show_mode || menu.show_mode.includes(networkMode)) && (!menu.parent_show_mode || menu.parent_show_mode.includes(networkMode)))
-						.map(menu => (menu.h = vm.$md5(menu.view), menu))
-				}
-			})
-		}
-	},
+	// {
+	// 	name: 'Unlock menu (v4.2.1~2) (deprecated)',
+	// 	from: 'vue',
+	// 	enable: false,
+	// 	condition: vm => ('menus' in vm && 'menuList' in vm) && vm.$md5,
+	// 	process(vm) {
+	// 		defineProp(vm, 'menuList', {
+	// 			get() {
+	// 				var networkMode = vm.networkMode;
+	// 				return vm.menus
+	// 					.filter(menu => (!menu.show_mode || menu.show_mode.includes(networkMode)) && (!menu.parent_show_mode || menu.parent_show_mode.includes(networkMode)))
+	// 					.map(menu => (menu.h = vm.$md5(menu.view), menu))
+	// 			}
+	// 		})
+	// 	}
+	// },
 	{
 		name: 'Unlock menu (v4.2.0)',
 		from: 'vue',
@@ -130,7 +131,7 @@ hookObject([
 	{
 		name: 'Change range of fan temperature',
 		from: 'vue',
-		enable: config.misc.fan.enable,
+		// enable: config.misc.fan.enable,
 		condition: vm => vm.handleInpSlider && 'tMarks' in vm,
 		process(vm) {
 			vm.handleInpSlider = t => vm.temperature = Math.min(Math.max(config.misc.fan.range[0], t), config.misc.fan.range[1])
@@ -158,8 +159,8 @@ hookObject([
 	{
 		name: 'Change slider of fan temperature ',
 		from: 'object',
-		enable: config.misc.fan.enable,
-		condition: o => o.staticClass === 'main-slider',
+		// enable: config.misc.fan.enable,
+		condition: o => o.model?.expression === "temperature" && o.staticClass === 'main-slider',
 		process(o) {
 			o.attrs.min = config.misc.fan.range[0] - 1
 			o.attrs.max = config.misc.fan.range[1] + 1
@@ -380,7 +381,8 @@ watchState([
 		requires: {
 			popper: () => glPopper,
 			toastr: () => glToastr,
-			switchElm: () => document.querySelector('.switch')
+			switchElm: () => document.querySelector('.switch'),
+			headerElm: () => document.querySelector('.header-container'),
 		},
 		process(param) {
 			const divideElm = param.switchElm.querySelector('.switch .divide-right')
@@ -389,8 +391,10 @@ watchState([
 			let showIframe = flag => {
 				closeButton.style.display = closeButton.nextElementSibling.style.display = flag ? '' : 'none'
 				if (flag) {
+					param.headerElm.style.zIndex = 2000
 					iframe.classList.add('gli-show')
 				} else {
+					param.headerElm.style.zIndex = ''
 					iframe.classList.remove('gli-show')
 				}
 			}
@@ -398,7 +402,7 @@ watchState([
 				let button = document.createElement('a')
 				button.classList.add('gli-navbtn')
 				button.href = link
-				button.innerHTML = '<span class="btn-icon ' + icon + '">'
+				button.innerHTML = '<span class="gli-btn-icon ' + icon + '">'
 				return button
 			}
 
@@ -462,5 +466,3 @@ watchState([
 		}
 	}
 ])
-
-xlog('info', 'Welcome', 'GlInjector v' + version)

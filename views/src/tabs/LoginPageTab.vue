@@ -230,7 +230,7 @@ export default {
             }
         },
         followMe() {
-            this.$message("Follow Me 💕 with https://github.com/VMatrices")
+            this.$message("Follow me 💕 on https://github.com/VMatrices")
             setTimeout(() => open("https://github.com/VMatrices"), 1000)
         }
     }

@@ -47,7 +47,7 @@ export default {
             this.keepCurrentTab()
             this.$router.push({ name: "overview" })
             const timer = setInterval(() => {
-                const btn = document.querySelector(".fan-setting-wrapper > *")
+                const btn = document.querySelector(".icon-fan-setting") 
                 if (btn) {
                     btn.click()
                     clearInterval(timer)
