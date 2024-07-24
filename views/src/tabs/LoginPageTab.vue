@@ -115,14 +115,18 @@
                 </transition>
                 <li class="title-li">{{ tl("login.button.title") }}</li>
                 <li>
-                    <span>{{ tl("login.button.add_luci") }}</span>
+                    <div>
+                        <span>{{ tl("login.button.add_luci") }}</span>
+                    </div>
                     <div>
                         <gl-switch v-model="styles.button.luci" />
                     </div>
                 </li>
                 <transition name="fade-down">
                     <li v-if="styles.button.luci">
-                        <span>{{ tl("login.button.comb_mode") }}</span>
+                        <div>
+                            <span>{{ tl("login.button.comb_mode") }}</span>
+                        </div>
                         <div>
                             <gl-switch v-model="styles.button.comb" />
                         </div>
@@ -130,7 +134,9 @@
                 </transition>
                 <transition name="fade-down">
                     <li v-if="styles.button.luci">
-                        <span>{{ tl("login.button.luci_text") }}</span>
+                        <div>
+                            <span>{{ tl("login.button.luci_text") }}</span>
+                        </div>
                         <div>
                             <el-input v-model="styles.button.luci_text" />
                         </div>

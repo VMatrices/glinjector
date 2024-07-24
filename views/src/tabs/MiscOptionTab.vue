@@ -2,7 +2,9 @@
     <div class="form">
         <ul>
             <li>
-                <span>{{ tl("misc.unlock") }}</span>
+                <div>
+                    <span>{{ tl("misc.unlock") }}</span>
+                </div>
                 <div>
                     <gl-switch v-model="misc.unlock" />
                 </div>
@@ -47,7 +49,7 @@ export default {
             this.keepCurrentTab()
             this.$router.push({ name: "overview" })
             const timer = setInterval(() => {
-                const btn = document.querySelector(".icon-fan-setting") 
+                const btn = document.querySelector(".icon-fan-setting")
                 if (btn) {
                     btn.click()
                     clearInterval(timer)
