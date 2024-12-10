@@ -381,7 +381,7 @@ watchState([
 		requires: {
 			popper: () => glPopper,
 			toastr: () => glToastr,
-			switchElm: () => document.querySelector('.switch'),
+			switchElm: () => document.querySelector('.hd-right'),
 			headerElm: () => document.querySelector('.header-container'),
 		},
 		process(param) {

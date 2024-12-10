@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=glinjector
-PKG_VERSION:=3.0.2
-PKG_RELEASE:=3
+PKG_VERSION:=3.0.3
+PKG_RELEASE:=4
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=VMatrices <vmatrices@outlook.com>
 
@@ -77,6 +77,11 @@ define Package/$(PKG_NAME)/install
 		$(INSTALL_DATA) ./files/rpc.lua $(1)/usr/lib/oui-httpd/rpc/$(PKG_NAME); \
 	fi
 
+	if [ -f ./files/validator.lua ]; then \
+		$(INSTALL_DIR) $(1)/usr/share/gl-validator.d/; \
+		$(INSTALL_DATA) ./files/validator.lua $(1)/usr/share/gl-validator.d/$(PKG_NAME).lua; \
+	fi
+
 	$(INSTALL_DIR) $(1)/www/i18n/
 	@$(foreach file, $(wildcard ./views/i18n/*.json), cp $(file) $(1)/www/i18n/$(GL_SDK_PREFIX)-$(PKG_NAME).$(notdir $(file));)
 
@@ -92,6 +97,8 @@ endef
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 if [ -z "$${IPKG_INSTROOT}" ]; then
+	sed -i '/cgi-bin/,/}/{/X-Frame-Options/d}' /etc/nginx/conf.d/gl.conf
+	nginx -s reload 2> /dev/null
 	echo
 	echo 'Please go to "System > Customization" and click the Apply button after installation'
 	echo '安装后请进入“系统 > 个性化”点击应用按钮'
@@ -105,6 +112,8 @@ define Package/$(PKG_NAME)/prerm
 if [ -z "$${IPKG_INSTROOT}" ]; then
 	rm -f /www/js/$(PKG_NAME)-*
 	cp -f /rom/www/gl_home.html /www/
+	cp -f /rom/etc/nginx/conf.d/gl.conf /etc/nginx/conf.d/
+	nginx -s reload 2> /dev/null
 fi
 exit 0
 endef
