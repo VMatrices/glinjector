@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=glinjector
-PKG_VERSION:=3.0.3
-PKG_RELEASE:=4
+PKG_VERSION:=3.0.5
+PKG_RELEASE:=6
 PKG_LICENSE:=MIT
 PKG_MAINTAINER:=VMatrices <vmatrices@outlook.com>
 
@@ -97,6 +97,13 @@ endef
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 if [ -z "$${IPKG_INSTROOT}" ]; then
+	if grep -qE "[1-4]\.[0-6]\..+" /etc/glversion; then
+		echo
+		echo 'Your firmware version is lower than 4.7.0, please try a lower version'
+		echo '您的固件版本低于4.7.0，请尝试较低版本的插件'
+		echo
+		exit 1
+	fi
 	sed -i '/cgi-bin/,/}/{/X-Frame-Options/d}' /etc/nginx/conf.d/gl.conf
 	nginx -s reload 2> /dev/null
 	echo

@@ -1,4 +1,4 @@
-const GL_PASSWD = 'CHANGEME'
+const GL_PASSWD = import.meta.env.VITE_GL_PASSWD || 'CHANGEME'
 
 export default function hookLogin(Vue) {
 
