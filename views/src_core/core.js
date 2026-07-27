@@ -39,7 +39,7 @@ hookObject([
 		name: 'Unlock menu (v4.2.3+)',
 		from: 'array',
 		enable: config.misc.unlock,
-		condition: arr => arr[0].lang_hide,
+		condition: arr => arr.some(menu => menu.lang_hide),
 		process(arr) {
 			arr.forEach(menu => menu.lang_hide = menu.parent_lang_hide = [])
 		}
@@ -239,6 +239,7 @@ watchState([
 					boxStyle.height = boxCfg.height + 'px'
 					boxStyle.borderRadius = boxCfg.radius + 'px'
 					boxStyle.marginTop = `calc(50vh - ${boxCfg.height / 2}px)`
+					boxStyle.minHeight = 'initial'
 					css += createCss('.login-wrapper .typeof-router ', {
 						marginTop: '0'
 					})

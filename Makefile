@@ -1,9 +1,9 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=glinjector
-PKG_VERSION:=3.0.5
-PKG_RELEASE:=6
-PKG_LICENSE:=MIT
+PKG_VERSION:=3.0.6
+PKG_RELEASE:=7
+PKG_LICENSE:=GPL-3.0
 PKG_MAINTAINER:=VMatrices <vmatrices@outlook.com>
 
 PKG_BUILD_DIR:= $(BUILD_DIR)/$(PKG_NAME)

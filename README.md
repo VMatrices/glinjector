@@ -5,43 +5,44 @@ GL-iNet 路由器UI增强插件。提供登录页美化、快捷按钮、自定�
 > 原帖镜像：[forum.gl-inet.cn/forum.php?mod=viewthread&tid=3129](https://web.archive.org/web/20260120184234/https://forum.gl-inet.cn/forum.php?mod=viewthread&tid=3129&extra=page%3D1)（中文论坛已关闭）
 
 
-## 功能一览
+## 功能总览
 
 - **定制登录页** — 自定义背景图片（在线/上传）、浮动登录框、亮暗主题、登录框动画
-- **一键登录 LuCI** — 登录页直接跳转 LuCI，自动维持会话免超时
-- **自定义快捷按钮** — 顶部导航栏添加任意链接按钮，支持内嵌页面
+- **一键登录 LuCI** — 支持登录页直接跳转 LuCI，自定义按钮样式
+- **自定义导航栏** — 顶部导航栏添加任意链接按钮，支持内嵌页面
 - **宽屏模式** — 解除官方 UI 宽度限制，充分利用屏幕空间
 - **首页背景** — 自定义首页背景图片，支持遮罩浓度调节
 - **风扇温度区间** — 自定义 CPU 风扇起转和满转温度范围
-- **移除区域限制** — 解除语言地区限制（仅供学习研究）
+- **移除区域限制** — 解除语言地区限制 *（仅供学习研究）*
 
 ## 效果预览
 
-| 登录页优化 | 自定义快捷按钮 |
+| 登录页优化 | 自定义导航栏 |
 |:---:|:---:|
 | ![登录页跳转](doc/luci-login.gif) | ![导航栏](doc/navbar.gif) |
 
 ## 配置界面
 
-所有功能通过 **系统 → 个性化** 页面可视化配置，支持实时预览。
+所有功能通过 **系统 → 个性化** 页面可视化配置，支持实时预览。（预览小窗有彩蛋~）
 
-### 登录页
+### 定制登录页
 
-| 登录框样式配置 | 自定义壁纸来源 |
-|:---:|:---:|
-| ![登录页配置](doc/login-config.png) | ![壁纸选择](doc/login-wallpaper.png) |
+![登录页配置](doc/login-config.png)
+
+### 自定义壁纸
+![壁纸选择](doc/login-wallpaper.png)
 
 ### 管理面板
 
 ![管理面板配置](doc/admin-panel-config.png)
 
-### 导航栏
+### 自定义导航栏
 
-| 按钮列表管理 | 新增按钮 |
+| 按钮列表 | 编辑按钮 |
 |:---:|:---:|
-| ![导航栏配置](doc/navbar-config.png) | ![新增按钮](doc/navbar-add-btn.png) |
+| ![导航栏配置](doc/navbar-config.png) | ![新增按钮](doc/navbar-edit-btn.png) |
 
-### 其他
+### 其他功能
 
 ![其他功能](doc/misc-config.png)
 
@@ -53,15 +54,15 @@ GL-iNet 路由器UI增强插件。提供登录页美化、快捷按钮、自定�
 | 固件 | 4.7.0 及以上 |
 | 架构 | 全部（all） |
 
-> 固件版本低于 4.7.0 请使用 [旧版插件](https://github.com/VMatrices/glinjector/releases/tag/v3.0.2)
+> 固件版本低于 4.7.0 请使用 [旧版插件](https://github.com/VMatrices/glinjector/releases/tag/v3.0.3)
 
 ## 安装
 
 1. 进入路由器管理页面
 2. **系统 → 高级设置 → 本地文件 → 上传**
-3. 选择 ipk 文件上传安装
+3. 选择 [ipk](https://github.com/VMatrices/glinjector/releases) 文件上传安装
 
-按照返回官方UI: **系统 → 个性化**，点击 **应用** 按钮使配置生效。
+安装完成后，返回官方UI: **系统 → 个性化**，点击 **应用** 按钮生效。
 
 
 ## 配置说明
