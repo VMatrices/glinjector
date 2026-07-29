@@ -28,6 +28,12 @@ body {
             }
         }
 
+        @media screen and (max-width: 850px) {
+            .gli-additional {
+                display: none !important;
+            }
+        }
+
         .divide-right+.gli-navbtn {
             margin-left: 0px;
         }

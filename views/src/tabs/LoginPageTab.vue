@@ -251,6 +251,14 @@ export default {
 .preview-form {
     display: flex;
 
+    @media screen and (max-width: 1010px) {
+        flex-direction: column-reverse;
+        align-items: center;
+        .form {
+            align-self: stretch;
+        }
+    }
+
     .form {
         flex: 1;
     }

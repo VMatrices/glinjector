@@ -83,6 +83,7 @@
             "tab_title": "导航栏",
             "tip": "在顶部导航栏添加自定义按钮，方便您快速访问。（部分网站可能设置了禁止嵌套）",
             "add": "新增",
+            "save": "保存",
             "add_btn": "新增按钮",
             "edit_btn": "修改按钮",
             "enable": "启用",
@@ -101,8 +102,13 @@
                 "blank": "打开新页面",
                 "replace": "替换当前页面"
             },
+            "wait": "等待页面加载",
             "not_empty": "不能为空",
-            "format_incorrect": "格式不正确"
+            "format_incorrect": "格式不正确",
+            "move_up": "上移",
+            "move_down": "下移",
+            "delete": "删除",
+            "edit": "编辑"
         },
         "misc": {
             "tab_title": "其他",

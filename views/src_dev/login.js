@@ -23,10 +23,10 @@ export default function hookLogin(Vue) {
         throw err
     }
 
-    async function login() {
-        const username = 'root', password = import.meta.env.VITE_GL_PASSWD || prompt("Please input password to login:")
+    async function login(password) {
+        const username = 'root'
         if (!password) {
-            throw 'Login interrupted!'
+            password = prompt("Please input password to login:")
         }
         try {
             let resp = await $request('challenge', { username })
@@ -51,7 +51,7 @@ export default function hookLogin(Vue) {
 
     Vue.prototype.$request = window.$request = async function (method, param, ...ext) {
         if (!$getCookie("Admin-Token")) {
-            await login()
+            await login(import.meta.env.VITE_GL_PASSWD)
         }
         try {
             return await $request(method, param, ...ext)

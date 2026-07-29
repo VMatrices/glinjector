@@ -38,8 +38,8 @@ import LoginPageTab from "./tabs/LoginPageTab.vue"
 import AdminPanelTab from "./tabs/AdminPanelTab.vue"
 import NavbarTab from "./tabs/NavbarTab.vue"
 import MiscOptionTab from "./tabs/MiscOptionTab.vue"
-import defaultConfig from "./js/default-config"
 import initConfirmDialog from "./js/confirm-dialog"
+import { defaultConfig, mergeConfig} from "./js/default-config"
 import { extendObject } from "./js/uitls"
 
 const SKEY_TAB_NAME = "gli.tabName",
@@ -67,7 +67,7 @@ export default {
     },
     async created() {
         try {
-            this.config = extendObject(defaultConfig(), JSON.parse((await this.rpc("get_config")).json))
+            this.config = mergeConfig(JSON.parse((await this.rpc("get_config")).json))
         } catch (ignored) {
             this.config = defaultConfig()
         }

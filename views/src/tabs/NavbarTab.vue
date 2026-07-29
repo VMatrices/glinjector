@@ -12,11 +12,11 @@
                 <th>{{ tl("navbar.btn") }}</th>
                 <th>{{ tl("navbar.path") }}</th>
                 <th>{{ tl("navbar.mode") }}</th>
-                <th>{{ tl("navbar.operate") }}</th>
+                <th class="is-center">{{ tl("navbar.operate") }}</th>
             </thead>
             <transition-group tag="tbody" name="table-fade">
                 <tr v-for="(item, i) in navbar.buttons" :key="item.id" class="table-fade-item">
-                    <td><gl-switch v-model="item.enable" /></td>
+                    <td><gl-switch size="small" v-model="item.enable" /></td>
                     <td>
                         <i :class="item.icon" />
                         <span class="ml10">{{ item.name }}</span>
@@ -32,19 +32,25 @@
                             <span v-if="item.mode == 'replace'">{{ tl("navbar.mode_option.replace") }}</span>
                         </template>
                     </td>
-                    <td>
-                        <gl-button class="gl-icon-btn" type="default" @click="handleSwapBtn(i, -1)">
-                            <i class="el-icon-arrow-up" />
-                        </gl-button>
-                        <gl-button class="gl-icon-btn" type="default" @click="handleSwapBtn(i, +1)">
-                            <i class="el-icon-arrow-down" />
-                        </gl-button>
-                        <gl-button class="gl-icon-btn" type="success" @click="handleOpenBtnDialog(i)">
-                            <i class="el-icon-edit" />
-                        </gl-button>
-                        <gl-button class="gl-icon-btn" type="error" @click="navbar.buttons.splice(i, 1)">
-                            <i class="el-icon-delete" />
-                        </gl-button>
+                    <td class="is-center">
+                        <gl-dropdown>
+                            <gl-dropdown-item @click="handleSwapBtn(i, -1)">
+                                <i class="el-icon-arrow-up" />
+                                <span>&nbsp;&nbsp;{{ tl("navbar.move_up") }}</span>
+                            </gl-dropdown-item>
+                            <gl-dropdown-item divided @click="handleSwapBtn(i, +1)">
+                                <i class="el-icon-arrow-down" />
+                                <span>&nbsp;&nbsp;{{ tl("navbar.move_down") }}</span>
+                            </gl-dropdown-item>
+                            <gl-dropdown-item divided @click="handleOpenBtnDialog(i)">
+                                <i class="el-icon-edit" />
+                                <span>&nbsp;&nbsp;{{ tl("navbar.edit") }}</span>
+                            </gl-dropdown-item>
+                            <gl-dropdown-item divided @click="navbar.buttons.splice(i, 1)">
+                                <i class="el-icon-delete" />
+                                <span>&nbsp;&nbsp;{{ tl("navbar.delete") }}</span>
+                            </gl-dropdown-item>
+                        </gl-dropdown>
                     </td>
                 </tr>
             </transition-group>
@@ -58,13 +64,19 @@
                             <div>{{ tl("navbar.icon") }}</div>
                             <div>
                                 <el-form-item prop="icon" :rules="rules.required">
-                                    <el-select v-model="btnDialog.data.icon" filterable :placeholder="tl('navbar.icon_placeholder')">
+                                    <el-select
+                                        v-model="btnDialog.data.icon"
+                                        filterable
+                                        popper-class="select-gird"
+                                        :placeholder="tl('navbar.icon_placeholder')"
+                                    >
                                         <template slot="prefix">
                                             <i :class="btnDialog.data.icon || 'el-icon-full-screen'" />
                                         </template>
                                         <el-option v-for="item in icons" :key="item" :label="item" :value="item">
-                                            <span style="float: left"><i :class="item" /></span>
-                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item }}</span>
+                                            <el-tooltip effect="dark" placement="top" :open-delay="200" :content="item">
+                                                <i :class="item" />
+                                            </el-tooltip>
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
@@ -103,11 +115,19 @@
                                 </div>
                             </li>
                         </transition>
+                        <transition name="fade-down">
+                            <li v-if="btnDialog.data.mode == 'embed'">
+                                <div>
+                                    <span>{{ tl("navbar.wait") }}</span>
+                                </div>
+                                <div><gl-switch size="small" v-model="btnDialog.data.wait" /></div>
+                            </li>
+                        </transition>
                         <li>
                             <div>
                                 <span>{{ tl("navbar.enable") }}</span>
                             </div>
-                            <div><gl-switch v-model="btnDialog.data.enable" /></div>
+                            <div><gl-switch size="small" v-model="btnDialog.data.enable" /></div>
                         </li>
                     </ul>
                 </el-form>
@@ -115,7 +135,9 @@
             <span slot="footer" class="dialog-footer">
                 <div class="dialog-btns">
                     <gl-button class="dialog-btn" @click="handleCloseBtnDialog">{{ $t("core.cancel") }}</gl-button>
-                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">{{ $t(btnDialog.edit ? "core.edit" : "core.add") }}</gl-button>
+                    <gl-button class="dialog-btn" type="primary" @click="handleSaveBtn">
+                        {{ btnDialog.edit ? tl("navbar.save") : $t("core.add") }}
+                    </gl-button>
                 </div>
             </span>
         </el-dialog>
@@ -183,6 +205,7 @@ export default {
                     icon: "",
                     link: "",
                     mode: "embed",
+                    wait: true,
                     enable: true
                 }
             }
@@ -225,6 +248,10 @@ export default {
     visibility: hidden;
 }
 
+.is-center {
+    text-align: center;
+}
+
 td {
     max-width: 100px;
     text-overflow: ellipsis;
@@ -239,6 +266,20 @@ td {
         width: inherit;
         height: inherit;
         line-height: inherit;
+    }
+}
+</style>
+
+<style lang="scss">
+.select-gird {
+    .el-select-dropdown__list {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0;
+        .el-select-dropdown__item {
+            text-align: center;
+            justify-content: center; /* v4.9.0 */
+        }
     }
 }
 </style>

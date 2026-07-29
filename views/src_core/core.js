@@ -376,7 +376,7 @@ watchState([
 	},
 	{
 		name: 'Inject navbar buttons',
-		condition: () => config.navbar.buttons.length && !location.hash.match('login'),
+		condition: () => config.navbar.buttons.some(o => o.enable) && !location.hash.match('login'),
 		delayCondition: () => document.querySelector('.home-wrapper'),
 		complete: () => document.querySelector('.gli-navbtn'),
 		requires: {
@@ -401,21 +401,15 @@ watchState([
 			}
 			let createNavBtn = (link, icon) => {
 				let button = document.createElement('a')
-				button.classList.add('gli-navbtn')
+				button.classList.add('gli-navbtn', 'gli-additional')
 				button.href = link
 				button.innerHTML = '<span class="gli-btn-icon ' + icon + '">'
 				return button
 			}
 
-			param.switchElm.prepend(divideElm.cloneNode())
-			const hasEmbed = config.navbar.buttons.find(o => o.mode == 'embed')
-
-			if (hasEmbed) {
-				iframe = document.createElement('iframe')
-				iframe.className = 'gli-iframe'
-				iframe.name = '_gli_iframe'
-				document.querySelector('.home-wrapper>.container').append(iframe)
-			}
+			const divideElm2 = divideElm.cloneNode()
+			divideElm2.classList.add('gli-additional')
+			param.switchElm.prepend(divideElm2)
 
 			for (let btnInfo of config.navbar.buttons.filter(o => o.enable).reverse()) {
 				let button = createNavBtn(btnInfo.link, btnInfo.icon)
@@ -432,28 +426,40 @@ watchState([
 				} else if (btnInfo.mode == 'embed') {
 					button.target = '_gli_iframe'
 					button.onclick = e => {
-						showIframe(false)
 						iframe.onload = () => {
 							iframe.onload = () => injectCss('', '[href="/cgi-bin/luci/admin/logout"]{display:none !important}', iframe.contentDocument)
 							iframe.onload()
-							setTimeout(() => {
-								glToastr.closeAll()
-								glDisableMask && glDisableMask(false)
-								showIframe(true)
-							}, 300)
+							if (btnInfo.wait) {
+								setTimeout(() => {
+									glToastr.closeAll()
+									glDisableMask && glDisableMask(false)
+									showIframe(true)
+								}, 300)
+							}
 						}
 						glToastr.closeAll()
-						glDisableMask && glDisableMask(true)
-						glToastr({
-							message: "Loading...",
-							iconClass: "iconfont icon-loading",
-							duration: 0
-						})
+						if (btnInfo.wait) {
+							showIframe(false)
+							glDisableMask && glDisableMask(true)
+							glToastr({
+								message: "Loading...",
+								iconClass: "iconfont icon-loading",
+								duration: 0
+							})
+						} else {
+							glDisableMask && glDisableMask(false)
+							showIframe(true)
+						}
 					}
 				}
 			}
 
-			if (hasEmbed) {
+			if (config.navbar.buttons.some(o => o.mode == 'embed')) {
+				iframe = document.createElement('iframe')
+				iframe.className = 'gli-iframe'
+				iframe.name = '_gli_iframe'
+				document.querySelector('.home-wrapper>.container').append(iframe)
+
 				closeButton = createNavBtn(null, 'iconfont icon-eject')
 				closeButton.removeAttribute('href')
 				closeButton.onclick = () => showIframe(false)

@@ -83,6 +83,7 @@
             "tab_title": "Navbar",
             "tip": "Add custom buttons to the top navigation bar for quick access. (Some websites may have restrictions on nesting)",
             "add": "Add",
+            "save": "Save",
             "add_btn": "Add button",
             "edit_btn": "Edit button",
             "enable": "Enable",
@@ -101,8 +102,13 @@
                 "blank": "Open in a new page",
                 "replace": "Replace the current page"
             },
+            "wait": "Waiting for page to load",
             "not_empty": "Cannot be empty",
-            "format_incorrect": "Incorrect format"
+            "format_incorrect": "Incorrect format",
+            "move_up": "Move up",
+            "move_down": "Move down",
+            "delete": "Delete",
+            "edit": "Edit"
         },
         "misc": {
             "tab_title": "Others",

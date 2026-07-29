@@ -1,4 +1,6 @@
 
+import { extendObject } from "./uitls"
+
 const config = {
     "style": {
         "login": {
@@ -51,6 +53,7 @@ const config = {
                 "icon": "iconfont icon-gateway",
                 "link": "/cgi-bin/luci/",
                 "mode": "blank",
+                "wait": true,
                 "enable": true
             },
             {
@@ -58,6 +61,7 @@ const config = {
                 "icon": "iconfont icon-printer",
                 "link": "/cgi-bin/luci/admin/network/network",
                 "mode": "embed",
+                "wait": true,
                 "enable": true
             },
             {
@@ -65,6 +69,7 @@ const config = {
                 "icon": "iconfont icon-flash",
                 "link": "/cgi-bin/luci/admin/status/channel_analysis",
                 "mode": "embed",
+                "wait": true,
                 "enable": true
             },
             {
@@ -85,6 +90,17 @@ const config = {
     }
 }
 
-export default function defaultConfig() {
+export function defaultConfig() {
     return JSON.parse(JSON.stringify(config))
+}
+
+
+export function mergeConfig(old) {
+    const cfg = extendObject(defaultConfig(), old)
+    cfg.navbar.buttons.forEach(btn => {
+        if (!('wait' in btn)) {
+            btn.wait = true
+        }
+    })
+    return cfg
 }
